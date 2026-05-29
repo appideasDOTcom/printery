@@ -32,6 +32,8 @@ The reference cartesian printer project (hardware designs, Marlin firmware, Octo
 | Screen | BTT TFT24 v1.1 |
 | Power supply | 24 V |
 | Wireless | ESP8266 (WAP via custom Pi HAT) |
+| Motor drivers | TMC 2209 |
+| Motors | Nema 17, 2A |
 
 ### Custom Pi HAT
 
