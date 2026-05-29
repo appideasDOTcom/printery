@@ -20,7 +20,7 @@ This is a CoreXY 3D printer built from the ground up, reusing the bottom frame a
 - Linear rails: 8 mm round rod — 360 mm and 405 mm lengths
 - Bearings: RJ4JP-01-08 solid polymer dry bearings (LM8UU footprint) — no lubrication required or desired
 - Lead screws: T8, 350 mm
-- Timing belts: 760-2GT (760 mm × 2 mm pitch)
+- Timing belts: 760-2GT (760 mm × 2 mm pitch); Meters of open-ended 2GT belt, can be cut to size
 - Target build volume: TBD — X and Y span describe frame geometry, not usable print area; Z height is not yet finalized. Z travel is limited by the 350 mm T8 lead screws minus coupler and nut clearance. Ask the user for confirmed build volume targets before calculations that depend on them.
 
 ### Toolhead & Thermal
