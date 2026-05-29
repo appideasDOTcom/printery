@@ -23,6 +23,8 @@ The reference cartesian printer project (hardware designs, Marlin firmware, Octo
 - Lead screws: T8, 350 mm
 - Timing belts: 760-2GT (760 mm × 2 mm pitch)
 
+The measurements of items in "Motion System" are what is currently owned. Prefer what is already owned, but suggest other sizes if another common size will make a better product or easier build.
+
 ### Electronics
 
 | Component | Part |
