@@ -94,4 +94,4 @@ module extrusion_2020(length = 100, axis = "z") {
 }
 
 // --- Preview output (comment out when using as a library) ---
-extrusion_2020(length = 100, axis = "z");
+// extrusion_2020(length = 100, axis = "z");
