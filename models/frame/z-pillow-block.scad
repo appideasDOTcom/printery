@@ -130,3 +130,4 @@ module z_pillow_block(bolts = "xy", flip = false) {
 // Preview — lower block (flip=false, pocket open at top)
 // ---------------------------------------------------------------------------
 z_pillow_block(bolts = "xy", flip = false);
+// z_pillow_block(bolts = "xx", flip = false);
