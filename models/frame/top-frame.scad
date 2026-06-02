@@ -107,19 +107,20 @@ module _z_pillow_blocks_lower() {
 
 module _z_pillow_blocks_upper() {
     // Same X/Y placement as lower blocks.
+    // flip=true: pocket opens downward, wings at top of block (aligned with top extrusion).
 
     // Front-left upper
     translate([ex, ex, pb_upper_bot_z])
-        z_pillow_block(bolts = "xy");
+        z_pillow_block(bolts = "xy", flip = true);
 
     // Front-right upper (mirrored)
     translate([bf_outer_x - ex, ex, pb_upper_bot_z])
         mirror([1, 0, 0])
-            z_pillow_block(bolts = "xy");
+            z_pillow_block(bolts = "xy", flip = true);
 
     // Rear center upper
     translate([ls_rc_x - pb_block_xy/2, bf_rear_y_face - pb_block_xy, pb_upper_bot_z])
-        z_pillow_block(bolts = "xx");
+        z_pillow_block(bolts = "xx", flip = true);
 }
 
 module _lead_screws() {
@@ -166,69 +167,62 @@ module _x_carriage_rods() {
 }
 
 module _y_rod_captures() {
-    // Four rod-end capture blocks, one at each end of each Y rod
-    // Mounted on the inside face of the front and rear top extrusions
-    rod_cap_y_offset = ex / 2 + 2;  // small standoff from extrusion face
+    // Four rod-end capture blocks, one at each end of each Y carriage rod.
+    // Block bore runs in local +Y. Back face (at local Y=rec_block_d) bolts into
+    // the extrusion T-slot on the extrusion's inner face.
+    //
+    // Front end (no mirror):
+    //   translate Y = tf_front_cy - ex/2 = 0
+    //   → block Y = 0..rec_block_d, back face at world Y = rec_block_d = 20 = extrusion inner face ✓
+    //
+    // Rear end (mirror [0,1,0]):
+    //   mirror flips +Y → -Y, so back face is now at -rec_block_d from translate Y
+    //   translate Y = bf_rear_y_face + rec_block_d = 405
+    //   → back face at world Y = 405 - 20 = 385 = bf_rear_y_face ✓
 
-    // Left rod: front end
-    translate([y_rod_left_x - pb_block_xy/2,
-               tf_front_cy - rod_cap_y_offset,
-               y_rod_z - ex/2])
-        rod_end_capture();
-
-    // Left rod: rear end
-    translate([y_rod_left_x - pb_block_xy/2,
-               tf_rear_cy + rod_cap_y_offset,
-               y_rod_z - ex/2])
-        mirror([0, 1, 0])
+    for (rx = [y_rod_left_x, y_rod_right_x]) {
+        // Front end
+        translate([rx - rec_block_w/2,
+                   tf_front_cy - ex/2,
+                   y_rod_z - ex/2])
             rod_end_capture();
 
-    // Right rod: front end
-    translate([y_rod_right_x - pb_block_xy/2,
-               tf_front_cy - rod_cap_y_offset,
-               y_rod_z - ex/2])
-        rod_end_capture();
-
-    // Right rod: rear end
-    translate([y_rod_right_x - pb_block_xy/2,
-               tf_rear_cy + rod_cap_y_offset,
-               y_rod_z - ex/2])
-        mirror([0, 1, 0])
-            rod_end_capture();
+        // Rear end
+        translate([rx - rec_block_w/2,
+                   bf_rear_y_face + rec_block_d,
+                   y_rod_z - ex/2])
+            mirror([0, 1, 0])
+                rod_end_capture();
+    }
 }
 
 module _x_rod_captures() {
-    // Four rod-end capture blocks for the two X carriage rods
-    // Mounted on the inside face of the left and right top Y extrusions
-    rod_cap_x_offset = ex / 2 + 2;
+    // Four rod-end capture blocks for the two X carriage rods.
+    // Bore must be rotated to run in X. Back face bolts into the Y-rail inner face.
+    //
+    // rotate([0,0,90]) — left-end mounts; maps local (x,y,z) → world (-y+tx, x+ty, z+tz)
+    //   Back face (local Y=rec_block_d=20) → world X = -20 + tx = ex → tx = ex + rec_block_d
+    //   Bore centre (local X=rec_block_w/2=9) → world Y = 9 + ty = rod_y → ty = rod_y - rec_block_w/2
+    //
+    // rotate([0,0,-90]) — right-end mounts; maps local (x,y,z) → world (y+tx, -x+ty, z+tz)
+    //   Back face (local Y=rec_block_d=20) → world X = 20 + tx = bf_outer_x-ex → tx = bf_outer_x-ex-rec_block_d
+    //   Bore centre (local X=rec_block_w/2=9) → world Y = -9 + ty = rod_y → ty = rod_y + rec_block_w/2
 
-    // Front X rod: left end
-    translate([tf_left_cx - rod_cap_x_offset,
-               x_rod_front_y - pb_block_xy/2,
-               x_rod_z - ex/2])
-        rotate([0, 0, 90])
-            rod_end_capture();
+    for (ry = [x_rod_front_y, x_rod_rear_y]) {
+        // Left end
+        translate([ex + rec_block_d,
+                   ry - rec_block_w/2,
+                   x_rod_z - ex/2])
+            rotate([0, 0, 90])
+                rod_end_capture();
 
-    // Front X rod: right end
-    translate([tf_right_cx + rod_cap_x_offset,
-               x_rod_front_y - pb_block_xy/2,
-               x_rod_z - ex/2])
-        rotate([0, 0, -90])
-            rod_end_capture();
-
-    // Rear X rod: left end
-    translate([tf_left_cx - rod_cap_x_offset,
-               x_rod_rear_y - pb_block_xy/2,
-               x_rod_z - ex/2])
-        rotate([0, 0, 90])
-            rod_end_capture();
-
-    // Rear X rod: right end
-    translate([tf_right_cx + rod_cap_x_offset,
-               x_rod_rear_y - pb_block_xy/2,
-               x_rod_z - ex/2])
-        rotate([0, 0, -90])
-            rod_end_capture();
+        // Right end
+        translate([bf_outer_x - ex - rec_block_d,
+                   ry + rec_block_w/2,
+                   x_rod_z - ex/2])
+            rotate([0, 0, -90])
+                rod_end_capture();
+    }
 }
 
 // ---------------------------------------------------------------------------

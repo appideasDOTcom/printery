@@ -44,38 +44,40 @@ ls_lower_engage  = 10.0;   // mm of screw inside lower bearing block
 ls_upper_engage  = 10.0;   // mm of screw inside upper bearing block
 ls_travel        = ls_length - ls_lower_engage - ls_upper_engage;  // 330 mm nut travel
 
-// Lower pillow block geometry (block bottom flush with bf_top_z)
-pb_wall          = 5.0;    // Min wall around bearing pocket
+// Lower pillow block geometry
+pb_wall          = 5.0;    // XY side-wall thickness around bearing OD
+pb_floor         = 4.0;    // Z floor/ceiling thickness (one closed end per block)
 pb_bearing_od    = 22.0;   // 608zz outer diameter
 pb_bearing_h     = 7.0;    // 608zz height
 pb_bearing_id    = 8.0;    // 608zz inner bore
 pb_flange_od     = 10.5;   // Spacer flange OD
 pb_flange_h      = 2.0;    // Spacer flange height
 pb_stack_h       = pb_bearing_h * 2 + pb_flange_h;  // 16.0 mm — double-bearing stack
-pb_block_h       = pb_stack_h + pb_wall * 2;         // 26.0 mm — pillow block total height
+pb_block_h       = pb_stack_h + pb_floor;             // 20.0 mm — pillow block total height
 pb_block_xy      = pb_bearing_od + pb_wall * 2;      // 32.0 mm — block footprint (square)
 
 // Lower block: bottom flush with the bottom face of the top-layer extrusion
 // Block mounts on the inside vertical face of the extrusion, not on top of it
 pb_lower_bot_z   = bf_top_layer_bot_z;                // 70 mm
-pb_lower_top_z   = pb_lower_bot_z + pb_block_h;       // 96 mm
+pb_lower_top_z   = pb_lower_bot_z + pb_block_h;       // 104 mm
 
-// Lead screw bottom sits at the bearing pocket floor inside the lower block
-pb_ls_bottom_z   = pb_lower_bot_z + pb_wall;          // 75 mm
+// Lead screw bottom: floor + bearing + spacer above block bottom = 9 mm above floor top
+pb_ls_bottom_z   = pb_lower_bot_z + pb_floor + pb_bearing_h + pb_flange_h;  // 83 mm
 
-// Upper pillow block: bearing pocket top aligns with lead screw top minus upper engagement
-pb_upper_bot_z   = pb_lower_bot_z + ls_length - ls_upper_engage - pb_stack_h; // 394 mm
-pb_upper_top_z   = pb_upper_bot_z + pb_block_h;       // 420 mm
+// Upper block: screw top sits at spacer bottom, which is bearing + spacer below ceiling
+// upper_top = pb_ls_bottom_z + ls_length + pb_flange_h + pb_bearing_h + pb_floor
+pb_upper_top_z   = pb_ls_bottom_z + ls_length + pb_flange_h + pb_bearing_h + pb_floor;  // 446 mm
+pb_upper_bot_z   = pb_upper_top_z - pb_block_h;       // 426 mm
 
 // ---------------------------------------------------------------------------
 // Top frame (vertical uprights + top rectangle)
 // ---------------------------------------------------------------------------
-// Top frame extrusion bottom face sits just above the upper pillow block
-tf_extrusion_bot_z  = pb_upper_top_z;              // 420 mm
-tf_extrusion_top_z  = tf_extrusion_bot_z + ex;     // 440 mm
+// Top frame extrusion occupies the same Z range as the upper pillow blocks (same as lower/bottom)
+tf_extrusion_bot_z  = pb_upper_bot_z;              // 426 mm
+tf_extrusion_top_z  = tf_extrusion_bot_z + ex;     // 458 mm
 
 // Vertical upright length: from top of bottom frame top layer to bottom of top frame
-tf_upright_length   = tf_extrusion_bot_z - bf_top_z; // 330 mm — cut from 400 mm stock
+tf_upright_length   = tf_extrusion_bot_z - bf_top_z; // 348 mm — cut from 400 mm stock
 tf_upright_bot_z    = bf_top_z;                       // 90 mm
 
 // Top frame has same footprint as bottom frame
@@ -123,6 +125,14 @@ x_rod_length         = bf_x_rail;         // cut to 300 mm from 360 mm stock
 // ---------------------------------------------------------------------------
 wing_t               = 5.0;   // Wing tab thickness — how far the tab protrudes from a block face
 wing_extend          = 20.0;  // How far the wing tab extends past the block body edge
+
+// ---------------------------------------------------------------------------
+// Rod-end-capture block dimensions (must stay in sync with rod-end-capture.scad)
+// ---------------------------------------------------------------------------
+rec_wall             = 5.0;           // side wall thickness around rod bore
+rec_bore_depth       = 15.0;          // depth the rod sits in the block
+rec_block_w          = carriage_rod_dia + rec_wall * 2;  // 18 mm — block width
+rec_block_d          = rec_bore_depth + rec_wall;         // 20 mm — block depth (Y local)
 
 // ---------------------------------------------------------------------------
 // M5 hardware
