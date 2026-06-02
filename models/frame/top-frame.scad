@@ -36,6 +36,7 @@ include <shared-dims.scad>
 use <../common/2020-extrusion.scad>
 use <z-pillow-block.scad>
 use <rod-end-capture.scad>
+use <x-rod-sled.scad>
 
 // ---------------------------------------------------------------------------
 // Derived values not already in shared-dims
@@ -155,14 +156,18 @@ module _y_carriage_rods() {
 }
 
 module _x_carriage_rods() {
-    // Two 8 mm rods running the X span, riding the Y rods
+    // X rods span between the two sleds — from right face of left sled to left face of right sled.
+    // Left sled right face: y_rod_left_x + 10 = 45 mm
+    // Right sled left face: y_rod_right_x - 10 = 295 mm  →  length = 250 mm
+    _x_rod_start = y_rod_left_x + 10;
+    _x_rod_len   = y_rod_right_x - y_rod_left_x - 20;   // 250 mm
     color("steelblue", 0.6) {
-        translate([ex, x_rod_front_y, x_rod_z])
+        translate([_x_rod_start, x_rod_front_y, x_rod_z])
             rotate([0, 90, 0])
-                cylinder(d = carriage_rod_dia, h = x_rod_length);
-        translate([ex, x_rod_rear_y, x_rod_z])
+                cylinder(d = carriage_rod_dia, h = _x_rod_len);
+        translate([_x_rod_start, x_rod_rear_y, x_rod_z])
             rotate([0, 90, 0])
-                cylinder(d = carriage_rod_dia, h = x_rod_length);
+                cylinder(d = carriage_rod_dia, h = _x_rod_len);
     }
 }
 
@@ -196,32 +201,15 @@ module _y_rod_captures() {
     }
 }
 
-module _x_rod_captures() {
-    // Four rod-end capture blocks for the two X carriage rods.
-    // Bore must be rotated to run in X. Back face bolts into the Y-rail inner face.
-    //
-    // rotate([0,0,90]) — left-end mounts; maps local (x,y,z) → world (-y+tx, x+ty, z+tz)
-    //   Back face (local Y=rec_block_d=20) → world X = -20 + tx = ex → tx = ex + rec_block_d
-    //   Bore centre (local X=rec_block_w/2=9) → world Y = 9 + ty = rod_y → ty = rod_y - rec_block_w/2
-    //
-    // rotate([0,0,-90]) — right-end mounts; maps local (x,y,z) → world (y+tx, -x+ty, z+tz)
-    //   Back face (local Y=rec_block_d=20) → world X = 20 + tx = bf_outer_x-ex → tx = bf_outer_x-ex-rec_block_d
-    //   Bore centre (local X=rec_block_w/2=9) → world Y = -9 + ty = rod_y → ty = rod_y + rec_block_w/2
-
-    for (ry = [x_rod_front_y, x_rod_rear_y]) {
-        // Left end
-        translate([ex + rec_block_d,
-                   ry - rec_block_w/2,
-                   x_rod_z - ex/2])
-            rotate([0, 0, 90])
-                rod_end_capture();
-
-        // Right end
-        translate([bf_outer_x - ex - rec_block_d,
-                   ry + rec_block_w/2,
-                   x_rod_z - ex/2])
-            rotate([0, 0, -90])
-                rod_end_capture();
+module _x_rod_sleds() {
+    // One sled per Y rod, each retaining both X rods.
+    // Sled: 20 mm wide (X) × 50 mm deep (Y) × 50 mm tall (Z)
+    // Centred on the Y rod in X; Y start = x_rod_front_y - 5; Z start = x_rod_z - 25
+    _sled_y = x_rod_front_y - 5;   // 177.5 mm
+    _sled_z = x_rod_z - 25;        // 446 mm
+    color("gold") {
+        translate([y_rod_left_x  - 10, _sled_y, _sled_z]) x_rod_sled();
+        translate([y_rod_right_x - 10, _sled_y, _sled_z]) x_rod_sled();
     }
 }
 
@@ -236,7 +224,7 @@ module top_frame() {
     color("orange")       _z_pillow_blocks_upper();
     color("silver", 0.7)  _lead_screws();
     color("cornflowerblue") _x_carriage_rods();
-    color("gold")         _x_rod_captures();
+    color("gold")           _x_rod_sleds();
 }
 
 // ---------------------------------------------------------------------------
