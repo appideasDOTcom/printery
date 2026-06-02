@@ -120,4 +120,4 @@ module bottom_frame() {
 // ---------------------------------------------------------------------------
 // Output (comment out when using as a library)
 // ---------------------------------------------------------------------------
-bottom_frame();
+color( "green" ) bottom_frame();
