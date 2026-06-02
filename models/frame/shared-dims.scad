@@ -101,14 +101,23 @@ ls_rc_x             = bf_outer_x / 2;             // 170 mm
 ls_rc_y             = bf_rear_y_face - ls_inset;  // 377 mm (inset from rear rail inside face)
 
 // ---------------------------------------------------------------------------
+// Upper-top frame (50 mm corner posts above top frame + top rectangle)
+// ---------------------------------------------------------------------------
+utf_post_h           = 50.0;                          // corner post height
+utf_post_bot_z       = tf_extrusion_top_z;            // 446 mm — sit on top of top-frame extrusion
+utf_post_top_z       = utf_post_bot_z + utf_post_h;   // 496 mm
+utf_ex_cz            = utf_post_top_z + ex / 2;       // 506 mm — top extrusion center Z
+
+// ---------------------------------------------------------------------------
 // CoreXY carriage linear rods
 // ---------------------------------------------------------------------------
-// Y rods: one each side, running full frame Y span, at the X rail centerlines
-// Sit just inside the top frame, above upper pillow blocks
+// Y rods: inside the upper-top frame, one per side, running full Y span.
+// Block back face is rod_clearance inside the corner post inner face.
 carriage_rod_dia     = 8.0;   // 8 mm round rod
-y_rod_left_x         = bf_left_cx;        // 10 mm — left Y rod X position
-y_rod_right_x        = bf_right_cx;       // 330 mm — right Y rod X position
-y_rod_z              = tf_extrusion_bot_z - carriage_rod_dia / 2 - 2.0;  // ~466 mm center
+rod_clearance        = 5.0;   // gap between mount block and adjacent post wall
+y_rod_left_x         = ex + rod_clearance + 10;               // 35 mm — rod centre (block is 20 mm wide)
+y_rod_right_x        = bf_outer_x - ex - rod_clearance - 10;  // 305 mm
+y_rod_z              = utf_post_bot_z + utf_post_h / 2;  // 471 mm — mid-height of UTF posts
 y_rod_length         = bf_y_rail;         // cut to 405 mm (or trim from 405 mm stock)
 
 // X rods: two rods running across the X span, riding on the Y rods

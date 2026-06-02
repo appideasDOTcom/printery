@@ -235,17 +235,16 @@ module top_frame() {
     color("orange")       _z_pillow_blocks_lower();
     color("orange")       _z_pillow_blocks_upper();
     color("silver", 0.7)  _lead_screws();
-    color("cornflowerblue") _y_carriage_rods();
     color("cornflowerblue") _x_carriage_rods();
-    color("gold")         _y_rod_captures();
     color("gold")         _x_rod_captures();
 }
 
 // ---------------------------------------------------------------------------
-// Output — renders both frames together for context
-// Comment out bottom_frame() to preview top frame alone.
+// Output — renders all frame layers together for context
 // ---------------------------------------------------------------------------
 use <bottom-frame.scad>
+use <upper-top-frame.scad>
 
-color("peru") bottom_frame();
+color("peru")      bottom_frame();
 top_frame();
+color("burlywood") upper_top_frame();
