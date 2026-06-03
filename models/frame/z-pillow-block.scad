@@ -23,111 +23,65 @@
 
 include <shared-dims.scad>
 
-// wing_t and wing_extend come from shared-dims.scad
-
 module z_pillow_block(bolts = "xy", flip = false) {
 
-    cx = pb_block_xy / 2;
-    cy = pb_block_xy / 2;
+    r      = 2.0;
+    cx     = pb_block_xy / 2;
+    cy     = pb_block_xy / 2;
+    bolt_z = ex / 2;
 
-    // Wings are always at the block bottom (wing_z = 0), fully merged with the block body.
-    // Lower block: wings bolt into the bottom-frame top horizontal extrusion (world Z = 70..90).
-    // Upper block: wings bolt into the top of the vertical upright (world Z = 426..446).
-    wing_z = 0;
-    bolt_z = ex / 2;   // bolt center at mid-height of extrusion
-
-    // -----------------------------------------------------------------------
-    // Block body
-    // -----------------------------------------------------------------------
-    module _body() {
-        cube([pb_block_xy, pb_block_xy, pb_block_h]);
+    // Single 2D footprint: block body + two wings as rectangles, all corners rounded.
+    // offset(r) offset(-r) = open morphology: rounds convex corners, keeps concave corners sharp.
+    module _footprint() {
+        offset(r = r) offset(r = -r)
+            union() {
+                square([pb_block_xy, pb_block_xy]);
+                if (bolts == "xy") {
+                    translate([pb_block_xy, 0])              square([wing_extend, wing_t]);
+                    translate([0,           pb_block_xy])    square([wing_t,      wing_extend]);
+                } else {
+                    translate([-wing_extend,   pb_block_xy - wing_t]) square([wing_extend, wing_t]);
+                    translate([pb_block_xy,    pb_block_xy - wing_t]) square([wing_extend, wing_t]);
+                }
+            }
     }
 
-    // -----------------------------------------------------------------------
-    // Bearing pocket + lead screw through-bore
-    // flip=false: OD bore from pb_floor upward — open at top
-    // flip=true:  OD bore from 0 upward to pb_block_h-pb_floor — open at bottom
-    // -----------------------------------------------------------------------
-    module _pocket() {
-        bore_z = flip ? -0.1      : pb_floor;
-        bore_h = flip ? pb_block_h - pb_floor + 0.1
-                      : pb_block_h - pb_floor + 0.1;
+    bore_z = flip ? -0.1 : pb_floor;
+    bore_h = pb_block_h - pb_floor + 0.1;
 
+    difference() {
+        linear_extrude(pb_block_h)
+            _footprint();
+
+        // Bearing pocket
         translate([cx, cy, bore_z])
             cylinder(d = pb_bearing_od, h = bore_h);
 
-        // Through-bore for lead screw — full height
+        // Lead screw through-bore
         translate([cx, cy, -0.1])
             cylinder(d = pb_bearing_id + 0.4, h = pb_block_h + 0.2);
-    }
 
-    // -----------------------------------------------------------------------
-    // "xy" wings
-    // Y-wing: back face at local Y=0 (front extrusion inner face), extends in +X
-    // X-wing: back face at local X=0 (left rail inner face), extends in +Y
-    // -----------------------------------------------------------------------
-    module _wing_y() {
-        translate([pb_block_xy, 0, wing_z])
-            cube([wing_extend, wing_t, ex]);
-    }
-    module _wing_y_hole() {
-        translate([pb_block_xy + wing_extend/2, wing_t + 0.1, bolt_z])
-            rotate([90, 0, 0])
-                cylinder(d = m5_through_dia, h = wing_t + 0.2);
-    }
-
-    module _wing_x() {
-        translate([0, pb_block_xy, wing_z])
-            cube([wing_t, wing_extend, ex]);
-    }
-    module _wing_x_hole() {
-        translate([wing_t + 0.1, pb_block_xy + wing_extend/2, bolt_z])
-            rotate([0, -90, 0])
-                cylinder(d = m5_through_dia, h = wing_t + 0.2);
-    }
-
-    // -----------------------------------------------------------------------
-    // "xx" wings
-    // Both back faces at local Y=pb_block_xy (rear extrusion inner face)
-    // Left wing extends in -X, right wing extends in +X
-    // -----------------------------------------------------------------------
-    module _wing_left() {
-        translate([-wing_extend, pb_block_xy - wing_t, wing_z])
-            cube([wing_extend, wing_t, ex]);
-    }
-    module _wing_left_hole() {
-        translate([-wing_extend/2, pb_block_xy - wing_t - 0.1, bolt_z])
-            rotate([-90, 0, 0])
-                cylinder(d = m5_through_dia, h = wing_t + 0.2);
-    }
-
-    module _wing_right() {
-        translate([pb_block_xy, pb_block_xy - wing_t, wing_z])
-            cube([wing_extend, wing_t, ex]);
-    }
-    module _wing_right_hole() {
-        translate([pb_block_xy + wing_extend/2, pb_block_xy - wing_t - 0.1, bolt_z])
-            rotate([-90, 0, 0])
-                cylinder(d = m5_through_dia, h = wing_t + 0.2);
-    }
-
-    // -----------------------------------------------------------------------
-    // Assembly
-    // -----------------------------------------------------------------------
-    difference() {
-        union() {
-            _body();
-            if (bolts == "xy") { _wing_y(); _wing_x(); }
-            else                { _wing_left(); _wing_right(); }
+        // Bolt holes
+        if (bolts == "xy") {
+            translate([pb_block_xy + wing_extend/2, wing_t + 0.1, bolt_z])
+                rotate([90, 0, 0])
+                    cylinder(d = m5_through_dia, h = wing_t + 0.2);
+            translate([wing_t + 0.1, pb_block_xy + wing_extend/2, bolt_z])
+                rotate([0, -90, 0])
+                    cylinder(d = m5_through_dia, h = wing_t + 0.2);
+        } else {
+            translate([-wing_extend/2, pb_block_xy - wing_t - 0.1, bolt_z])
+                rotate([-90, 0, 0])
+                    cylinder(d = m5_through_dia, h = wing_t + 0.2);
+            translate([pb_block_xy + wing_extend/2, pb_block_xy - wing_t - 0.1, bolt_z])
+                rotate([-90, 0, 0])
+                    cylinder(d = m5_through_dia, h = wing_t + 0.2);
         }
-        _pocket();
-        if (bolts == "xy") { _wing_y_hole(); _wing_x_hole(); }
-        else                { _wing_left_hole(); _wing_right_hole(); }
     }
 }
 
 // ---------------------------------------------------------------------------
-// Preview — lower block (flip=false, pocket open at top)
+// Preview
 // ---------------------------------------------------------------------------
 z_pillow_block(bolts = "xy", flip = false);
 // z_pillow_block(bolts = "xx", flip = false);

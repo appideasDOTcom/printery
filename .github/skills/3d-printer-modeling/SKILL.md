@@ -25,6 +25,11 @@ Before writing any new module, check `/Users/costmo/Documents/dev/printing/gitHu
 
 These are non-negotiable for every model produced:
 
+### 0. Foundational
+
+- Start with simple shapes and build or take away from there. Do not overcomplicate things.
+- Assume that slightly rounded corners are preferable to right angles.
+
 ### 1. High Render Quality by Default
 
 Always set `$fa` and `$fs` globally at the top of the file for smooth curves and arcs:
