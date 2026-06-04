@@ -73,6 +73,14 @@ module _corner_uprights() {
                 extrusion_2020(tf_upright_length, "z");
 }
 
+module _rear_center_upright() {
+    // Single vertical 2020 upright centered on the rear lead screw (X = ls_rc_x)
+    // and flush with the rear Y rail centerline (Y = tf_rear_cy).
+    // Same Z span as the four corner uprights.
+    translate([ls_rc_x, tf_rear_cy, tf_up_bot_z])
+        extrusion_2020(tf_upright_length, "z");
+}
+
 module _top_rectangle() {
     // Left Y rail
     translate([tf_left_cx, 0, tf_ex_cz])
@@ -219,6 +227,7 @@ module _x_rod_sleds() {
 
 module top_frame() {
     color("tan")          _corner_uprights();
+    color("tan")          _rear_center_upright();
     color("tan")          _top_rectangle();
     color("orange")       _z_pillow_blocks_lower();
     color("orange")       _z_pillow_blocks_upper();

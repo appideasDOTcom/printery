@@ -47,7 +47,7 @@ ls_travel        = ls_length - ls_lower_engage - ls_upper_engage;  // 330 mm nut
 // Lower pillow block geometry
 pb_wall          = 5.0;    // XY side-wall thickness around bearing OD
 pb_floor         = 4.0;    // Z floor/ceiling thickness (one closed end per block)
-pb_bearing_od    = 22.4;   // 608zz outer diameter
+pb_bearing_od    = 22.0;   // 608zz outer diameter
 pb_bearing_h     = 7.0;    // 608zz height
 pb_bearing_id    = 8.0;    // 608zz inner bore
 pb_flange_od     = 10.5;   // Spacer flange OD
@@ -77,7 +77,7 @@ tf_extrusion_bot_z  = pb_upper_bot_z;              // 426 mm
 tf_extrusion_top_z  = tf_extrusion_bot_z + ex;     // 458 mm
 
 // Vertical upright length: from top of bottom frame top layer to bottom of top frame
-tf_upright_length   = tf_extrusion_bot_z - bf_top_z; // 348 mm — cut from 400 mm stock
+tf_upright_length   = tf_extrusion_bot_z - bf_top_z; // 336 mm — cut from 400 mm stock
 tf_upright_bot_z    = bf_top_z;                       // 90 mm
 
 // Top frame has same footprint as bottom frame

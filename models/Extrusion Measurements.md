@@ -5,6 +5,7 @@
 | Qty | Length | Description |
 |-----|--------|-------------|
 | 4 | **336 mm** | Corner uprights (cut from 400 mm or 1 m stock) |
+| 1 | **336 mm** | Center rear upright support |
 | 2 | **405 mm** | Top Y rails (left & right) |
 | 2 | **300 mm** | Top X cross-members (front & rear) |
 
@@ -23,7 +24,7 @@
 | Length | Total Qty | Notes |
 |--------|-----------|-------|
 | 405 mm | 4 | Shared length between top frame and UTF Y rails |
-| 336 mm | 4 | Top frame uprights only |
+| 336 mm | 5 | Top frame uprights and support beam |
 | 300 mm | 4 | Shared length between top frame and UTF X members |
 | 50 mm  | 4 | UTF corner posts only |
 
