@@ -82,12 +82,43 @@ module upper_top_frame() {
     }
 }
 
+module _x_carriage_rods() {
+    // X rods span between the two sleds — from right face of left sled to left face of right sled.
+    // Left sled right face: y_rod_left_x + 10 = 45 mm
+    // Right sled left face: y_rod_right_x - 10 = 295 mm  →  length = 250 mm
+    _x_rod_start = y_rod_left_x + 10;
+    _x_rod_len   = y_rod_right_x - y_rod_left_x - 20;   // 250 mm
+    color("steelblue", 0.6) {
+        translate([_x_rod_start, x_rod_front_y, x_rod_z])
+            rotate([0, 90, 0])
+                cylinder(d = carriage_rod_dia, h = _x_rod_len);
+        translate([_x_rod_start, x_rod_rear_y, x_rod_z])
+            rotate([0, 90, 0])
+                cylinder(d = carriage_rod_dia, h = _x_rod_len);
+    }
+}
+
+module _x_rod_sleds() {
+    // One sled per Y rod, each retaining both X rods.
+    // Sled: 20 mm wide (X) × 50 mm deep (Y) × 50 mm tall (Z)
+    // Centred on the Y rod in X; Y start = x_rod_front_y - 5; Z start = x_rod_z - 25
+    _sled_y = x_rod_front_y - 5;   // 177.5 mm
+    _sled_z = x_rod_z - 25;        // 446 mm
+    color("gold") {
+        translate([y_rod_left_x  - 10, _sled_y, _sled_z]) x_rod_sled();
+        translate([y_rod_right_x - 10, _sled_y, _sled_z]) x_rod_sled();
+    }
+}
+
 // ---------------------------------------------------------------------------
 // Preview — open this file to see all three frame layers
 // ---------------------------------------------------------------------------
 use <top-frame.scad>   // also brings bottom-frame module in scope
 use <bottom-frame.scad>
+use <x-rod-sled.scad>
 
-color("peru")      bottom_frame();
+color("peru")           bottom_frame();
 top_frame();
+color("cornflowerblue") _x_carriage_rods();
+color("gold")           _x_rod_sleds();
 upper_top_frame();
