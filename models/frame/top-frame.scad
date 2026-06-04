@@ -37,6 +37,7 @@ use <../common/2020-extrusion.scad>
 use <z-pillow-block.scad>
 use <rod-end-capture.scad>
 use <x-rod-sled.scad>
+use <../printerX/Z axis frame brace.scad>
 
 // ---------------------------------------------------------------------------
 // Derived values not already in shared-dims
@@ -71,6 +72,39 @@ module _corner_uprights() {
         for (cy = [tf_front_cy, tf_rear_cy])
             translate([cx, cy, tf_up_bot_z])
                 extrusion_2020(tf_upright_length, "z");
+}
+
+// Wrapper around the top-level geometry in "Z axis frame brace.scad".
+// The brace's local corner is at (y=0, z=0):
+//   y=0 flat face presses against an upright's inner face;
+//   z=0 flat face sits on the horizontal rail at bf_top_z.
+module _z_axis_brace() {
+    difference() {
+        union() { mainBody(); edgePieces(); }
+        union() { mainCutout(); throughHoles(); }
+    }
+}
+
+module _z_axis_braces() {
+    // Front-left: brace extends +Y and +Z from the inner corner of the left-front upright
+    translate([0, ex, bf_top_z])
+        _z_axis_brace();
+
+    // Front-right: mirror X so it faces the right-front upright
+    translate([bf_outer_x, ex, bf_top_z])
+        mirror([1, 0, 0])
+            _z_axis_brace();
+
+    // Rear-left: mirror Y so it extends into the frame in −Y
+    translate([0, bf_rear_y_face, bf_top_z])
+        mirror([0, 1, 0])
+            _z_axis_brace();
+
+    // Rear-right: mirror both X and Y
+    translate([bf_outer_x, bf_rear_y_face, bf_top_z])
+        mirror([1, 0, 0])
+            mirror([0, 1, 0])
+                _z_axis_brace();
 }
 
 module _rear_center_upright() {
@@ -163,22 +197,6 @@ module _y_carriage_rods() {
     }
 }
 
-module _x_carriage_rods() {
-    // X rods span between the two sleds — from right face of left sled to left face of right sled.
-    // Left sled right face: y_rod_left_x + 10 = 45 mm
-    // Right sled left face: y_rod_right_x - 10 = 295 mm  →  length = 250 mm
-    _x_rod_start = y_rod_left_x + 10;
-    _x_rod_len   = y_rod_right_x - y_rod_left_x - 20;   // 250 mm
-    color("steelblue", 0.6) {
-        translate([_x_rod_start, x_rod_front_y, x_rod_z])
-            rotate([0, 90, 0])
-                cylinder(d = carriage_rod_dia, h = _x_rod_len);
-        translate([_x_rod_start, x_rod_rear_y, x_rod_z])
-            rotate([0, 90, 0])
-                cylinder(d = carriage_rod_dia, h = _x_rod_len);
-    }
-}
-
 module _y_rod_captures() {
     // Four rod-end capture blocks, one at each end of each Y carriage rod.
     // Block bore runs in local +Y. Back face (at local Y=rec_block_d) bolts into
@@ -209,6 +227,22 @@ module _y_rod_captures() {
     }
 }
 
+module _x_carriage_rods() {
+    // X rods span between the two sleds — from right face of left sled to left face of right sled.
+    // Left sled right face: y_rod_left_x + 10 = 45 mm
+    // Right sled left face: y_rod_right_x - 10 = 295 mm  →  length = 250 mm
+    _x_rod_start = y_rod_left_x + 10;
+    _x_rod_len   = y_rod_right_x - y_rod_left_x - 20;   // 250 mm
+    color("steelblue", 0.6) {
+        translate([_x_rod_start, x_rod_front_y, x_rod_z])
+            rotate([0, 90, 0])
+                cylinder(d = carriage_rod_dia, h = _x_rod_len);
+        translate([_x_rod_start, x_rod_rear_y, x_rod_z])
+            rotate([0, 90, 0])
+                cylinder(d = carriage_rod_dia, h = _x_rod_len);
+    }
+}
+
 module _x_rod_sleds() {
     // One sled per Y rod, each retaining both X rods.
     // Sled: 20 mm wide (X) × 50 mm deep (Y) × 50 mm tall (Z)
@@ -228,6 +262,7 @@ module _x_rod_sleds() {
 module top_frame() {
     color("tan")          _corner_uprights();
     color("tan")          _rear_center_upright();
+    color("sienna")       _z_axis_braces();
     color("tan")          _top_rectangle();
     color("orange")       _z_pillow_blocks_lower();
     color("orange")       _z_pillow_blocks_upper();
