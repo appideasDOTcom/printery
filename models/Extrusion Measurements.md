@@ -1,4 +1,12 @@
-## Top Frame + Upper-Top Frame — 2020 Extrusion Cuts
+## Lower Frame + Top Frame + Upper-Top Frame — 2020 Extrusion Cuts
+
+### Lower Frame
+
+| Qty | Length | Description |
+|-----|--------|-------------|
+| 4 | **405 mm** | Bottom Y rails (left & right) |
+| 2 | **300 mm** | Bottom X cross-members (front & rear) |
+| 4 | **50 mm** | Corner posts |
 
 ### Top Frame
 
@@ -23,9 +31,7 @@
 
 | Length | Total Qty | Notes |
 |--------|-----------|-------|
-| 405 mm | 4 | Shared length between top frame and UTF Y rails |
+| 405 mm | 8 | Long (Y) axis rails |
 | 336 mm | 5 | Top frame uprights and support beam |
-| 300 mm | 4 | Shared length between top frame and UTF X members |
-| 50 mm  | 4 | UTF corner posts only |
-
-The 405 mm and 300 mm rails are the same lengths as the bottom frame, so if you have off-cuts from that build they can be reused.
+| 300 mm | 6 | Short (X) axis rails |
+| 50 mm  | 8 | UTF corner posts only |
