@@ -165,13 +165,39 @@ module _z_pillow_blocks_upper() {
         z_pillow_block(bolts = "xx", flip = true);
 }
 
+module _z_linear_rods() {
+    // Three 8 mm × 362 mm vertical rods, one per lead screw, centred to each
+    // lead screw in X and located at z_lr_rod_cy from the outer block face in Y.
+    // Each rod bottoms out inside the lower block bore and rises into the upper
+    // block bore; Z span = pb_lower_top_z − z_lr_bore_depth to
+    //                       pb_upper_bot_z + z_lr_bore_depth  (362.4 mm total).
+    fl_cx = ex + pb_block_xy/2;                          // 36 mm
+    fl_cy = ex + z_lr_rod_cy;                            // 29.1 mm
+    fr_cx = bf_outer_x - ex - pb_block_xy/2;             // 304 mm
+    rc_cx = ls_rc_x;                                     // 170 mm
+    rc_cy = bf_rear_y_face - z_lr_rod_cy;                // 375.9 mm
+
+    rod_z0  = pb_lower_top_z - z_lr_bore_depth;          // 76.8 mm
+    rod_len = z_lr_length + 2 * z_lr_clearance;          // 362.4 mm
+
+    color("cornflowerblue") {
+        translate([fl_cx, fl_cy, rod_z0])
+            cylinder(d = z_lr_dia, h = rod_len);
+        translate([fr_cx, fl_cy, rod_z0])
+            cylinder(d = z_lr_dia, h = rod_len);
+        translate([rc_cx, rc_cy, rod_z0])
+            cylinder(d = z_lr_dia, h = rod_len);
+    }
+}
+
 module _lead_screws() {
-    // Bearing centers = block placement + pb_block_xy/2 in X and Y.
-    fl_cx = ex + pb_block_xy/2;                      // 36 mm
-    fl_cy = ex + pb_block_xy/2;                      // 36 mm
-    fr_cx = bf_outer_x - ex - pb_block_xy/2;         // 304 mm
+    // Bearing centres reflect the new pillow-block geometry (rod section added).
+    // X is unchanged; Y shifts inward by (z_lr_bearing_cy − pb_block_xy/2).
+    fl_cx = ex + pb_block_xy/2;                      // 36 mm  (unchanged)
+    fl_cy = ex + z_lr_bearing_cy;                     // 49.3 mm
+    fr_cx = bf_outer_x - ex - pb_block_xy/2;         // 304 mm (unchanged)
     rc_cx = ls_rc_x;                                 // 170 mm
-    rc_cy = bf_rear_y_face - pb_block_xy/2;          // 369 mm
+    rc_cy = bf_rear_y_face - z_lr_bearing_cy;        // 355.7 mm
 
     color("silver", 0.7) {
         translate([fl_cx, fl_cy, pb_ls_bottom_z])
@@ -238,6 +264,7 @@ module top_frame() {
     color("orange")       _z_pillow_blocks_lower();
     color("orange")       _z_pillow_blocks_upper();
     color("silver", 0.7)  _lead_screws();
+                          _z_linear_rods();
 }
 
 // ---------------------------------------------------------------------------

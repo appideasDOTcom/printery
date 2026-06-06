@@ -144,6 +144,26 @@ rec_block_w          = carriage_rod_dia + rec_wall * 2;  // 18 mm — block widt
 rec_block_d          = rec_bore_depth + rec_wall;         // 20 mm — block depth (Y local)
 
 // ---------------------------------------------------------------------------
+// Z-axis stabilization linear rod (8 mm rod, 362 mm long)
+// ---------------------------------------------------------------------------
+z_lr_dia         = 8.0;    // Physical rod diameter
+z_lr_length      = 362.0;  // Physical rod length
+z_lr_clearance   = 0.2;    // Extra bore depth on each end (rod treated as 362.4 mm)
+z_lr_bore_dia    = 8.2;    // Bore diameter for the 8 mm rod
+z_lr_wall        = 5.0;    // Plastic wall thickness flanking the rod bore
+
+// Distance from the outer (extrusion-facing) block face to each bore centre:
+z_lr_rod_cy      = z_lr_wall + z_lr_bore_dia / 2;                                     // 9.1 mm
+z_lr_bearing_cy  = z_lr_rod_cy + z_lr_bore_dia / 2 + z_lr_wall + pb_bearing_od / 2;  // 29.3 mm
+
+// Total pillow block depth (outer face → inner face):
+z_lr_block_depth = z_lr_bearing_cy + pb_bearing_od / 2 + pb_wall;                     // 45.4 mm
+
+// Blind-bore depth from the inner face in each block so the rod bottoms out.
+// Inner-face gap = pb_upper_bot_z − pb_lower_top_z = 336 mm.
+z_lr_bore_depth  = (z_lr_length + z_lr_clearance * 2 - (pb_upper_bot_z - pb_lower_top_z)) / 2;  // 13.2 mm
+
+// ---------------------------------------------------------------------------
 // M5 hardware
 // ---------------------------------------------------------------------------
 m5_through_dia       = 5.5;
