@@ -18,7 +18,7 @@ The reference cartesian printer project (hardware designs, Marlin firmware, Octo
 ### Motion System
 
 - Type: CoreXY
-- Linear rails: 8 mm round rod — 360 mm and 405 mm lengths
+- Linear rails: 8 mm round rod — 362 mm and 405 mm lengths
 - Bearings: RJ4JP-01-08 solid polymer dry bearings (LM8UU footprint) — **no lubrication required or desired**
 - Lead screws: T8, 350 mm
 - Timing belts: 760-2GT (760 mm × 2 mm pitch)

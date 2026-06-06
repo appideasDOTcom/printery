@@ -47,7 +47,7 @@ ls_travel        = ls_length - ls_lower_engage - ls_upper_engage;  // 330 mm nut
 // Lower pillow block geometry
 pb_wall          = 5.0;    // XY side-wall thickness around bearing OD
 pb_floor         = 4.0;    // Z floor/ceiling thickness (one closed end per block)
-pb_bearing_od    = 22.0;   // 608zz outer diameter
+pb_bearing_od    = 22.2;   // 608zz outer diameter
 pb_bearing_h     = 7.0;    // 608zz height
 pb_bearing_id    = 8.0;    // 608zz inner bore
 pb_flange_od     = 10.5;   // Spacer flange OD
@@ -127,7 +127,7 @@ x_rod_mid_y          = bf_y_rail / 2;     // 202.5 mm — X rods centered in the
 x_rod_front_y        = x_rod_mid_y - x_rod_spacing / 2;  // 182.5 mm
 x_rod_rear_y         = x_rod_mid_y + x_rod_spacing / 2;  // 222.5 mm
 x_rod_z              = y_rod_z;            // same height as Y rods
-x_rod_length         = bf_x_rail;         // cut to 300 mm from 360 mm stock
+x_rod_length         = bf_x_rail;         // cut to 300 mm from 362 mm stock
 
 // ---------------------------------------------------------------------------
 // Wing tabs (pillow blocks and captures)
@@ -146,7 +146,7 @@ rec_block_d          = rec_bore_depth + rec_wall;         // 20 mm — block dep
 // ---------------------------------------------------------------------------
 // M5 hardware
 // ---------------------------------------------------------------------------
-m5_through_dia       = 5.4;
+m5_through_dia       = 5.5;
 m5_head_dia          = 9.0;
 m5_head_depth        = 3.5;
 m5_tnut_clearance    = 20.0;  // Elbow connector occupies first 20 mm of each rail

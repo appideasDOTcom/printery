@@ -84,17 +84,29 @@ module z_pillow_block(bolts = "xy", flip = false) {
         if (bolts == "xy") {
             translate([pb_block_xy + wing_extend/2, wing_t + 0.1, bolt_z])
                 rotate([90, 0, 0])
-                    cylinder(d = m5_through_dia, h = wing_t + 0.2);
+                    hull() {
+                        translate([0, -2, 0]) cylinder(d = m5_through_dia, h = wing_t + 0.2);
+                        translate([0,  2, 0]) cylinder(d = m5_through_dia, h = wing_t + 0.2);
+                    }
             translate([wing_t + 0.1, pb_block_xy + wing_extend/2, bolt_z])
                 rotate([0, -90, 0])
-                    cylinder(d = m5_through_dia, h = wing_t + 0.2);
+                    hull() {
+                        translate([-2, 0, 0]) cylinder(d = m5_through_dia, h = wing_t + 0.2);
+                        translate([ 2, 0, 0]) cylinder(d = m5_through_dia, h = wing_t + 0.2);
+                    }
         } else {
             translate([-wing_extend/2, pb_block_xy - wing_t - 0.1, bolt_z])
                 rotate([-90, 0, 0])
-                    cylinder(d = m5_through_dia, h = wing_t + 0.2);
+                    hull() {
+                        translate([0, -2, 0]) cylinder(d = m5_through_dia, h = wing_t + 0.2);
+                        translate([0,  2, 0]) cylinder(d = m5_through_dia, h = wing_t + 0.2);
+                    }
             translate([pb_block_xy + wing_extend/2, pb_block_xy - wing_t - 0.1, bolt_z])
                 rotate([-90, 0, 0])
-                    cylinder(d = m5_through_dia, h = wing_t + 0.2);
+                    hull() {
+                        translate([0, -2, 0]) cylinder(d = m5_through_dia, h = wing_t + 0.2);
+                        translate([0,  2, 0]) cylinder(d = m5_through_dia, h = wing_t + 0.2);
+                    }
         }
     }
 }
@@ -102,5 +114,5 @@ module z_pillow_block(bolts = "xy", flip = false) {
 // ---------------------------------------------------------------------------
 // Preview
 // ---------------------------------------------------------------------------
-// z_pillow_block(bolts = "xy", flip = false);
+z_pillow_block(bolts = "xy", flip = false);
 // z_pillow_block(bolts = "xx", flip = false);
