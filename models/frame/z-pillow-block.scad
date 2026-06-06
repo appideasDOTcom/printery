@@ -145,5 +145,6 @@ module z_pillow_block(bolts = "xy", flip = false) {
 // Preview
 // ---------------------------------------------------------------------------
 // z_pillow_block(bolts = "xy", flip = false);
+// z_pillow_block(bolts = "xy", flip = true);
 z_pillow_block(bolts = "xx", flip = false);
 
