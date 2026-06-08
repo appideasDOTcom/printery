@@ -149,7 +149,7 @@ rec_block_d          = rec_bore_depth + rec_wall;         // 20 mm — block dep
 z_lr_dia         = 8.0;    // Physical rod diameter
 z_lr_length      = 362.0;  // Physical rod length
 z_lr_clearance   = 0.2;    // Extra bore depth on each end (rod treated as 362.4 mm)
-z_lr_bore_dia    = 8.2;    // Bore diameter for the 8 mm rod
+z_lr_bore_dia    = 8.3;    // Bore diameter for the 8 mm rod
 z_lr_wall        = 5.0;    // Plastic wall thickness flanking the rod bore
 
 // Distance from the outer (extrusion-facing) block face to each bore centre:
