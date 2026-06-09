@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p /Users/costmo/Documents/dev/printing/printery/.claude/commands)"
+    ],
+    "additionalDirectories": [
+      "/Users/costmo/Documents/dev/printing/printery/.claude"
+    ]
+  }
+}
