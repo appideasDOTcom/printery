@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(mkdir -p /Users/costmo/Documents/dev/printing/printery/.claude/commands)"
+      "Bash(mkdir -p /Users/costmo/Documents/dev/printing/printery/.claude/commands)",
+      "Bash(python3)"
     ],
     "additionalDirectories": [
       "/Users/costmo/Documents/dev/printing/printery/.claude"
