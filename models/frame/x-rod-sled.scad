@@ -2,8 +2,9 @@
  * x-rod-sled.scad
  *
  * Y-axis carriage sled. Rides on one Y rod via two RJ4JP (LM8UU-footprint,
- * dry polymer — NO lubrication) bearings trapped in a retainer pocket at the
- * TOP of the sled, and captures both X gantry rods lower in the body.
+ * dry polymer — NO lubrication) bearings trapped in a retainer pocket near the
+ * top of the sled. Rod + bearings load from the outer (−X) face side slot.
+ * Captures both X gantry rods lower in the body.
  *
  * Envelope: sled_w x sled_d x sled_h = 23 (X) x 60 (Y) x 50 (Z) mm.
  *   - X grew 20 -> 23 to give the full RJ4JP retainer shell (matches the
@@ -30,9 +31,9 @@ xrod_rear_y   = sled_d / 2 + (x_rod_rear_y  - x_rod_mid_y);   // 50
 
 x_bore_dia    = carriage_rod_dia + 0.2;     // 8.2 mm slip fit for the X rod capture
 
-// --- Bearing rod-insertion relief (opens through the top face) ---
-relief_w          = carriage_rod_dia;       // 8 mm — rod passes, bearing stays trapped below
-relief_above_axis = 5.0;                    // slot floor this far above the rod axis (printerx value)
+// --- Bearing rod-insertion relief (opens through the outer −X face) ---
+relief_w          = carriage_rod_dia;       // 8 mm — slot height, rod passes, bearing stays trapped
+relief_above_axis = 5.0;                    // slot floor this far from the rod axis (toward −X)
 
 // --- Two-bearing spacing along the rod ---
 bearing_pitch = rj_base_y;                  // 29 — origin-to-origin of the two pocket modules
@@ -74,11 +75,12 @@ module yrod_bearing_pocket() {
                 rj4jp_pocket_piece();
 }
 
-// Slot from above the rod axis up through the sled top, so the rod + bearings
-// drop in. Width = rod dia; the bearings are held radially by the pocket.
+// Slot from the outer (−X) face inward to relief_above_axis from the rod axis,
+// so the rod + bearings slide in from the side. Height = rod dia; bearings are
+// held radially by the pocket. Top face is left smooth/closed.
 module yrod_relief() {
-    translate([yrod_x - relief_w / 2, -0.1, yrod_z + relief_above_axis])
-        cube([relief_w, sled_d + 0.2, sled_h - (yrod_z + relief_above_axis) + 0.1]);
+    translate([-0.1, -0.1, yrod_z - relief_w / 2])
+        cube([yrod_x - relief_above_axis + 0.1, sled_d + 0.2, relief_w]);
 }
 
 // Full-width X-rod capture bore at height xrod_z.
@@ -108,7 +110,7 @@ module x_rod_sled() {
         yrod_relief();
         x_rod_bore(xrod_front_y);
         x_rod_bore(xrod_rear_y);
-        // Top-outer round: arc concentric with the pocket (tangent to the top)
+        // Top-outer round: arc concentric with the pocket, forms the smooth bearing-arc cap at the top face
         _outer_corner_round(yrod_z, yrod_z, sled_h + round_eps);
         // Bottom-outer round: same shape mirrored to the bottom (tangent to it)
         _outer_corner_round(sled_h - yrod_z, -round_eps, sled_h - yrod_z);
