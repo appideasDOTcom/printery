@@ -63,11 +63,14 @@ module upper_top_frame() {
         translate([ex,           utf_rear_cy,  utf_ex_cz]) extrusion_2020(bf_x_rail, "x");
     }
 
-    // Y rod mounts — one plain block per corner (X-symmetric, no mirror needed)
+    // Y rod mounts — bore always enters from the inner face (toward the frame centre).
+    // Front mounts: inner face is +Y, so mirror in Y and shift by _blk_d so the
+    //   block stays in position but the bore opens toward the rear.
+    // Rear mounts: inner face is already -Y (local Y=0), no mirror needed.
     // Front-left
-    color("yellow") translate([_blk_x_l, _blk_y_f, utf_post_bot_z]) y_rod_mount();
+    color("yellow") translate([_blk_x_l, _blk_y_f + _blk_d, utf_post_bot_z]) mirror([0,1,0]) y_rod_mount();
     // Front-right
-    color("yellow") translate([_blk_x_r, _blk_y_f, utf_post_bot_z]) y_rod_mount();
+    color("yellow") translate([_blk_x_r, _blk_y_f + _blk_d, utf_post_bot_z]) mirror([0,1,0]) y_rod_mount();
     // Rear-left
     color("yellow") translate([_blk_x_l, _blk_y_r, utf_post_bot_z]) y_rod_mount();
     // Rear-right
