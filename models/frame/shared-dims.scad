@@ -112,36 +112,58 @@ utf_ex_cz            = utf_post_top_z + ex / 2;       // 506 mm — top extrusio
 // CoreXY carriage linear rods
 // ---------------------------------------------------------------------------
 // Y rods: inside the upper-top frame, one per side, running full Y span.
-// Block back face is rod_clearance inside the corner post inner face.
+// The sled rides on the Y rod via two RJ4JP bearings held in a pocket near
+// the TOP of the sled (see x-rod-sled.scad). The X gantry rods are captured
+// lower in the sled body, clear of that bearing pocket.
 carriage_rod_dia     = 8.0;   // 8 mm round rod
 rod_clearance        = 5.0;   // gap between mount block and adjacent post wall
 y_rod_left_x         = ex + rod_clearance + 10;               // 35 mm — rod centre (block is 20 mm wide)
 y_rod_right_x        = bf_outer_x - ex - rod_clearance - 10;  // 305 mm
-y_rod_z              = utf_post_bot_z + utf_post_h / 2;  // 471 mm — mid-height of UTF posts
 y_rod_length         = bf_y_rail;         // cut to 405 mm (or trim from 405 mm stock)
 
-// X rods: two rods running across the X span, riding on the Y rods
-// Offset front/back so the sled doesn't tip — spacing TBD by sled design
+// RJ4JP bearing retainer profile — copied verbatim from printerx
+//   "X axis carriage" / "Y carriage bearing retainer" (tested RJ4JP clamp).
+//   Do not alter these; the trap-ring spacing/depth is what makes the dry
+//   polymer bearing seat correctly without over-clamping.
+rj_bearing_od        = 15.1;
+rj_length            = 24.0;   // RJ4JP body length (doc says 24, really ~23.7)
+rj_y_bolt_pitch      = 18.0;
+rj_piece_margin      = 5.5;
+rj_base_y            = rj_y_bolt_pitch + rj_piece_margin * 2;   // 29 — one-bearing pocket module length
+rj_trap_ring_spacing = 15.3;
+rj_trap_ring_depth   = 0.2;
+rj_trap_ring_width   = 0.6;
+rj_cutout_to_end     = ((rj_base_y - rj_trap_ring_spacing) / 2 + 1) - rj_trap_ring_width;  // 7.25
+rj_shell             = 3.95;   // wall around bearing OD (matches printerx 23 mm shaft OD)
+
+// Sled outer envelope
+sled_w               = rj_bearing_od + rj_shell * 2;   // 23 mm (X) — full RJ4JP shell
+sled_h               = 50.0;                            // Z — fixed by spec
+sled_d               = rj_base_y * 2 + 2;              // 60 mm (Y) — two-bearing retainer span
+sled_top_z           = utf_post_top_z;                 // 496 mm — level with Y-rod-mount top
+sled_bot_z           = sled_top_z - sled_h;            // 446 mm
+
+// X rods: two rods running across the X span, captured in the sleds below
+// the Y rod. Height is still being iterated and only needs to render
+// reasonably; it is pinned here independently of the Y rod.
 x_rod_spacing        = 40.0;   // distance between the two X rods (center to center)
 x_rod_mid_y          = bf_y_rail / 2;     // 202.5 mm — X rods centered in the frame
 x_rod_front_y        = x_rod_mid_y - x_rod_spacing / 2;  // 182.5 mm
 x_rod_rear_y         = x_rod_mid_y + x_rod_spacing / 2;  // 222.5 mm
-x_rod_z              = y_rod_z;            // same height as Y rods
+x_rod_local_z        = 18.45;  // X-rod bore centre, local to the sled (TBD later)
+x_rod_z              = sled_bot_z + x_rod_local_z;       // 464.45 mm
 x_rod_length         = bf_x_rail;         // cut to 300 mm from 362 mm stock
+
+// Y rod height: centre the bearing pocket so the solid wall above it (to the
+// sled top — gap "B") equals the web below it (to the X-rod bore — gap "A").
+_xrod_bore_top_z     = x_rod_z + (carriage_rod_dia + 0.2) / 2;  // 468.55 mm — top of X-rod bore
+y_rod_z              = (sled_top_z + _xrod_bore_top_z) / 2;     // 482.275 mm — equal A and B (≈6.175 mm)
 
 // ---------------------------------------------------------------------------
 // Wing tabs (pillow blocks and captures)
 // ---------------------------------------------------------------------------
 wing_t               = 5.0;   // Wing tab thickness — how far the tab protrudes from a block face
 wing_extend          = 20.0;  // How far the wing tab extends past the block body edge
-
-// ---------------------------------------------------------------------------
-// Rod-end-capture block dimensions (must stay in sync with rod-end-capture.scad)
-// ---------------------------------------------------------------------------
-rec_wall             = 5.0;           // side wall thickness around rod bore
-rec_bore_depth       = 15.0;          // depth the rod sits in the block
-rec_block_w          = carriage_rod_dia + rec_wall * 2;  // 18 mm — block width
-rec_block_d          = rec_bore_depth + rec_wall;         // 20 mm — block depth (Y local)
 
 // ---------------------------------------------------------------------------
 // Z-axis stabilization linear rod (8 mm rod, 362 mm long)

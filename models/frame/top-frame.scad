@@ -35,7 +35,6 @@
 include <shared-dims.scad>
 use <../common/2020-extrusion.scad>
 use <z-pillow-block.scad>
-use <rod-end-capture.scad>
 use <../printerX/Z axis frame brace.scad>
 
 // ---------------------------------------------------------------------------
@@ -209,48 +208,10 @@ module _lead_screws() {
     }
 }
 
-module _y_carriage_rods() {
-    // Two 8 mm rods running the full Y span at each side of the frame
-    // Captured at each end by a rod_end_capture block on the top frame extrusion
-    color("steelblue", 0.8) {
-        translate([y_rod_left_x, 0, y_rod_z])
-            rotate([-90, 0, 0])
-                cylinder(d = carriage_rod_dia, h = y_rod_length);
-        translate([y_rod_right_x, 0, y_rod_z])
-            rotate([-90, 0, 0])
-                cylinder(d = carriage_rod_dia, h = y_rod_length);
-    }
-}
-
-module _y_rod_captures() {
-    // Four rod-end capture blocks, one at each end of each Y carriage rod.
-    // Block bore runs in local +Y. Back face (at local Y=rec_block_d) bolts into
-    // the extrusion T-slot on the extrusion's inner face.
-    //
-    // Front end (no mirror):
-    //   translate Y = tf_front_cy - ex/2 = 0
-    //   → block Y = 0..rec_block_d, back face at world Y = rec_block_d = 20 = extrusion inner face ✓
-    //
-    // Rear end (mirror [0,1,0]):
-    //   mirror flips +Y → -Y, so back face is now at -rec_block_d from translate Y
-    //   translate Y = bf_rear_y_face + rec_block_d = 405
-    //   → back face at world Y = 405 - 20 = 385 = bf_rear_y_face ✓
-
-    for (rx = [y_rod_left_x, y_rod_right_x]) {
-        // Front end
-        translate([rx - rec_block_w/2,
-                   tf_front_cy - ex/2,
-                   y_rod_z - ex/2])
-            rod_end_capture();
-
-        // Rear end
-        translate([rx - rec_block_w/2,
-                   bf_rear_y_face + rec_block_d,
-                   y_rod_z - ex/2])
-            mirror([0, 1, 0])
-                rod_end_capture();
-    }
-}
+// NOTE: The Y carriage rods and their end-capture blocks are owned by
+// upper-top-frame.scad (they live in the upper-top frame, captured by
+// y_rod_mount). They are intentionally NOT rendered here — see
+// upper-top-frame.scad for the single source of truth.
 
 // ---------------------------------------------------------------------------
 // Top-level module
