@@ -66,7 +66,8 @@ _pul_pckt_bot   = _pul_bot_z - 0.5;
 _pul_pckt_top   = _pul_top_z + 0.5;
 
 _shaft_x        = 17.0;
-_shaft_y        = 5.0;
+_shaft_y        = 5.0;         // rear: pocket opens through Y=0 (interior) face
+_shaft_y_front  = 15.0;        // front: pocket opens through Y=_yrm_d (interior) face
 _shaft_dia      = 5.3;
 _shaft_top_z    = _yrm_bore_z - _yrm_bore_dia / 2 - 2.0;
 
@@ -77,6 +78,7 @@ _m5_nut_h       = 5.0;
 
 // ---------------------------------------------------------------------------
 // Front variant — bore enters from Y=_yrm_d (interior face); right side uses mirror([1,0,0])
+// Both pulley pocket positions are present; only one is used per corner.
 // ---------------------------------------------------------------------------
 module y_rod_mount_front() {
     difference() {
@@ -89,6 +91,18 @@ module y_rod_mount_front() {
         translate([_yrm_bore_x, _yrm_d + 0.1, _yrm_bore_z])
             rotate([90, 0, 0])
                 cylinder(d = _yrm_air_dia, h = _yrm_d + 0.2);
+        // Pulley pocket: opens through X+ and Y+ (interior) faces for belt routing
+        translate([_shaft_x, _shaft_y_front, _pul_pckt_bot])
+            cylinder(r = _pul_r, h = _pul_pckt_top - _pul_pckt_bot);
+        // Shaft bore: bottom of block to just below rod bore floor
+        translate([_shaft_x, _shaft_y_front, -0.1])
+            cylinder(d = _shaft_dia, h = _shaft_top_z + 0.1);
+        // M5 bolt-head counterbore at block bottom face
+        translate([_shaft_x, _shaft_y_front, -0.1])
+            cylinder(d = _m5_head_dia, h = _m5_head_depth + 0.1);
+        // M5 nut seat above upper pulley
+        translate([_shaft_x, _shaft_y_front, _pul_pckt_top])
+            cylinder(d = _m5_nut_dia, h = _m5_nut_h);
     }
 }
 
