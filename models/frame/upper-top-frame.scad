@@ -50,10 +50,10 @@ _blk_y_r  = bf_rear_y_face;              // 385 mm — rear block front face
 // ---------------------------------------------------------------------------
 module upper_top_frame() {
     // Corner posts
-    color("burlywood") for (cx = [utf_left_cx, utf_right_cx])
-        for (cy = [utf_front_cy, utf_rear_cy])
-            translate([cx, cy, utf_post_bot_z])
-                extrusion_2020(utf_post_h, "z");
+    // color("burlywood") for (cx = [utf_left_cx, utf_right_cx])
+    //     for (cy = [utf_front_cy, utf_rear_cy])
+    //         translate([cx, cy, utf_post_bot_z])
+    //             extrusion_2020(utf_post_h, "z");
 
     // Top rectangle
     color("burlywood") {
@@ -63,18 +63,20 @@ module upper_top_frame() {
         translate([ex,           utf_rear_cy,  utf_ex_cz]) extrusion_2020(bf_x_rail, "x");
     }
 
-    // Y rod mounts — bore always enters from the inner face (toward the frame centre).
-    // Front mounts: inner face is +Y, so mirror in Y and shift by _blk_d so the
-    //   block stays in position but the bore opens toward the rear.
-    // Rear mounts: inner face is already -Y (local Y=0), no mirror needed.
+    // Y rod mounts — bore always enters from the interior-facing face.
+    // Front mounts: y_rod_mount_front() bore enters from Y=_yrm_d (high-Y face),
+    //   which becomes the interior face after placement at _blk_y_f.  No mirror.
+    // Rear mounts: y_rod_mount_rear() bore enters from Y=0 (low-Y face),
+    //   which IS the interior face at _blk_y_r.  No mirror except rear-right in X
+    //   so its pulley shaft also faces the printer interior.
     // Front-left
-    color("yellow") translate([_blk_x_l, _blk_y_f + _blk_d, utf_post_bot_z]) mirror([0,1,0]) y_rod_mount();
-    // Front-right
-    color("yellow") translate([_blk_x_r, _blk_y_f + _blk_d, utf_post_bot_z]) mirror([0,1,0]) y_rod_mount();
-    // Rear-left
-    color("yellow") translate([_blk_x_l, _blk_y_r, utf_post_bot_z]) y_rod_mount();
-    // Rear-right
-    color("yellow") translate([_blk_x_r, _blk_y_r, utf_post_bot_z]) y_rod_mount();
+    color("yellow") translate([_blk_x_l, _blk_y_f, utf_post_bot_z]) y_rod_mount_front();
+    // Front-right (X-mirror: bore stays at global X=310, extra material toward center)
+    color("yellow") translate([_blk_x_r + _blk_w, _blk_y_f, utf_post_bot_z]) mirror([1,0,0]) y_rod_mount_front();
+    // Rear-left  (shaft at local X=17, Y=5 — faces +X and -Y interior)
+    color("yellow") translate([_blk_x_l, _blk_y_r, utf_post_bot_z]) y_rod_mount_rear();
+    // Rear-right (X-mirror: shaft at mirrored X=3, Y=5 — faces -X and -Y interior)
+    color("yellow") translate([_blk_x_r + _blk_w, _blk_y_r, utf_post_bot_z]) mirror([1,0,0]) y_rod_mount_rear();
 
     // Y rods — 4mm shorter than full span, centred (2mm gap at each end).
     // Raised to y_rod_z so they ride high in the sled bearings.
