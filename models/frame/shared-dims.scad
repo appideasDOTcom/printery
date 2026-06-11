@@ -143,21 +143,38 @@ sled_d               = rj_base_y * 2 + 2;              // 60 mm (Y) — two-bear
 sled_top_z           = utf_post_top_z;                 // 496 mm — level with Y-rod-mount top
 sled_bot_z           = sled_top_z - sled_h;            // 446 mm
 
-// X rods: two rods running across the X span, captured in the sleds below
-// the Y rod. Height is still being iterated and only needs to render
-// reasonably; it is pinned here independently of the Y rod.
-x_rod_spacing        = 40.0;   // distance between the two X rods (center to center)
-x_rod_mid_y          = bf_y_rail / 2;     // 202.5 mm — X rods centered in the frame
-x_rod_front_y        = x_rod_mid_y - x_rod_spacing / 2;  // 182.5 mm
-x_rod_rear_y         = x_rod_mid_y + x_rod_spacing / 2;  // 222.5 mm
-x_rod_local_z        = 18.45;  // X-rod bore centre, local to the sled (TBD later)
-x_rod_z              = sled_bot_z + x_rod_local_z;       // 464.45 mm
-x_rod_length         = bf_x_rail;         // cut to 300 mm from 362 mm stock
+// X rods: diagonal layout — front rod at top of sled, rear rod at bottom.
+// Bore edge is x_rod_local_edge_gap mm from each adjacent sled face.
+x_rod_mid_y          = bf_y_rail / 2;     // 202.5 mm — X rod Y midpoint in frame
+x_rod_local_edge_gap = 3.0;              // bore outer edge to nearest sled face (mm)
+_x_rod_bore_r        = (carriage_rod_dia + 0.3) / 2;          // 4.15 mm — bore radius
+_sled_front_y        = x_rod_mid_y - sled_d / 2;              // 172.5 mm — sled front face, global Y
+// Global Y positions
+x_rod_front_y        = _sled_front_y + x_rod_local_edge_gap + _x_rod_bore_r;           // 179.65 mm
+x_rod_rear_y         = _sled_front_y + sled_d - x_rod_local_edge_gap - _x_rod_bore_r;  // 225.35 mm
+// Local Z positions in sled (from sled bottom)
+x_rod_front_local_z  = sled_h - x_rod_local_edge_gap - _x_rod_bore_r;  // 42.85 mm
+x_rod_rear_local_z   = x_rod_local_edge_gap + _x_rod_bore_r;            // 7.15 mm
+// Global Z positions
+x_rod_front_z        = sled_bot_z + x_rod_front_local_z;   // 488.85 mm
+x_rod_rear_z         = sled_bot_z + x_rod_rear_local_z;    // 453.15 mm
+
+// X rod bore geometry: top rod stops 2 mm short of the yrod_relief opening.
+// yrod_relief inner edge = yrod_x - relief_above_axis = sled_w/2 - 5.0 = 6.5 mm from outer face.
+x_rod_bore_depth = sled_w - (sled_w / 2 - 5.0) - 2.0;  // 14.5 mm — blind bore from inner face
+x_rod_air_depth  = sled_w - x_rod_bore_depth;           //  8.5 mm — air escape from outer face to bore floor
+
+// X rod physical length: free span between sled inner faces + bore depth each side.
+// Y rod / sled centres: ex + 10 mm (bore offset in y-rod-mount) = 30 mm left, 310 mm right.
+_x_rod_cx_l     = ex + 10.0;                        // 30 mm
+_x_rod_cx_r     = bf_outer_x - ex - 10.0;           // 310 mm
+x_rod_free_span = _x_rod_cx_r - _x_rod_cx_l - sled_w;   // 257 mm — inner face to inner face
+x_rod_length    = x_rod_free_span + 2 * x_rod_bore_depth;  // 286 mm — cut from 362 mm stock
 
 // Y rod height: centre the bearing pocket so the solid wall above it (to the
-// sled top — gap "B") equals the web below it (to the X-rod bore — gap "A").
-_xrod_bore_top_z     = x_rod_z + (carriage_rod_dia + 0.2) / 2;  // 468.55 mm — top of X-rod bore
-y_rod_z              = (sled_top_z + _xrod_bore_top_z) / 2;     // 482.275 mm — equal A and B (≈6.175 mm)
+// sled top — gap "B") equals the web below it (to the rear X-rod bore top — gap "A").
+_xrod_bore_top_z     = x_rod_rear_z + _x_rod_bore_r;            // 466.3 mm — top of rear X-rod bore
+y_rod_z              = (sled_top_z + _xrod_bore_top_z) / 2;     // 481.15 mm — equal A and B
 
 // ---------------------------------------------------------------------------
 // Wing tabs (pillow blocks and captures)

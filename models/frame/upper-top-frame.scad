@@ -56,12 +56,12 @@ module upper_top_frame() {
     //             extrusion_2020(utf_post_h, "z");
 
     // Top rectangle
-    color("burlywood") {
-        translate([utf_left_cx,  0,           utf_ex_cz]) extrusion_2020(bf_y_rail, "y");
-        translate([utf_right_cx, 0,           utf_ex_cz]) extrusion_2020(bf_y_rail, "y");
-        translate([ex,           utf_front_cy, utf_ex_cz]) extrusion_2020(bf_x_rail, "x");
-        translate([ex,           utf_rear_cy,  utf_ex_cz]) extrusion_2020(bf_x_rail, "x");
-    }
+    // color("burlywood") {
+    //     translate([utf_left_cx,  0,           utf_ex_cz]) extrusion_2020(bf_y_rail, "y");
+    //     translate([utf_right_cx, 0,           utf_ex_cz]) extrusion_2020(bf_y_rail, "y");
+    //     translate([ex,           utf_front_cy, utf_ex_cz]) extrusion_2020(bf_x_rail, "x");
+    //     translate([ex,           utf_rear_cy,  utf_ex_cz]) extrusion_2020(bf_x_rail, "x");
+    // }
 
     // Y rod mounts — bore always enters from the interior-facing face.
     // Front mounts: y_rod_mount_front() bore enters from Y=_yrm_d (high-Y face),
@@ -94,15 +94,16 @@ _y_rod_cx_l = _blk_x_l + _blk_w / 2;   // 30 mm
 _y_rod_cx_r = _blk_x_r + _blk_w / 2;   // 310 mm
 
 module _x_carriage_rods() {
-    // X rods span between the two sleds, captured through both sled bores.
-    _x_rod_len = _y_rod_cx_r - _y_rod_cx_l;   // 280 mm
+    // Render full physical rod from bore floor (left sled) to bore floor (right sled).
+    // Start = left sled outer face + closing wall = _y_rod_cx_l - sled_w/2 + (sled_w - x_rod_bore_depth)
+    _x_start = _y_rod_cx_l - sled_w / 2 + (sled_w - x_rod_bore_depth);  // 27 mm
     color("steelblue", 0.6) {
-        translate([_y_rod_cx_l, x_rod_front_y, x_rod_z])
+        translate([_x_start, x_rod_front_y, x_rod_front_z])
             rotate([0, 90, 0])
-                cylinder(d = carriage_rod_dia, h = _x_rod_len);
-        translate([_y_rod_cx_l, x_rod_rear_y, x_rod_z])
+                cylinder(d = carriage_rod_dia, h = x_rod_length);
+        translate([_x_start, x_rod_rear_y, x_rod_rear_z])
             rotate([0, 90, 0])
-                cylinder(d = carriage_rod_dia, h = _x_rod_len);
+                cylinder(d = carriage_rod_dia, h = x_rod_length);
     }
 }
 
@@ -128,6 +129,6 @@ use <x-rod-sled.scad>
 
 color("peru")           bottom_frame();
 top_frame();
-color("cornflowerblue") _x_carriage_rods();
+// color("cornflowerblue") _x_carriage_rods();
 color("gold")           _x_rod_sleds();
 upper_top_frame();

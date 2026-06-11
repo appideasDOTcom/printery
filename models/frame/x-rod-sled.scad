@@ -4,7 +4,7 @@
  * Y-axis carriage sled. Rides on one Y rod via two RJ4JP (LM8UU-footprint,
  * dry polymer — NO lubrication) bearings trapped in a retainer pocket near the
  * top of the sled. Rod + bearings load from the outer (−X) face side slot.
- * Captures both X gantry rods lower in the body.
+ * Captures both X gantry rods: front-top corner and rear-bottom corner.
  *
  * Envelope: sled_w x sled_d x sled_h = 23 (X) x 60 (Y) x 50 (Z) mm.
  *   - X grew 20 -> 23 to give the full RJ4JP retainer shell (matches the
@@ -25,11 +25,18 @@ include <shared-dims.scad>
 // --- Local feature positions (sled frame: origin front-left-bottom) ---
 yrod_x        = sled_w / 2;                 // 11.5 — Y rod / bearing centre in X
 yrod_z        = y_rod_z - sled_bot_z;       // 36.275 — Y rod centre in Z (rides high)
-xrod_z        = x_rod_z - sled_bot_z;       // 18.45 — X rod capture bores in Z
-xrod_front_y  = sled_d / 2 + (x_rod_front_y - x_rod_mid_y);   // 10
-xrod_rear_y   = sled_d / 2 + (x_rod_rear_y  - x_rod_mid_y);   // 50
 
-x_bore_dia    = carriage_rod_dia + 0.2;     // 8.2 mm slip fit for the X rod capture
+x_bore_dia    = carriage_rod_dia + 0.3;   // 8.3 mm slip fit for the X rod capture
+
+// Front-top and rear-bottom X rod capture positions (sled-local, origin front-left-bottom)
+xrod_front_y  = x_rod_local_edge_gap + x_bore_dia / 2;              // 16.15 — from front face
+xrod_front_z  = sled_h - x_rod_local_edge_gap - x_bore_dia / 2;    // 33.85 — from bottom
+xrod_rear_y   = sled_d - x_rod_local_edge_gap - x_bore_dia / 2;    // 43.85 — from front
+xrod_rear_z   = x_rod_local_edge_gap + x_bore_dia / 2;             // 16.15 — from bottom
+
+// Blind bore depth from shared-dims: rod stops 2 mm short of the yrod_relief opening.
+x_bore_depth  = x_rod_bore_depth;   // 14.5 mm — from inner face (see shared-dims.scad)
+x_air_dia     = 5.0;                // air-escape hole diameter
 
 // --- Bearing rod-insertion relief (opens through the outer −X face) ---
 relief_w          = carriage_rod_dia;       // 8 mm — slot height, rod passes, bearing stays trapped
@@ -83,11 +90,17 @@ module yrod_relief() {
         cube([yrod_x - relief_above_axis + 0.1, sled_d + 0.2, relief_w]);
 }
 
-// Full-width X-rod capture bore at height xrod_z.
-module x_rod_bore(bore_y) {
-    translate([-0.1, bore_y, xrod_z])
+// Blind X-rod capture bore. Rod inserts from inner (+X) face, bottoms out 2 mm short of yrod_relief.
+// Air escape opens from outer face to the bore floor (depth = x_rod_air_depth from shared-dims).
+module x_rod_bore(bore_y, bore_z) {
+    // Rod bore: blind, 8.3 mm dia, from inner face inward
+    translate([sled_w + 0.1, bore_y, bore_z])
+        rotate([0, -90, 0])
+            cylinder(d = x_bore_dia, h = x_bore_depth + 0.1);
+    // Air escape: 5 mm dia, from outer face to bore floor
+    translate([-0.1, bore_y, bore_z])
         rotate([0, 90, 0])
-            cylinder(d = x_bore_dia, h = sled_w + 0.2);
+            cylinder(d = x_air_dia, h = x_rod_air_depth + 0.1);
 }
 
 // Outer corner waste: everything on the outer (−X) half that lies beyond a
@@ -108,8 +121,8 @@ module x_rod_sled() {
         cube([sled_w, sled_d, sled_h]);
         yrod_bearing_pocket();
         yrod_relief();
-        x_rod_bore(xrod_front_y);
-        x_rod_bore(xrod_rear_y);
+        x_rod_bore(xrod_front_y, xrod_front_z);
+        x_rod_bore(xrod_rear_y, xrod_rear_z);
         // Top-outer round: arc concentric with the pocket, forms the smooth bearing-arc cap at the top face
         _outer_corner_round(yrod_z, yrod_z, sled_h + round_eps);
         // Bottom-outer round: same shape mirrored to the bottom (tangent to it)
