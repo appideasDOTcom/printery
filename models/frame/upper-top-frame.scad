@@ -49,19 +49,19 @@ _blk_y_r  = bf_rear_y_face;              // 385 mm — rear block front face
 // Module
 // ---------------------------------------------------------------------------
 module upper_top_frame() {
-    // Corner posts
-    color("burlywood") for (cx = [utf_left_cx, utf_right_cx])
-        for (cy = [utf_front_cy, utf_rear_cy])
-            translate([cx, cy, utf_post_bot_z])
-                extrusion_2020(utf_post_h, "z");
+    // // Corner posts
+    // color("burlywood") for (cx = [utf_left_cx, utf_right_cx])
+    //     for (cy = [utf_front_cy, utf_rear_cy])
+    //         translate([cx, cy, utf_post_bot_z])
+    //             extrusion_2020(utf_post_h, "z");
 
-    // Top rectangle
-    color("burlywood") {
-        translate([utf_left_cx,  0,           utf_ex_cz]) extrusion_2020(bf_y_rail, "y");
-        translate([utf_right_cx, 0,           utf_ex_cz]) extrusion_2020(bf_y_rail, "y");
-        translate([ex,           utf_front_cy, utf_ex_cz]) extrusion_2020(bf_x_rail, "x");
-        translate([ex,           utf_rear_cy,  utf_ex_cz]) extrusion_2020(bf_x_rail, "x");
-    }
+    // // Top rectangle
+    // color("burlywood") {
+    //     translate([utf_left_cx,  0,           utf_ex_cz]) extrusion_2020(bf_y_rail, "y");
+    //     translate([utf_right_cx, 0,           utf_ex_cz]) extrusion_2020(bf_y_rail, "y");
+    //     translate([ex,           utf_front_cy, utf_ex_cz]) extrusion_2020(bf_x_rail, "x");
+    //     translate([ex,           utf_rear_cy,  utf_ex_cz]) extrusion_2020(bf_x_rail, "x");
+    // }
 
     // Y rod mounts — bore always enters from the interior-facing face.
     // Front mounts: y_rod_mount_front() bore enters from Y=_yrm_d (high-Y face),
