@@ -54,8 +54,21 @@ bearing_pitch = rj_base_y;                  // 29 — origin-to-origin of the tw
 outer_wall   = sled_h - (yrod_z + rj_bearing_od / 2);   // 6.175 — wall above the pocket (= gap A/B)
 round_r      = rj_bearing_od / 2 + outer_wall;          // 13.725 — outer contour radius (tangent to top)
 round_eps    = 0.1;
+corner_r     = 2.0;   // fillet on the 4 vertical (X-running) edges of the sled body
 
 // --- Modules ---
+
+// Sled body with rounded vertical (X-running) edges so the print head traces a
+// smooth path rather than a sharp 90° corner at each layer.  Both flat faces
+// (inner +X and outer -X) remain perfectly flat.
+module sled_body() {
+    hull()
+        for (y = [corner_r, sled_d - corner_r])
+            for (z = [corner_r, sled_h - corner_r])
+                translate([0, y, z])
+                    rotate([0, 90, 0])
+                        cylinder(r = corner_r, h = sled_w);
+}
 
 // ONE bearing's retainer pocket, built along the local +Z axis.
 // Verbatim printerx profile: a full-length thin bore leaves two inward trap
@@ -118,7 +131,7 @@ module _outer_corner_round(arc_cz, box_lo, box_hi) {
 
 module x_rod_sled() {
     difference() {
-        cube([sled_w, sled_d, sled_h]);
+        sled_body();
         yrod_bearing_pocket();
         yrod_relief();
         x_rod_bore(xrod_front_y, xrod_front_z);
