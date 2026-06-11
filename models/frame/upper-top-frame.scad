@@ -129,6 +129,6 @@ use <x-rod-sled.scad>
 
 color("peru")           bottom_frame();
 top_frame();
-// color("cornflowerblue") _x_carriage_rods();
+color("cornflowerblue") _x_carriage_rods();
 color("gold")           _x_rod_sleds();
 upper_top_frame();

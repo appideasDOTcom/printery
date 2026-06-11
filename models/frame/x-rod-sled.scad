@@ -97,10 +97,10 @@ module x_rod_bore(bore_y, bore_z) {
     translate([sled_w + 0.1, bore_y, bore_z])
         rotate([0, -90, 0])
             cylinder(d = x_bore_dia, h = x_bore_depth + 0.1);
-    // Air escape: 5 mm dia, from outer face to bore floor
+    // Air escape: 5 mm dia, from outer face through full sled width to guarantee no wall at bore junction
     translate([-0.1, bore_y, bore_z])
         rotate([0, 90, 0])
-            cylinder(d = x_air_dia, h = x_rod_air_depth + 0.1);
+            cylinder(d = x_air_dia, h = sled_w + 0.2);
 }
 
 // Outer corner waste: everything on the outer (−X) half that lies beyond a
