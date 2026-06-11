@@ -50,18 +50,18 @@ _blk_y_r  = bf_rear_y_face;              // 385 mm — rear block front face
 // ---------------------------------------------------------------------------
 module upper_top_frame() {
     // Corner posts
-    // color("burlywood") for (cx = [utf_left_cx, utf_right_cx])
-    //     for (cy = [utf_front_cy, utf_rear_cy])
-    //         translate([cx, cy, utf_post_bot_z])
-    //             extrusion_2020(utf_post_h, "z");
+    color("burlywood") for (cx = [utf_left_cx, utf_right_cx])
+        for (cy = [utf_front_cy, utf_rear_cy])
+            translate([cx, cy, utf_post_bot_z])
+                extrusion_2020(utf_post_h, "z");
 
     // Top rectangle
-    // color("burlywood") {
-    //     translate([utf_left_cx,  0,           utf_ex_cz]) extrusion_2020(bf_y_rail, "y");
-    //     translate([utf_right_cx, 0,           utf_ex_cz]) extrusion_2020(bf_y_rail, "y");
-    //     translate([ex,           utf_front_cy, utf_ex_cz]) extrusion_2020(bf_x_rail, "x");
-    //     translate([ex,           utf_rear_cy,  utf_ex_cz]) extrusion_2020(bf_x_rail, "x");
-    // }
+    color("burlywood") {
+        translate([utf_left_cx,  0,           utf_ex_cz]) extrusion_2020(bf_y_rail, "y");
+        translate([utf_right_cx, 0,           utf_ex_cz]) extrusion_2020(bf_y_rail, "y");
+        translate([ex,           utf_front_cy, utf_ex_cz]) extrusion_2020(bf_x_rail, "x");
+        translate([ex,           utf_rear_cy,  utf_ex_cz]) extrusion_2020(bf_x_rail, "x");
+    }
 
     // Y rod mounts — bore always enters from the interior-facing face.
     // Front mounts: y_rod_mount_front() bore enters from Y=_yrm_d (high-Y face),
@@ -81,17 +81,17 @@ module upper_top_frame() {
     // Y rods — 4mm shorter than full span, centred (2mm gap at each end).
     // Raised to y_rod_z so they ride high in the sled bearings.
     color("cornflowerblue") {
-        translate([_blk_x_l + _blk_w / 2, 2, y_rod_z]) rotate([-90, 0, 0])
+        translate([_y_rod_cx_l, 2, y_rod_z]) rotate([-90, 0, 0])
             cylinder(d = carriage_rod_dia, h = y_rod_length - 4);
-        translate([_blk_x_r + _blk_w / 2, 2, y_rod_z]) rotate([-90, 0, 0])
+        translate([_y_rod_cx_r, 2, y_rod_z]) rotate([-90, 0, 0])
             cylinder(d = carriage_rod_dia, h = y_rod_length - 4);
     }
 }
 
 // Left and right Y-rod centres in X — defined by the (frame-flush) Y-rod
 // mount bores, so the rods, sleds, and mounts all share one X reference.
-_y_rod_cx_l = _blk_x_l + _blk_w / 2;   // 30 mm
-_y_rod_cx_r = _blk_x_r + _blk_w / 2;   // 310 mm
+_y_rod_cx_l = _blk_x_l + yrm_bore_x;          // 33.5 mm — bore centre, left rod
+_y_rod_cx_r = _blk_x_r + _blk_w - yrm_bore_x;  // 306.5 mm — bore centre, right rod (mirrored block)
 
 module _x_carriage_rods() {
     // Render full physical rod from bore floor (left sled) to bore floor (right sled).

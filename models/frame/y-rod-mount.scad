@@ -37,7 +37,7 @@ _yrm_h          = 50.0;
 // ---------------------------------------------------------------------------
 // Rod bore
 // ---------------------------------------------------------------------------
-_yrm_bore_x     = 10.0;                      // bore centre X — 10 mm from outer face
+_yrm_bore_x     = yrm_bore_x;                // bore centre X — from shared-dims.scad
 _yrm_bore_dia   = carriage_rod_dia + 0.3;    // 8.3 mm — 8 mm rod + 0.3 slip fit
 _yrm_bore_depth = _yrm_d - 2;                // 18 mm — rod bottoms out 2 mm from far face
 _yrm_air_dia    = 5.0;                        // air-escape through-hole diameter
@@ -62,12 +62,14 @@ _pul_bot_z      = _bot_belt_cz - _pul_h / 2;   // ≈ 7.0 mm — lower pulley bo
 _pul_top_z      = _top_belt_cz + _pul_h / 2;   // ≈ 25.5 mm — upper pulley top
 
 _pul_r          = _pul_od / 2 + 0.6;            // 9.6 mm — pocket radius with clearance
-_pul_pckt_bot   = _pul_bot_z - 0.5;
-_pul_pckt_top   = _pul_top_z + 0.5;
+_pul_z_lift     = 2.0;   // lifts pocket 2 mm to thicken floor (was ~6.5 mm → now ~8.5 mm)
+_pul_pckt_bot   = _pul_bot_z - 0.5 + _pul_z_lift;
+_pul_pckt_top   = _pul_top_z + 0.5 + _pul_z_lift;
 
-_shaft_x        = 17.0;
-_shaft_y        = 5.0;         // rear: pocket opens through Y=0 (interior) face
-_shaft_y_front  = 15.0;        // front: pocket opens through Y=_yrm_d (interior) face
+_shaft_x        = 10.5;
+_floor_ext      = 10.0;   // floor extension length toward printer center (mm)
+_shaft_y        = 10.0;        // centred on the 20 mm rail (Y=_yrm_d/2)
+_shaft_y_front  = 10.0;        // centred on the 20 mm rail (Y=_yrm_d/2)
 _shaft_dia      = 5.3;
 _shaft_top_z    = _yrm_bore_z - _yrm_bore_dia / 2 - 2.0;
 
@@ -76,13 +78,22 @@ _m5_head_depth  = 4.0;
 _m5_nut_dia     = 9.2;
 _m5_nut_h       = 5.0;
 
+// Corner-bracket mounting bolt (runs in X through the block)
+_cbkt_bolt_z    = _yrm_h - 6.0;   // Z centre — above rod bore, 6 mm from top face
+_cbkt_cbore_dia = 9.0;             // bolt head recess diameter
+_cbkt_cbore_dep = 4.0;             // bolt head recess depth from interior (+X) face
+
 // ---------------------------------------------------------------------------
 // Front variant — bore enters from Y=_yrm_d (interior face); right side uses mirror([1,0,0])
 // Both pulley pocket positions are present; only one is used per corner.
 // ---------------------------------------------------------------------------
 module y_rod_mount_front() {
     difference() {
-        cube([_yrm_w, _yrm_d, _yrm_h]);
+        union() {
+            cube([_yrm_w, _yrm_d, _yrm_h]);
+            translate([_yrm_w, 0, 0])
+                cube([_floor_ext, _yrm_d, _pul_pckt_bot]);
+        }
         // Rod bore: enters from the Y=_yrm_d face, bottoms out 2 mm from exterior face
         translate([_yrm_bore_x, _yrm_d + 0.1, _yrm_bore_z])
             rotate([90, 0, 0])
@@ -94,6 +105,12 @@ module y_rod_mount_front() {
         // Pulley pocket: opens through X+ and Y+ (interior) faces for belt routing
         translate([_shaft_x, _shaft_y_front, _pul_pckt_bot])
             cylinder(r = _pul_r, h = _pul_pckt_top - _pul_pckt_bot);
+        // Belt escape: remove inner (+X) wall — from pocket edge to inner Y face, outer face preserved
+        translate([_shaft_x, _shaft_y_front - _pul_r, _pul_pckt_bot])
+            cube([_yrm_w - _shaft_x + 0.1, _yrm_d - (_shaft_y_front - _pul_r) + 0.1, _pul_pckt_top - _pul_pckt_bot]);
+        // Belt escape: remove inner Y wall (Y=_yrm_d side) of pulley pocket
+        translate([_shaft_x - _pul_r, _shaft_y_front, _pul_pckt_bot])
+            cube([2 * _pul_r, _yrm_d - _shaft_y_front + 0.1, _pul_pckt_top - _pul_pckt_bot]);
         // Shaft bore: bottom of block to just below rod bore floor
         translate([_shaft_x, _shaft_y_front, -0.1])
             cylinder(d = _shaft_dia, h = _shaft_top_z + 0.1);
@@ -103,6 +120,16 @@ module y_rod_mount_front() {
         // M5 nut seat above upper pulley
         translate([_shaft_x, _shaft_y_front, _pul_pckt_top])
             cylinder(d = _m5_nut_dia, h = _m5_nut_h);
+        // M5 through hole at midpoint of floor extension
+        translate([_yrm_w + _floor_ext / 2, _yrm_d / 2, -0.1])
+            cylinder(d = m5_through_dia, h = _pul_pckt_bot + 0.2);
+        // Corner-bracket bolt: through hole in X, head recessed from interior (+X) face
+        translate([-0.1, _yrm_d / 2, _cbkt_bolt_z])
+            rotate([0, 90, 0])
+                cylinder(d = m5_through_dia, h = _yrm_w + 0.2);
+        translate([_yrm_w - _cbkt_cbore_dep, _yrm_d / 2, _cbkt_bolt_z])
+            rotate([0, 90, 0])
+                cylinder(d = _cbkt_cbore_dia, h = _cbkt_cbore_dep + 0.1);
     }
 }
 
@@ -111,7 +138,11 @@ module y_rod_mount_front() {
 // ---------------------------------------------------------------------------
 module y_rod_mount_rear() {
     difference() {
-        cube([_yrm_w, _yrm_d, _yrm_h]);
+        union() {
+            cube([_yrm_w, _yrm_d, _yrm_h]);
+            translate([_yrm_w, 0, 0])
+                cube([_floor_ext, _yrm_d, _pul_pckt_bot]);
+        }
         // Rod bore: enters from the Y=0 face
         translate([_yrm_bore_x, -0.1, _yrm_bore_z])
             rotate([-90, 0, 0])
@@ -123,6 +154,12 @@ module y_rod_mount_rear() {
         // Pulley pocket: opens through X+ and Y- faces into printer interior
         translate([_shaft_x, _shaft_y, _pul_pckt_bot])
             cylinder(r = _pul_r, h = _pul_pckt_top - _pul_pckt_bot);
+        // Belt escape: remove inner (+X) wall — from inner Y face to pocket edge, outer face preserved
+        translate([_shaft_x, -0.1, _pul_pckt_bot])
+            cube([_yrm_w - _shaft_x + 0.1, _shaft_y + _pul_r + 0.1, _pul_pckt_top - _pul_pckt_bot]);
+        // Belt escape: remove inner Y wall (Y=0 side) of pulley pocket
+        translate([_shaft_x - _pul_r, -0.1, _pul_pckt_bot])
+            cube([2 * _pul_r, _shaft_y + 0.1, _pul_pckt_top - _pul_pckt_bot]);
         // Shaft bore: bottom of block to just below rod bore floor
         translate([_shaft_x, _shaft_y, -0.1])
             cylinder(d = _shaft_dia, h = _shaft_top_z + 0.1);
@@ -132,6 +169,16 @@ module y_rod_mount_rear() {
         // M5 nut seat above upper pulley
         translate([_shaft_x, _shaft_y, _pul_pckt_top])
             cylinder(d = _m5_nut_dia, h = _m5_nut_h);
+        // M5 through hole at midpoint of floor extension
+        translate([_yrm_w + _floor_ext / 2, _yrm_d / 2, -0.1])
+            cylinder(d = m5_through_dia, h = _pul_pckt_bot + 0.2);
+        // Corner-bracket bolt: through hole in X, head recessed from interior (+X) face
+        translate([-0.1, _yrm_d / 2, _cbkt_bolt_z])
+            rotate([0, 90, 0])
+                cylinder(d = m5_through_dia, h = _yrm_w + 0.2);
+        translate([_yrm_w - _cbkt_cbore_dep, _yrm_d / 2, _cbkt_bolt_z])
+            rotate([0, 90, 0])
+                cylinder(d = _cbkt_cbore_dia, h = _cbkt_cbore_dep + 0.1);
     }
 }
 

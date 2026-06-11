@@ -117,8 +117,9 @@ utf_ex_cz            = utf_post_top_z + ex / 2;       // 506 mm — top extrusio
 // lower in the sled body, clear of that bearing pocket.
 carriage_rod_dia     = 8.0;   // 8 mm round rod
 rod_clearance        = 5.0;   // gap between mount block and adjacent post wall
-y_rod_left_x         = ex + rod_clearance + 10;               // 35 mm — rod centre (block is 20 mm wide)
-y_rod_right_x        = bf_outer_x - ex - rod_clearance - 10;  // 305 mm
+yrm_bore_x           = 13.5;  // Y-rod bore centre offset from outer face of the mount block (mm)
+y_rod_left_x         = ex + yrm_bore_x;               // 33.5 mm — left rod centre
+y_rod_right_x        = bf_outer_x - ex - yrm_bore_x;  // 306.5 mm — right rod centre
 y_rod_length         = bf_y_rail;         // cut to 405 mm (or trim from 405 mm stock)
 
 // RJ4JP bearing retainer profile — copied verbatim from printerx
@@ -165,11 +166,11 @@ x_rod_bore_depth = sled_w - (sled_w / 2 - 5.0) - 2.0;  // 14.5 mm — blind bore
 x_rod_air_depth  = sled_w - x_rod_bore_depth;           //  8.5 mm — air escape from outer face to bore floor
 
 // X rod physical length: free span between sled inner faces + bore depth each side.
-// Y rod / sled centres: ex + 10 mm (bore offset in y-rod-mount) = 30 mm left, 310 mm right.
-_x_rod_cx_l     = ex + 10.0;                        // 30 mm
-_x_rod_cx_r     = bf_outer_x - ex - 10.0;           // 310 mm
-x_rod_free_span = _x_rod_cx_r - _x_rod_cx_l - sled_w;   // 257 mm — inner face to inner face
-x_rod_length    = x_rod_free_span + 2 * x_rod_bore_depth;  // 286 mm — cut from 362 mm stock
+// Sled centres follow the Y-rod bore position (yrm_bore_x from shared-dims).
+_x_rod_cx_l     = ex + yrm_bore_x;                      // 33.5 mm
+_x_rod_cx_r     = bf_outer_x - ex - yrm_bore_x;         // 306.5 mm
+x_rod_free_span = _x_rod_cx_r - _x_rod_cx_l - sled_w;   // 250 mm — inner face to inner face
+x_rod_length    = x_rod_free_span + 2 * x_rod_bore_depth;  // 279 mm — cut from 362 mm stock
 
 // Y rod height: centre the bearing pocket so the solid wall above it (to the
 // sled top — gap "B") equals the web below it (to the rear X-rod bore top — gap "A").
