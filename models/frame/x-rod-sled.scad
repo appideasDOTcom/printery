@@ -38,6 +38,12 @@ xrod_rear_z   = x_rod_local_edge_gap + x_bore_dia / 2;             // 16.15 — 
 x_bore_depth  = x_rod_bore_depth;   // 14.5 mm — from inner face (see shared-dims.scad)
 x_air_dia     = 5.0;                // air-escape hole diameter
 
+// Belt pass clearance on outer (−X) face
+// Pulley centre at global X = 30.5 mm; belt outer edge at 24.5 mm; sled outer face at 22 mm.
+// Need sled clear to 24.5 + 2 mm margin = 26.5 mm → 4.5 mm depth from outer face.
+belt_pass_depth = 4.5;
+belt_pass_h     = 30.0;   // covers both belt-run heights (~12–28 mm local Z) with margin
+
 // --- Bearing rod-insertion relief (opens through the outer −X face) ---
 relief_w          = carriage_rod_dia;       // 8 mm — slot height, rod passes, bearing stays trapped
 relief_above_axis = 5.0;                    // slot floor this far from the rod axis (toward −X)
@@ -129,6 +135,12 @@ module _outer_corner_round(arc_cz, box_lo, box_hi) {
     }
 }
 
+// Clears the outer (−X) face for the GT2 belt running along the Y-axis wall.
+module _belt_pass_clearance() {
+    translate([-0.1, -0.1, -0.1])
+        cube([belt_pass_depth + 0.1, sled_d + 0.2, belt_pass_h + 0.1]);
+}
+
 module x_rod_sled() {
     difference() {
         sled_body();
@@ -140,6 +152,7 @@ module x_rod_sled() {
         _outer_corner_round(yrod_z, yrod_z, sled_h + round_eps);
         // Bottom-outer round: same shape mirrored to the bottom (tangent to it)
         _outer_corner_round(sled_h - yrod_z, -round_eps, sled_h - yrod_z);
+        _belt_pass_clearance();
     }
 }
 
