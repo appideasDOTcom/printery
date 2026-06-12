@@ -3,7 +3,14 @@
     "allow": [
       "Bash(mkdir -p /Users/costmo/Documents/dev/printing/printery/.claude/commands)",
       "Bash(python3)",
-      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/t.stl --export-format binstl -)"
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/t.stl --export-format binstl -)",
+      "Bash(openscad -o /tmp/yrm_test.stl y-rod-mount.scad)",
+      "Bash(which openscad *)",
+      "Read(//usr/local/bin/**)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD -o /tmp/yrm_test.stl /Users/costmo/Documents/dev/printing/printery/models/frame/y-rod-mount.scad)",
+      "Bash(openscad --hardwarnings -o /tmp/x-rod-sled-test.stl x-rod-sled.scad)",
+      "Read(//opt/homebrew/bin/**)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/x-rod-sled-test.stl x-rod-sled.scad)"
     ],
     "additionalDirectories": [
       "/Users/costmo/Documents/dev/printing/printery/.claude"

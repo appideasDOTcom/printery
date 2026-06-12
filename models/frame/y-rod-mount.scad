@@ -33,6 +33,7 @@ include <shared-dims.scad>
 _yrm_w          = 25.0;   // 5 mm extra on center-facing side (was 20)
 _yrm_d          = 20.0;
 _yrm_h          = 50.0;
+_yrm_h_rail     = 70.0;
 
 // ---------------------------------------------------------------------------
 // Rod bore
@@ -89,7 +90,10 @@ _cbkt_cbore_dep = 4.0;             // bolt head recess depth from interior (+X) 
 // ---------------------------------------------------------------------------
 module y_rod_mount_front() {
     difference() {
-        cube([_yrm_w, _yrm_d, _yrm_h]);
+        union() {
+            cube([_yrm_w, _yrm_d, _yrm_h]);
+            translate([-20, -2, -20]) cube([_yrm_w + 20, 2, _yrm_h + 40]);
+        }
         // Rod bore: enters from the Y=_yrm_d face, bottoms out 2 mm from exterior face
         translate([_yrm_bore_x, _yrm_d + 0.1, _yrm_bore_z])
             rotate([90, 0, 0])
@@ -97,7 +101,7 @@ module y_rod_mount_front() {
         // Air escape: through hole exits exterior face
         translate([_yrm_bore_x, _yrm_d + 0.1, _yrm_bore_z])
             rotate([90, 0, 0])
-                cylinder(d = _yrm_air_dia, h = _yrm_d + 0.2);
+                cylinder(d = _yrm_air_dia, h = _yrm_d + 2.2);
         // Pulley pocket: opens through X+ and Y+ (interior) faces for belt routing
         translate([_shaft_x, _shaft_y_front, _pul_pckt_bot])
             cylinder(r = _pul_r, h = _pul_pckt_top - _pul_pckt_bot);
@@ -114,8 +118,12 @@ module y_rod_mount_front() {
         translate([_shaft_x, _shaft_y_front, -0.1])
             cylinder(d = _m5_head_dia, h = _m5_head_depth + 0.1);
         // M5 hex nut trap above upper pulley — $fn=6 prevents nut spinning during tightening
-        translate([_shaft_x, _shaft_y_front, _pul_pckt_top])
-            cylinder(d = _m5_hex_dia, h = _m5_nut_h, $fn = 6);
+        translate([_shaft_x, _shaft_y_front, _pul_pckt_top - 0.1])
+            cylinder(d = _m5_hex_dia, h = _m5_nut_h + 0.1, $fn = 6);
+        // M5 frame-mount hole
+        translate([-10, -2.1, _yrm_h/2]) rotate([-90,0,0]) cylinder(d=5.5, h=_yrm_d+4.2);
+		translate([10, -2.1, _yrm_h_rail - 10]) rotate([-90,0,0]) cylinder(d=5.5, h=_yrm_d+4.2);
+		translate([10, -2.1, -10]) rotate([-90,0,0]) cylinder(d=5.5, h=_yrm_d+4.2);
     }
 }
 
@@ -124,7 +132,10 @@ module y_rod_mount_front() {
 // ---------------------------------------------------------------------------
 module y_rod_mount_rear() {
     difference() {
-        cube([_yrm_w, _yrm_d, _yrm_h]);
+        union() {
+            cube([_yrm_w, _yrm_d, _yrm_h]);
+            translate([-20, _yrm_d, -20]) cube([_yrm_w + 20, 2, _yrm_h + 40]);
+        }
         // Rod bore: enters from the Y=0 face
         translate([_yrm_bore_x, -0.1, _yrm_bore_z])
             rotate([-90, 0, 0])
@@ -132,7 +143,7 @@ module y_rod_mount_rear() {
         // Air escape
         translate([_yrm_bore_x, -0.1, _yrm_bore_z])
             rotate([-90, 0, 0])
-                cylinder(d = _yrm_air_dia, h = _yrm_d + 0.2);
+                cylinder(d = _yrm_air_dia, h = _yrm_d + 2.2);
         // Pulley pocket: opens through X+ and Y- faces into printer interior
         translate([_shaft_x, _shaft_y, _pul_pckt_bot])
             cylinder(r = _pul_r, h = _pul_pckt_top - _pul_pckt_bot);
@@ -151,8 +162,16 @@ module y_rod_mount_rear() {
         // M5 hex nut trap above upper pulley — $fn=6 prevents nut spinning during tightening
         translate([_shaft_x, _shaft_y, _pul_pckt_top])
             cylinder(d = _m5_hex_dia, h = _m5_nut_h, $fn = 6);
+
+		translate([-10, -2.1, _yrm_h/2]) rotate([-90,0,0]) cylinder(d=5.5, h=_yrm_d+4.2);
+		translate([10, -2.1, _yrm_h_rail - 10]) rotate([-90,0,0]) cylinder(d=5.5, h=_yrm_d+4.2);
+		translate([10, -2.1, -10]) rotate([-90,0,0]) cylinder(d=5.5, h=_yrm_d+4.2);
     }
 }
 
 // Preview
-y_rod_mount_front();
+// Four variations:
+y_rod_mount_front();                 // Front left
+// mirror([1,0,0]) y_rod_mount_front(); // Front right
+// y_rod_mount_rear();                  // Rear left
+// mirror([1,0,0]) y_rod_mount_rear();  // Rear right

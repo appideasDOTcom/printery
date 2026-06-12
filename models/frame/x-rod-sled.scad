@@ -136,9 +136,18 @@ module _outer_corner_round(arc_cz, box_lo, box_hi) {
 }
 
 // Clears the outer (−X) face for the GT2 belt running along the Y-axis wall.
+// Top-inner corner is rounded with a hull+cylinder fillet.
+belt_pass_fillet_r = 3.0;
 module _belt_pass_clearance() {
-    translate([-0.1, -0.1, -0.1])
-        cube([belt_pass_depth + 0.1, sled_d + 0.2, belt_pass_h + 0.1]);
+    hull() {
+        translate([-0.1, -0.1, -0.1])
+            cube([belt_pass_depth - belt_pass_fillet_r, sled_d + 0.2, belt_pass_h + 0.2]);
+        translate([-0.1, -0.1, -0.1])
+            cube([belt_pass_depth + 0.2, sled_d + 0.2, belt_pass_h - belt_pass_fillet_r]);
+        translate([belt_pass_depth - belt_pass_fillet_r, -0.1, belt_pass_h - belt_pass_fillet_r])
+            rotate([-90, 0, 0])
+                cylinder(r = belt_pass_fillet_r, h = sled_d + 0.2);
+    }
 }
 
 module x_rod_sled() {
