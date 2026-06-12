@@ -175,7 +175,7 @@ x_rod_length    = x_rod_free_span + 2 * x_rod_bore_depth;  // 279 mm — cut fro
 // Y rod height: centre the bearing pocket so the solid wall above it (to the
 // sled top — gap "B") equals the web below it (to the rear X-rod bore top — gap "A").
 _xrod_bore_top_z     = x_rod_rear_z + _x_rod_bore_r;            // 466.3 mm — top of rear X-rod bore
-y_rod_z              = (sled_top_z + _xrod_bore_top_z) / 2;     // 481.15 mm — equal A and B
+y_rod_z              = 482.2;     // rod bore 1 mm below corner-bracket M5 bore in y-rod-mount
 
 // ---------------------------------------------------------------------------
 // Wing tabs (pillow blocks and captures)

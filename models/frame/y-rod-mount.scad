@@ -62,9 +62,9 @@ _pul_bot_z      = _bot_belt_cz - _pul_h / 2;   // ≈ 7.0 mm — lower pulley bo
 _pul_top_z      = _top_belt_cz + _pul_h / 2;   // ≈ 25.5 mm — upper pulley top
 
 _pul_r          = _pul_od / 2 + 0.6;            // 9.6 mm — pocket radius with clearance
-_pul_z_lift     = 5.1;   // lifts pocket by bolt-head counterbore depth so head clears pocket floor
-_pul_pckt_bot   = _pul_bot_z - 0.5 + _pul_z_lift;
-_pul_pckt_top   = _pul_top_z + 0.5 + _pul_z_lift;
+_pul_z_lift     = 5.1;
+_pul_pckt_bot   = 6.0;   // fixed — decoupled from rod bore position
+_pul_pckt_top   = 25.5;  // fixed — decoupled from rod bore position
 
 _shaft_x        = 10.5;
 _floor_ext      = 10.0;   // floor extension length toward printer center (mm)

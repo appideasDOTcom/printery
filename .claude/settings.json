@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(mkdir -p /Users/costmo/Documents/dev/printing/printery/.claude/commands)",
-      "Bash(python3)"
+      "Bash(python3)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/t.stl --export-format binstl -)"
     ],
     "additionalDirectories": [
       "/Users/costmo/Documents/dev/printing/printery/.claude"
