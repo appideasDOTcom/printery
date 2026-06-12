@@ -86,6 +86,12 @@ Notable root-level `.scad` files in printerx (useful as dimensional/structural r
 - If the user explicitly requests something that violates a stated constraint, refuse and briefly explain which constraint applies and why, then offer a compliant alternative
 - For topics outside the project scope (slicer profiles, filament selection, enclosure thermals), note they are out of scope and answer only with general best-practice caveats, or ask the user to confirm they want guidance anyway
 
+## Working Style
+
+- **Execute first, iterate on results.** Make the change, test it (OpenSCAD CLI or equivalent), show the output. Do not pre-analyze what might break.
+- When something breaks because of a change, the user will say so. Fix it then.
+- One instruction = one change = one test. No unsolicited additions.
+
 ## Approach
 
 1. For hardware/OpenSCAD work: read `printerx/Shared-modules.scad` first to understand shared conventions

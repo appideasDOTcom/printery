@@ -35,6 +35,7 @@
 include <shared-dims.scad>
 use <../common/2020-extrusion.scad>
 use <z-pillow-block.scad>
+use <z-carriage-sled.scad>
 use <../printerX/Z axis frame brace.scad>
 
 // ---------------------------------------------------------------------------
@@ -208,6 +209,33 @@ module _lead_screws() {
     }
 }
 
+module _z_carriage_sleds() {
+    // Rod centre X positions — match _z_linear_rods()
+    _cx_fl = ex + pb_block_xy / 2;               // 36 mm
+    _cx_fr = bf_outer_x - ex - pb_block_xy / 2;  // 304 mm
+    _cx_rc = ls_rc_x;                            // 170 mm
+
+    // Rod centre Y positions
+    _cy_f  = ex + z_lr_rod_cy;                   // 29.1 mm (front rods)
+    _cy_r  = bf_rear_y_face - z_lr_rod_cy;       // 375.9 mm (rear rod)
+
+    // Z preview position: mid-travel, cylinder centred
+    _z_pre = (pb_lower_top_z + pb_upper_bot_z) / 2 - (rj_base_y + 2) / 2;  // ≈ 249.5 mm
+
+    // Lead screw centre Y positions
+    _ls_cy_f = ex + z_lr_bearing_cy;              // 49.3 mm (front screws)
+    _ls_cy_r = bf_rear_y_face - z_lr_bearing_cy;  // 355.7 mm (rear screw)
+
+    // Front-left
+    translate([_cx_fl, _cy_f, _z_pre]) z_carriage_assembly();
+
+    // Front-right
+    translate([_cx_fr, _cy_f, _z_pre]) z_carriage_assembly();
+
+    // Rear-center: rotate 180° so relief and lead screw offset face the correct direction
+    translate([_cx_rc, _cy_r, _z_pre]) rotate([0, 0, 180]) z_carriage_assembly();
+}
+
 // NOTE: The Y carriage rods and their end-capture blocks are owned by
 // upper-top-frame.scad (they live in the upper-top frame, captured by
 // y_rod_mount). They are intentionally NOT rendered here — see
@@ -236,4 +264,5 @@ use <upper-top-frame.scad>
 
 color("peru")      bottom_frame();
 top_frame();
+color("gold")      _z_carriage_sleds();
 // color("burlywood") upper_top_frame();

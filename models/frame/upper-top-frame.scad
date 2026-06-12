@@ -23,6 +23,7 @@
 include <shared-dims.scad>
 use <../common/2020-extrusion.scad>
 use <y-rod-mount.scad>
+use <z-carriage-sled.scad>
 
 // ---------------------------------------------------------------------------
 // Dimensions — now in shared-dims.scad (utf_post_h, utf_post_bot_z, etc.)
@@ -49,19 +50,19 @@ _blk_y_r  = bf_rear_y_face;              // 385 mm — rear block front face
 // Module
 // ---------------------------------------------------------------------------
 module upper_top_frame() {
-    // // Corner posts
-    // color("burlywood") for (cx = [utf_left_cx, utf_right_cx])
-    //     for (cy = [utf_front_cy, utf_rear_cy])
-    //         translate([cx, cy, utf_post_bot_z])
-    //             extrusion_2020(utf_post_h, "z");
+    // Corner posts
+    color("burlywood") for (cx = [utf_left_cx, utf_right_cx])
+        for (cy = [utf_front_cy, utf_rear_cy])
+            translate([cx, cy, utf_post_bot_z])
+                extrusion_2020(utf_post_h, "z");
 
-    // // Top rectangle
-    // color("burlywood") {
-    //     translate([utf_left_cx,  0,           utf_ex_cz]) extrusion_2020(bf_y_rail, "y");
-    //     translate([utf_right_cx, 0,           utf_ex_cz]) extrusion_2020(bf_y_rail, "y");
-    //     translate([ex,           utf_front_cy, utf_ex_cz]) extrusion_2020(bf_x_rail, "x");
-    //     translate([ex,           utf_rear_cy,  utf_ex_cz]) extrusion_2020(bf_x_rail, "x");
-    // }
+    // Top rectangle
+    color("burlywood") {
+        translate([utf_left_cx,  0,           utf_ex_cz]) extrusion_2020(bf_y_rail, "y");
+        translate([utf_right_cx, 0,           utf_ex_cz]) extrusion_2020(bf_y_rail, "y");
+        translate([ex,           utf_front_cy, utf_ex_cz]) extrusion_2020(bf_x_rail, "x");
+        translate([ex,           utf_rear_cy,  utf_ex_cz]) extrusion_2020(bf_x_rail, "x");
+    }
 
     // Y rod mounts — bore always enters from the interior-facing face.
     // Front mounts: y_rod_mount_front() bore enters from Y=_yrm_d (high-Y face),
@@ -120,6 +121,33 @@ module _x_rod_sleds() {
     }
 }
 
+module _z_carriage_sleds() {
+    // Rod centre X positions — match _z_linear_rods()
+    _cx_fl = ex + pb_block_xy / 2;               // 36 mm
+    _cx_fr = bf_outer_x - ex - pb_block_xy / 2;  // 304 mm
+    _cx_rc = ls_rc_x;                            // 170 mm
+
+    // Rod centre Y positions
+    _cy_f  = ex + z_lr_rod_cy;                   // 29.1 mm (front rods)
+    _cy_r  = bf_rear_y_face - z_lr_rod_cy;       // 375.9 mm (rear rod)
+
+    // Z preview position: mid-travel, cylinder centred
+    _z_pre = (pb_lower_top_z + pb_upper_bot_z) / 2 - (rj_base_y + 2) / 2;  // ≈ 249.5 mm
+
+    // Lead screw centre Y positions
+    _ls_cy_f = ex + z_lr_bearing_cy;              // 49.3 mm (front screws)
+    _ls_cy_r = bf_rear_y_face - z_lr_bearing_cy;  // 355.7 mm (rear screw)
+
+    // Front-left
+    translate([_cx_fl, _cy_f, _z_pre]) z_carriage_assembly();
+
+    // Front-right
+    translate([_cx_fr, _cy_f, _z_pre]) z_carriage_assembly();
+
+    // Rear-center: rotate 180° so relief and lead screw offset face the correct direction
+    translate([_cx_rc, _cy_r, _z_pre]) rotate([0, 0, 180]) z_carriage_assembly();
+}
+
 // ---------------------------------------------------------------------------
 // Preview — open this file to see all three frame layers
 // ---------------------------------------------------------------------------
@@ -131,4 +159,5 @@ color("peru")           bottom_frame();
 top_frame();
 color("cornflowerblue") _x_carriage_rods();
 color("gold")           _x_rod_sleds();
+color("gold")      _z_carriage_sleds();
 upper_top_frame();

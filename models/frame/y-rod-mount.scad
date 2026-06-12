@@ -62,7 +62,7 @@ _pul_bot_z      = _bot_belt_cz - _pul_h / 2;   // ≈ 7.0 mm — lower pulley bo
 _pul_top_z      = _top_belt_cz + _pul_h / 2;   // ≈ 25.5 mm — upper pulley top
 
 _pul_r          = _pul_od / 2 + 0.6;            // 9.6 mm — pocket radius with clearance
-_pul_z_lift     = 2.0;   // lifts pocket 2 mm to thicken floor (was ~6.5 mm → now ~8.5 mm)
+_pul_z_lift     = 5.1;   // lifts pocket by bolt-head counterbore depth so head clears pocket floor
 _pul_pckt_bot   = _pul_bot_z - 0.5 + _pul_z_lift;
 _pul_pckt_top   = _pul_top_z + 0.5 + _pul_z_lift;
 
@@ -74,9 +74,9 @@ _shaft_dia      = 5.3;
 _shaft_top_z    = _yrm_bore_z - _yrm_bore_dia / 2 - 2.0;
 
 _m5_head_dia    = 9.5;
-_m5_head_depth  = 4.0;
-_m5_nut_dia     = 9.2;
+_m5_head_depth  = 5.1;
 _m5_nut_h       = 5.0;
+_m5_hex_dia     = 9.6;   // M5 hex nut circumscribed dia + 0.3 mm clearance (8.0 mm AF → 9.24 mm AC)
 
 // Corner-bracket mounting bolt (runs in X through the block)
 _cbkt_bolt_z    = _yrm_h - 6.0;   // Z centre — above rod bore, 6 mm from top face
@@ -117,9 +117,9 @@ module y_rod_mount_front() {
         // M5 bolt-head counterbore at block bottom face
         translate([_shaft_x, _shaft_y_front, -0.1])
             cylinder(d = _m5_head_dia, h = _m5_head_depth + 0.1);
-        // M5 nut seat above upper pulley
+        // M5 hex nut trap above upper pulley — $fn=6 prevents nut spinning during tightening
         translate([_shaft_x, _shaft_y_front, _pul_pckt_top])
-            cylinder(d = _m5_nut_dia, h = _m5_nut_h);
+            cylinder(d = _m5_hex_dia, h = _m5_nut_h, $fn = 6);
         // M5 through hole at midpoint of floor extension
         translate([_yrm_w + _floor_ext / 2, _yrm_d / 2, -0.1])
             cylinder(d = m5_through_dia, h = _pul_pckt_bot + 0.2);
@@ -166,9 +166,9 @@ module y_rod_mount_rear() {
         // M5 bolt-head counterbore at block bottom face
         translate([_shaft_x, _shaft_y, -0.1])
             cylinder(d = _m5_head_dia, h = _m5_head_depth + 0.1);
-        // M5 nut seat above upper pulley
+        // M5 hex nut trap above upper pulley — $fn=6 prevents nut spinning during tightening
         translate([_shaft_x, _shaft_y, _pul_pckt_top])
-            cylinder(d = _m5_nut_dia, h = _m5_nut_h);
+            cylinder(d = _m5_hex_dia, h = _m5_nut_h, $fn = 6);
         // M5 through hole at midpoint of floor extension
         translate([_yrm_w + _floor_ext / 2, _yrm_d / 2, -0.1])
             cylinder(d = m5_through_dia, h = _pul_pckt_bot + 0.2);

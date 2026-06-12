@@ -158,3 +158,4 @@ module x_rod_sled() {
 
 // Preview
 x_rod_sled();
+// mirror([1, 0, 0]) x_rod_sled();
