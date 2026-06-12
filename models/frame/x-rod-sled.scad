@@ -32,7 +32,7 @@ x_bore_dia    = carriage_rod_dia + 0.3;   // 8.3 mm slip fit for the X rod captu
 xrod_front_y  = x_rod_local_edge_gap + x_bore_dia / 2;              // 16.15 — from front face
 xrod_front_z  = sled_h - x_rod_local_edge_gap - x_bore_dia / 2;    // 33.85 — from bottom
 xrod_rear_y   = sled_d - x_rod_local_edge_gap - x_bore_dia / 2;    // 43.85 — from front
-xrod_rear_z   = x_rod_local_edge_gap + x_bore_dia / 2;             // 16.15 — from bottom
+xrod_rear_z   = x_rod_local_edge_gap + x_bore_dia / 2 + 5;         // 21.15 — from bottom
 
 // Blind bore depth from shared-dims: rod stops 2 mm short of the yrod_relief opening.
 x_bore_depth  = x_rod_bore_depth;   // 14.5 mm — from inner face (see shared-dims.scad)

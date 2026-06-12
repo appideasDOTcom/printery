@@ -71,11 +71,11 @@ _floor_ext      = 10.0;   // floor extension length toward printer center (mm)
 _shaft_y        = 10.0;        // centred on the 20 mm rail (Y=_yrm_d/2)
 _shaft_y_front  = 10.0;        // centred on the 20 mm rail (Y=_yrm_d/2)
 _shaft_dia      = 5.3;
-_shaft_top_z    = _yrm_bore_z - _yrm_bore_dia / 2 - 2.0;
+_shaft_top_z    = _yrm_bore_z + _yrm_bore_dia / 2;
 
 _m5_head_dia    = 9.5;
 _m5_head_depth  = 5.1;
-_m5_nut_h       = 5.0;
+_m5_nut_h       = 4.1;
 _m5_hex_dia     = 9.6;   // M5 hex nut circumscribed dia + 0.3 mm clearance (8.0 mm AF → 9.24 mm AC)
 
 // Corner-bracket mounting bolt (runs in X through the block)
@@ -89,11 +89,7 @@ _cbkt_cbore_dep = 4.0;             // bolt head recess depth from interior (+X) 
 // ---------------------------------------------------------------------------
 module y_rod_mount_front() {
     difference() {
-        union() {
-            cube([_yrm_w, _yrm_d, _yrm_h]);
-            translate([_yrm_w, 0, 0])
-                cube([_floor_ext, _yrm_d, _pul_pckt_bot]);
-        }
+        cube([_yrm_w, _yrm_d, _yrm_h]);
         // Rod bore: enters from the Y=_yrm_d face, bottoms out 2 mm from exterior face
         translate([_yrm_bore_x, _yrm_d + 0.1, _yrm_bore_z])
             rotate([90, 0, 0])
@@ -120,16 +116,6 @@ module y_rod_mount_front() {
         // M5 hex nut trap above upper pulley — $fn=6 prevents nut spinning during tightening
         translate([_shaft_x, _shaft_y_front, _pul_pckt_top])
             cylinder(d = _m5_hex_dia, h = _m5_nut_h, $fn = 6);
-        // M5 through hole at midpoint of floor extension
-        translate([_yrm_w + _floor_ext / 2, _yrm_d / 2, -0.1])
-            cylinder(d = m5_through_dia, h = _pul_pckt_bot + 0.2);
-        // Corner-bracket bolt: through hole in X, head recessed from interior (+X) face
-        translate([-0.1, _yrm_d / 2, _cbkt_bolt_z])
-            rotate([0, 90, 0])
-                cylinder(d = m5_through_dia, h = _yrm_w + 0.2);
-        translate([_yrm_w - _cbkt_cbore_dep, _yrm_d / 2, _cbkt_bolt_z])
-            rotate([0, 90, 0])
-                cylinder(d = _cbkt_cbore_dia, h = _cbkt_cbore_dep + 0.1);
     }
 }
 
@@ -138,11 +124,7 @@ module y_rod_mount_front() {
 // ---------------------------------------------------------------------------
 module y_rod_mount_rear() {
     difference() {
-        union() {
-            cube([_yrm_w, _yrm_d, _yrm_h]);
-            translate([_yrm_w, 0, 0])
-                cube([_floor_ext, _yrm_d, _pul_pckt_bot]);
-        }
+        cube([_yrm_w, _yrm_d, _yrm_h]);
         // Rod bore: enters from the Y=0 face
         translate([_yrm_bore_x, -0.1, _yrm_bore_z])
             rotate([-90, 0, 0])
@@ -169,16 +151,6 @@ module y_rod_mount_rear() {
         // M5 hex nut trap above upper pulley — $fn=6 prevents nut spinning during tightening
         translate([_shaft_x, _shaft_y, _pul_pckt_top])
             cylinder(d = _m5_hex_dia, h = _m5_nut_h, $fn = 6);
-        // M5 through hole at midpoint of floor extension
-        translate([_yrm_w + _floor_ext / 2, _yrm_d / 2, -0.1])
-            cylinder(d = m5_through_dia, h = _pul_pckt_bot + 0.2);
-        // Corner-bracket bolt: through hole in X, head recessed from interior (+X) face
-        translate([-0.1, _yrm_d / 2, _cbkt_bolt_z])
-            rotate([0, 90, 0])
-                cylinder(d = m5_through_dia, h = _yrm_w + 0.2);
-        translate([_yrm_w - _cbkt_cbore_dep, _yrm_d / 2, _cbkt_bolt_z])
-            rotate([0, 90, 0])
-                cylinder(d = _cbkt_cbore_dia, h = _cbkt_cbore_dep + 0.1);
     }
 }
 

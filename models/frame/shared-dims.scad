@@ -139,10 +139,10 @@ rj_shell             = 3.95;   // wall around bearing OD (matches printerx 23 mm
 
 // Sled outer envelope
 sled_w               = rj_bearing_od + rj_shell * 2;   // 23 mm (X) — full RJ4JP shell
-sled_h               = 50.0;                            // Z — fixed by spec
+sled_h               = 55.0;                            // Z — 50 mm spec + 5 mm bottom extension
 sled_d               = rj_base_y * 2 + 2;              // 60 mm (Y) — two-bearing retainer span
 sled_top_z           = utf_post_top_z;                 // 496 mm — level with Y-rod-mount top
-sled_bot_z           = sled_top_z - sled_h;            // 446 mm
+sled_bot_z           = sled_top_z - sled_h + 5;        // 451 mm
 
 // X rods: diagonal layout — front rod at top of sled, rear rod at bottom.
 // Bore edge is x_rod_local_edge_gap mm from each adjacent sled face.
@@ -155,7 +155,7 @@ x_rod_front_y        = _sled_front_y + x_rod_local_edge_gap + _x_rod_bore_r;    
 x_rod_rear_y         = _sled_front_y + sled_d - x_rod_local_edge_gap - _x_rod_bore_r;  // 225.35 mm
 // Local Z positions in sled (from sled bottom)
 x_rod_front_local_z  = sled_h - x_rod_local_edge_gap - _x_rod_bore_r;  // 42.85 mm
-x_rod_rear_local_z   = x_rod_local_edge_gap + _x_rod_bore_r;            // 7.15 mm
+x_rod_rear_local_z   = x_rod_local_edge_gap + _x_rod_bore_r + 5;        // 12.15 mm
 // Global Z positions
 x_rod_front_z        = sled_bot_z + x_rod_front_local_z;   // 488.85 mm
 x_rod_rear_z         = sled_bot_z + x_rod_rear_local_z;    // 453.15 mm
