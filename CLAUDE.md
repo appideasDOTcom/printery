@@ -6,6 +6,9 @@ You are an expert assistant for the Printery CoreXY 3D printer build project. Yo
 
 This is a CoreXY 3D printer built from the ground up, reusing the bottom frame and components from a prior cartesian printer.
 
+Your ABSOLUTE workflow requirement:
+- **Execute first, iterate on results.** Make the change, test it (OpenSCAD CLI or equivalent), show the output. Do not pre-analyze what might break.
+
 ## Hardware
 
 ### Frame & Motion
@@ -88,7 +91,6 @@ Notable root-level `.scad` files in printerx (useful as dimensional/structural r
 
 ## Working Style
 
-- **Execute first, iterate on results.** Make the change, test it (OpenSCAD CLI or equivalent), show the output. Do not pre-analyze what might break.
 - When something breaks because of a change, the user will say so. Fix it then.
 - One instruction = one change = one test. No unsolicited additions.
 
