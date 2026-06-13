@@ -63,6 +63,14 @@ fp_m5_hex_dia    = 9.6;
 fp_m5_nut_h      = 4.1;
 fp_shaft_top_z   = yrod_z + (carriage_rod_dia + 0.3) / 2;  // stops just below Y-rod bore floor
 
+// --- Rear-face idler pulley pocket ---
+// 18 mm behind and 15 mm outside the front pulley shaft; same Z extents.
+rp_shaft_x       = fp_shaft_x - 15.0;   // 1.0 mm — local sled X
+rp_shaft_y       = fp_shaft_y + 18.0;   // 28.0 mm — local sled Y
+rp_pckt_bot      = fp_pckt_bot;         // 6.0 mm — same Z as front pocket
+rp_pckt_top      = fp_pckt_top;         // 25.5 mm
+rp_shaft_top_z   = fp_shaft_top_z;      // same shaft height
+
 // --- Bearing rod-insertion relief (opens through the outer −X face) ---
 relief_w          = carriage_rod_dia;       // 8 mm — slot height, rod passes, bearing stays trapped
 relief_above_axis = 5.0;                    // slot floor this far from the rod axis (toward −X)
@@ -177,6 +185,29 @@ module front_pulley_pocket() {
         cylinder(d = fp_m5_hex_dia, h = fp_m5_nut_h + 0.1, $fn = 6);
 }
 
+// Rear-face idler pulley pocket. Same geometry as front_pulley_pocket(); opens through
+// the outer (−X) face and rear (Y=sled_d) face.
+module rear_pulley_pocket() {
+    // Cylindrical pocket volume
+    translate([rp_shaft_x, rp_shaft_y, rp_pckt_bot])
+        cylinder(r = fp_pul_r, h = rp_pckt_top - rp_pckt_bot);
+    // Belt escape: open inner (+X) wall
+    translate([rp_shaft_x, rp_shaft_y - fp_pul_r, rp_pckt_bot])
+        cube([sled_w - rp_shaft_x + 0.1, fp_pul_r * 2, rp_pckt_top - rp_pckt_bot]);
+    // Belt escape: open rear (Y=sled_d) wall
+    translate([rp_shaft_x - fp_pul_r, rp_shaft_y, rp_pckt_bot])
+        cube([fp_pul_r * 2, sled_d - rp_shaft_y + 0.1, rp_pckt_top - rp_pckt_bot]);
+    // Shaft bore: bottom of sled to just below Y-rod bore floor
+    translate([rp_shaft_x, rp_shaft_y, -0.1])
+        cylinder(d = fp_shaft_dia, h = rp_shaft_top_z + 0.1);
+    // M5 bolt-head counterbore at sled bottom face
+    translate([rp_shaft_x, rp_shaft_y, -0.1])
+        cylinder(d = fp_m5_head_dia, h = fp_m5_head_depth + 0.1);
+    // M5 hex nut trap above upper pulley
+    translate([rp_shaft_x, rp_shaft_y, rp_pckt_top - 0.1])
+        cylinder(d = fp_m5_hex_dia, h = fp_m5_nut_h + 0.1, $fn = 6);
+}
+
 // Clears the outer (−X) face for the GT2 belt running along the Y-axis wall.
 // Top-inner corner is rounded with a hull+cylinder fillet.
 belt_pass_fillet_r = 3.0;
@@ -193,18 +224,33 @@ module _belt_pass_clearance() {
 }
 
 module x_rod_sled() {
-    difference() {
-        sled_body();
-        yrod_bearing_pocket();
-        yrod_relief();
-        x_rod_bore(xrod_front_y, xrod_front_z);
-        x_rod_bore(xrod_rear_y, xrod_rear_z);
-        // Top-outer round: arc concentric with the pocket, forms the smooth bearing-arc cap at the top face
-        _outer_corner_round(yrod_z, yrod_z, sled_h + round_eps);
-        // Bottom-outer round: same shape mirrored to the bottom (tangent to it)
-        _outer_corner_round(sled_h - yrod_z, -round_eps, sled_h - yrod_z);
-        _belt_pass_clearance();
-        front_pulley_pocket();
+    union() {
+        difference() {
+            sled_body();
+            yrod_bearing_pocket();
+            yrod_relief();
+            x_rod_bore(xrod_front_y, xrod_front_z);
+            x_rod_bore(xrod_rear_y, xrod_rear_z);
+            _outer_corner_round(yrod_z, yrod_z, sled_h + round_eps);
+            _outer_corner_round(sled_h - yrod_z, -round_eps, sled_h - yrod_z);
+            _belt_pass_clearance();
+            front_pulley_pocket();
+            rear_pulley_pocket();
+        }
+        // Floor disc and bridge — outside the difference so nothing erases them.
+        // Shaft bore and bolt-head counterbore subtracted here.
+        difference() {
+            union() {
+                translate([rp_shaft_x, rp_shaft_y, 0])
+                    cylinder(d = 12.0, h = rp_pckt_bot);
+                translate([0, rp_shaft_y - 6.0, 0])
+                    cube([rp_shaft_x + 6.0, 12.0, rp_pckt_bot]);
+            }
+            translate([rp_shaft_x, rp_shaft_y, -0.1])
+                cylinder(d = fp_shaft_dia, h = rp_pckt_bot + 0.2);
+            translate([rp_shaft_x, rp_shaft_y, -0.1])
+                cylinder(d = fp_m5_head_dia, h = fp_m5_head_depth + 0.1);
+        }
     }
 }
 
