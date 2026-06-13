@@ -139,10 +139,10 @@ rj_shell             = 3.95;   // wall around bearing OD (matches printerx 23 mm
 
 // Sled outer envelope
 sled_w               = rj_bearing_od + rj_shell * 2;   // 23 mm (X) — full RJ4JP shell
-sled_h               = 55.0;                            // Z — 50 mm spec + 5 mm bottom extension
+sled_h               = 57.0;                            // Z — 50 mm spec + 5 mm bottom extension + 2 mm to clear X rod / bearing pocket
 sled_d               = rj_base_y * 2 + 2;              // 60 mm (Y) — two-bearing retainer span
-sled_top_z           = utf_post_top_z;                 // 496 mm — level with Y-rod-mount top
-sled_bot_z           = sled_top_z - sled_h + 5;        // 451 mm
+sled_top_z           = utf_post_top_z + 3;             // 499 mm — 3 mm above UTF post tops to clear front pulley geometry
+sled_bot_z           = utf_post_bot_z;                  // 446 mm — fixed to UTF post bottom, independent of sled_top_z
 
 // X rods: diagonal layout — front rod at top of sled, rear rod at bottom.
 // Bore edge is x_rod_local_edge_gap mm from each adjacent sled face.
@@ -154,7 +154,8 @@ _sled_front_y        = x_rod_mid_y - sled_d / 2;              // 172.5 mm — sl
 x_rod_front_y        = _sled_front_y + x_rod_local_edge_gap + _x_rod_bore_r;           // 179.65 mm
 x_rod_rear_y         = _sled_front_y + sled_d - x_rod_local_edge_gap - _x_rod_bore_r;  // 225.35 mm
 // Local Z positions in sled (from sled bottom)
-x_rod_front_local_z  = sled_h - x_rod_local_edge_gap - _x_rod_bore_r;  // 42.85 mm
+// Front rod raised 3 mm (edge gap reduced from 3.0 to 1.0) to clear Y bearing pocket after y_rod_z lift.
+x_rod_front_local_z  = sled_h - 1.0 - _x_rod_bore_r;                    // 49.85 mm
 x_rod_rear_local_z   = x_rod_local_edge_gap + _x_rod_bore_r + 5;        // 12.15 mm
 // Global Z positions
 x_rod_front_z        = sled_bot_z + x_rod_front_local_z;   // 488.85 mm
@@ -175,7 +176,7 @@ x_rod_length    = x_rod_free_span + 2 * x_rod_bore_depth;  // 279 mm — cut fro
 // Y rod height: centre the bearing pocket so the solid wall above it (to the
 // sled top — gap "B") equals the web below it (to the rear X-rod bore top — gap "A").
 _xrod_bore_top_z     = x_rod_rear_z + _x_rod_bore_r;            // 466.3 mm — top of rear X-rod bore
-y_rod_z              = 482.2;     // rod bore 1 mm below corner-bracket M5 bore in y-rod-mount
+y_rod_z              = 485.2;     // rod bore 1 mm below corner-bracket M5 bore in y-rod-mount; raised 3 mm to clear front pulley nut trap
 
 // ---------------------------------------------------------------------------
 // Wing tabs (pillow blocks and captures)

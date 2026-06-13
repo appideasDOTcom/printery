@@ -30,7 +30,7 @@ x_bore_dia    = carriage_rod_dia + 0.3;   // 8.3 mm slip fit for the X rod captu
 
 // Front-top and rear-bottom X rod capture positions (sled-local, origin front-left-bottom)
 xrod_front_y  = x_rod_local_edge_gap + x_bore_dia / 2;              // 16.15 — from front face
-xrod_front_z  = sled_h - x_rod_local_edge_gap - x_bore_dia / 2;    // 33.85 — from bottom
+xrod_front_z  = x_rod_front_local_z;    // from shared-dims — matches assembly rod placement
 xrod_rear_y   = sled_d - x_rod_local_edge_gap - x_bore_dia / 2;    // 43.85 — from front
 xrod_rear_z   = x_rod_local_edge_gap + x_bore_dia / 2 + 5;         // 21.15 — from bottom
 
@@ -43,6 +43,25 @@ x_air_dia     = 5.0;                // air-escape hole diameter
 // Need sled clear to 24.5 + 2 mm margin = 26.5 mm → 4.5 mm depth from outer face.
 belt_pass_depth = 4.5;
 belt_pass_h     = 30.0;   // covers both belt-run heights (~12–28 mm local Z) with margin
+
+// --- Front-face idler pulley pocket ---
+// Outside of this pulley's belt path aligns with the inside of the y-rod-mount front
+// pulley's belt path. Offset from the y-rod-mount shaft (+X toward center) = 7.5 mm.
+// y-rod-mount shaft at global X = ex + _shaft_x = 20 + 10.5 = 30.5; sled outer face at 22.
+// New shaft local X = (30.5 + 7.5) - 22 = 16 mm.
+fp_pul_od        = 18.0;
+fp_pul_r         = fp_pul_od / 2 + 0.6;   // 9.6 mm — pocket radius with clearance (matches y-rod-mount)
+fp_shaft_x_offset = 7.5;                   // X offset toward center vs. y-rod-mount shaft
+fp_shaft_x       = (30.5 + fp_shaft_x_offset) - 22;   // 16.0 mm — local sled X
+fp_shaft_y       = 10.0;                   // Y from front face — centred on the 20 mm rail (matches y-rod-mount)
+fp_shaft_dia     = 5.3;                    // M5 clearance bore
+fp_pckt_bot      = 6.0;                    // matches y-rod-mount _pul_pckt_bot
+fp_pckt_top      = 25.5;                   // matches y-rod-mount _pul_pckt_top
+fp_m5_head_dia   = 9.5;
+fp_m5_head_depth = 5.1;
+fp_m5_hex_dia    = 9.6;
+fp_m5_nut_h      = 4.1;
+fp_shaft_top_z   = yrod_z + (carriage_rod_dia + 0.3) / 2;  // stops just below Y-rod bore floor
 
 // --- Bearing rod-insertion relief (opens through the outer −X face) ---
 relief_w          = carriage_rod_dia;       // 8 mm — slot height, rod passes, bearing stays trapped
@@ -135,6 +154,29 @@ module _outer_corner_round(arc_cz, box_lo, box_hi) {
     }
 }
 
+// Front-face idler pulley pocket. Opens through the front (Y=0) face and the
+// inner (+X) face. Shaft bore runs from bottom to just below the Y-rod bore floor.
+module front_pulley_pocket() {
+    // Cylindrical pocket volume
+    translate([fp_shaft_x, fp_shaft_y, fp_pckt_bot])
+        cylinder(r = fp_pul_r, h = fp_pckt_top - fp_pckt_bot);
+    // Belt escape: open inner (+X) wall from pocket edge to sled inner face
+    translate([fp_shaft_x, fp_shaft_y - fp_pul_r, fp_pckt_bot])
+        cube([sled_w - fp_shaft_x + 0.1, fp_pul_r * 2, fp_pckt_top - fp_pckt_bot]);
+    // Belt escape: open front (Y=0) wall of pocket
+    translate([fp_shaft_x - fp_pul_r, -0.1, fp_pckt_bot])
+        cube([fp_pul_r * 2, fp_shaft_y + 0.1, fp_pckt_top - fp_pckt_bot]);
+    // Shaft bore: bottom of sled to just below Y-rod bore floor
+    translate([fp_shaft_x, fp_shaft_y, -0.1])
+        cylinder(d = fp_shaft_dia, h = fp_shaft_top_z + 0.1);
+    // M5 bolt-head counterbore at sled bottom face
+    translate([fp_shaft_x, fp_shaft_y, -0.1])
+        cylinder(d = fp_m5_head_dia, h = fp_m5_head_depth + 0.1);
+    // M5 hex nut trap above upper pulley
+    translate([fp_shaft_x, fp_shaft_y, fp_pckt_top - 0.1])
+        cylinder(d = fp_m5_hex_dia, h = fp_m5_nut_h + 0.1, $fn = 6);
+}
+
 // Clears the outer (−X) face for the GT2 belt running along the Y-axis wall.
 // Top-inner corner is rounded with a hull+cylinder fillet.
 belt_pass_fillet_r = 3.0;
@@ -162,6 +204,7 @@ module x_rod_sled() {
         // Bottom-outer round: same shape mirrored to the bottom (tangent to it)
         _outer_corner_round(sled_h - yrod_z, -round_eps, sled_h - yrod_z);
         _belt_pass_clearance();
+        front_pulley_pocket();
     }
 }
 

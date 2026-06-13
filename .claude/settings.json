@@ -10,7 +10,16 @@
       "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD -o /tmp/yrm_test.stl /Users/costmo/Documents/dev/printing/printery/models/frame/y-rod-mount.scad)",
       "Bash(openscad --hardwarnings -o /tmp/x-rod-sled-test.stl x-rod-sled.scad)",
       "Read(//opt/homebrew/bin/**)",
-      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/x-rod-sled-test.stl x-rod-sled.scad)"
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/x-rod-sled-test.stl x-rod-sled.scad)",
+      "Bash(openscad -o /tmp/x-rod-sled-test.stl x-rod-sled.scad)",
+      "Read(//usr/local/**)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD -o /tmp/x-rod-sled-test.stl x-rod-sled.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format echo -o /dev/stdout x-rod-sled.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format echo -o /dev/null -)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD -o /tmp/diag.csg x-rod-sled.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD -o /tmp/diag.ast --export-format ast x-rod-sled.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD -o /tmp/y-rod-mount-test.stl y-rod-mount.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD -o /tmp/utf-test.png --camera=170,202,490,55,0,25,200 --colorscheme=Tomorrow upper-top-frame.scad)"
     ],
     "additionalDirectories": [
       "/Users/costmo/Documents/dev/printing/printery/.claude"
