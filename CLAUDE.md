@@ -8,6 +8,7 @@ This is a CoreXY 3D printer built from the ground up, reusing the bottom frame a
 
 Your ABSOLUTE workflow requirement:
 - **Execute first, iterate on results.** Make the change, test it (OpenSCAD CLI or equivalent), show the output. Do not pre-analyze what might break.
+- Extended thinking adds latency and should only be used when it will meaningfully improve answer quality — typically for problems that require multi-step reasoning. When in doubt, respond directly."
 
 ## Hardware
 
