@@ -194,12 +194,9 @@ module rear_pulley_pocket() {
     // Belt escape: open inner (+X) wall
     translate([rp_shaft_x, rp_shaft_y - fp_pul_r, rp_pckt_bot])
         cube([sled_w - rp_shaft_x + 0.1, fp_pul_r * 2, rp_pckt_top - rp_pckt_bot]);
-    // Belt escape: open rear (Y=sled_d) wall
-    translate([rp_shaft_x - fp_pul_r, rp_shaft_y, rp_pckt_bot])
-        cube([fp_pul_r * 2, sled_d - rp_shaft_y + 0.1, rp_pckt_top - rp_pckt_bot]);
     // Shaft bore: bottom of sled to just below Y-rod bore floor
     translate([rp_shaft_x, rp_shaft_y, -0.1])
-        cylinder(d = fp_shaft_dia, h = rp_shaft_top_z + 0.1);
+        cylinder(d = fp_shaft_dia, h = rp_shaft_top_z + 0.1 - 9);
     // M5 bolt-head counterbore at sled bottom face
     translate([rp_shaft_x, rp_shaft_y, -0.1])
         cylinder(d = fp_m5_head_dia, h = fp_m5_head_depth + 0.1);
@@ -241,15 +238,26 @@ module x_rod_sled() {
         // Shaft bore and bolt-head counterbore subtracted here.
         difference() {
             union() {
-                translate([rp_shaft_x, rp_shaft_y, 0])
-                    cylinder(d = 12.0, h = rp_pckt_bot);
-                translate([0, rp_shaft_y - 6.0, 0])
-                    cube([rp_shaft_x + 6.0, 12.0, rp_pckt_bot]);
+                translate([rp_shaft_x, rp_shaft_y, 1.4])
+                    cylinder(d = 12.0, h = rp_pckt_bot - 1.4);
+                translate([0, rp_shaft_y - 6.0, 1.4])
+                    cube([rp_shaft_x + 6.0, 12.0, rp_pckt_bot - 1.4]);
             }
             translate([rp_shaft_x, rp_shaft_y, -0.1])
                 cylinder(d = fp_shaft_dia, h = rp_pckt_bot + 0.2);
             translate([rp_shaft_x, rp_shaft_y, -0.1])
                 cylinder(d = fp_m5_head_dia, h = fp_m5_head_depth + 0.1);
+        }
+        // Rear pulley boss: top flush with the shelf left by the lower bearing relief.
+        // Shelf top = yrod_z - relief_w / 2; cylinder top = same.
+        difference() {
+            translate([rp_shaft_x, rp_shaft_y, yrod_z - relief_w / 2 - 9.7])
+                cylinder(d = 15.0, h = 9.7);
+            yrod_bearing_pocket();
+            translate([rp_shaft_x, rp_shaft_y, yrod_z - relief_w / 2 - 9.7 - 0.1])
+                cylinder(d = fp_m5_hex_dia, h = fp_m5_nut_h + 0.1, $fn = 6);
+            translate([rp_shaft_x, rp_shaft_y, yrod_z - relief_w / 2 - 9.7 - 0.1])
+                cylinder(d = fp_shaft_dia, h = 7.7 + 0.1);
         }
     }
 }
