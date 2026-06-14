@@ -176,7 +176,7 @@ module front_pulley_pocket() {
         cube([fp_pul_r * 2, fp_shaft_y + 0.1, fp_pckt_top - fp_pckt_bot]);
     // Shaft bore: bottom of sled to just below Y-rod bore floor
     translate([fp_shaft_x, fp_shaft_y, -0.1])
-        cylinder(d = fp_shaft_dia, h = fp_shaft_top_z + 0.1);
+        cylinder(d = fp_shaft_dia, h = fp_shaft_top_z - 12);
     // M5 bolt-head counterbore at sled bottom face
     translate([fp_shaft_x, fp_shaft_y, -0.1])
         cylinder(d = fp_m5_head_dia, h = fp_m5_head_depth + 0.1);
