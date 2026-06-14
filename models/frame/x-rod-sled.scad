@@ -171,6 +171,11 @@ module front_pulley_pocket() {
     // Belt escape: open inner (+X) wall from pocket edge to sled inner face
     translate([fp_shaft_x, fp_shaft_y - fp_pul_r, fp_pckt_bot])
         cube([sled_w - fp_shaft_x + 0.1, fp_pul_r * 2, fp_pckt_top - fp_pckt_bot]);
+
+	// Remove the wall between pockets so that we can print without supports.
+	translate([fp_shaft_x - 12, fp_shaft_y - fp_pul_r - 2, fp_pckt_bot])
+        cube([sled_w - fp_shaft_x + 0.1 + 12, fp_pul_r * 2 + 2, fp_pckt_top - fp_pckt_bot]);
+
     // Belt escape: open front (Y=0) wall of pocket
     translate([fp_shaft_x - fp_pul_r, -0.1, fp_pckt_bot])
         cube([fp_pul_r * 2, fp_shaft_y + 0.1, fp_pckt_top - fp_pckt_bot]);
@@ -240,7 +245,7 @@ module x_rod_sled() {
             union() {
                 translate([rp_shaft_x, rp_shaft_y, 1.4])
                     cylinder(d = 12.0, h = rp_pckt_bot - 1.4);
-                translate([0, rp_shaft_y - 6.0, 1.4])
+                translate([1, rp_shaft_y - 6.0, 1.4])
                     cube([rp_shaft_x + 6.0, 12.0, rp_pckt_bot - 1.4]);
             }
             translate([rp_shaft_x, rp_shaft_y, -0.1])
@@ -263,5 +268,5 @@ module x_rod_sled() {
 }
 
 // Preview
-x_rod_sled();
-// mirror([1, 0, 0]) x_rod_sled();
+x_rod_sled();                   // LEFT
+// mirror([1, 0, 0]) x_rod_sled(); // RIGHT
