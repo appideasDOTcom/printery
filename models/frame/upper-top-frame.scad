@@ -154,10 +154,12 @@ module _z_carriage_sleds() {
 use <top-frame.scad>   // also brings bottom-frame module in scope
 use <bottom-frame.scad>
 use <x-rod-sled.scad>
+use <hotend-carriage.scad>
 
 color("peru")           bottom_frame();
 top_frame();
 color("cornflowerblue") _x_carriage_rods();
 color("gold")           _x_rod_sleds();
-color("gold")      _z_carriage_sleds();
+color("gold")           _z_carriage_sleds();
 upper_top_frame();
+color("tomato")         hotend_carriage();
