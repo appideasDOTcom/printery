@@ -129,3 +129,7 @@ front_top_retainer();
 translate([0, _rod_dy + ft_body_y, _rod_dz + ft_body_z])
     rotate([180, 0, 0])
         rear_bottom_retainer();
+translate([0, 0, _rod_dz])
+    cube([ft_body_x, ft_body_y, -_rod_dz]);
+translate([0, ft_body_y, _rod_dz])
+    cube([ft_body_x, _rod_dy - ft_body_y, ft_body_z]);
