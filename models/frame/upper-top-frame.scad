@@ -20,10 +20,10 @@
  *   upper_top_frame();
  */
 
-include <shared-dims.scad>
+include <../common/shared-dims.scad>
 use <../common/2020-extrusion.scad>
-use <y-rod-mount.scad>
-use <z-carriage-sled.scad>
+use <../motion-system/y-rod-mount.scad>
+use <../motion-system/z-carriage-sled.scad>
 
 // ---------------------------------------------------------------------------
 // Dimensions — now in shared-dims.scad (utf_post_h, utf_post_bot_z, etc.)
@@ -153,8 +153,8 @@ module _z_carriage_sleds() {
 // ---------------------------------------------------------------------------
 use <top-frame.scad>   // also brings bottom-frame module in scope
 use <bottom-frame.scad>
-use <x-rod-sled.scad>
-use <hotend-carriage.scad>
+use <../motion-system/x-rod-sled.scad>
+use <../hotend/hotend-carriage.scad>
 
 color("peru")           bottom_frame();
 top_frame();

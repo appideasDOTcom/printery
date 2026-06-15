@@ -32,10 +32,10 @@
  *   top_frame();
  */
 
-include <shared-dims.scad>
+include <../common/shared-dims.scad>
 use <../common/2020-extrusion.scad>
-use <z-pillow-block.scad>
-use <z-carriage-sled.scad>
+use <../motion-system/z-pillow-block.scad>
+use <../motion-system/z-carriage-sled.scad>
 use <../printerX/Z axis frame brace.scad>
 
 // ---------------------------------------------------------------------------

@@ -20,7 +20,7 @@
  * on the frame in Y, top flush with the UTF post tops.
  */
 
-include <shared-dims.scad>
+include <../common/shared-dims.scad>
 
 // --- Local feature positions (sled frame: origin front-left-bottom) ---
 yrod_x        = sled_w / 2;                 // 11.5 — Y rod / bearing centre in X

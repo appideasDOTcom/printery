@@ -29,7 +29,7 @@
  *   Upper: same X/Y, replace pb_lower_bot_z with pb_upper_bot_z, add flip=true.
  */
 
-include <shared-dims.scad>
+include <../common/shared-dims.scad>
 
 module z_pillow_block(bolts = "xy", flip = false) {
 

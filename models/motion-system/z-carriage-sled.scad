@@ -1,4 +1,4 @@
-include <shared-dims.scad>
+include <../common/shared-dims.scad>
 
 // --- Bearing retainer ---
 zbr_od           = rj_bearing_od + 5.0;                // 20.1 mm

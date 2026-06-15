@@ -25,7 +25,7 @@
  * See upper-top-frame.scad for placement.
  */
 
-include <shared-dims.scad>
+include <../common/shared-dims.scad>
 
 // ---------------------------------------------------------------------------
 // Block envelope

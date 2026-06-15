@@ -19,7 +19,12 @@
       "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD -o /tmp/diag.csg x-rod-sled.scad)",
       "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD -o /tmp/diag.ast --export-format ast x-rod-sled.scad)",
       "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD -o /tmp/y-rod-mount-test.stl y-rod-mount.scad)",
-      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD -o /tmp/utf-test.png --camera=170,202,490,55,0,25,200 --colorscheme=Tomorrow upper-top-frame.scad)"
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD -o /tmp/utf-test.png --camera=170,202,490,55,0,25,200 --colorscheme=Tomorrow upper-top-frame.scad)",
+      "Bash(mv /Users/costmo/Documents/dev/printing/printery/models/frame/x-rod-sled.scad /Users/costmo/Documents/dev/printing/printery/models/motion-system/x-rod-sled.scad)",
+      "Bash(mv /Users/costmo/Documents/dev/printing/printery/models/frame/y-rod-mount.scad /Users/costmo/Documents/dev/printing/printery/models/motion-system/y-rod-mount.scad)",
+      "Bash(mv /Users/costmo/Documents/dev/printing/printery/models/frame/z-carriage-sled.scad /Users/costmo/Documents/dev/printing/printery/models/motion-system/z-carriage-sled.scad)",
+      "Bash(mv /Users/costmo/Documents/dev/printing/printery/models/frame/z-pillow-block.scad /Users/costmo/Documents/dev/printing/printery/models/motion-system/z-pillow-block.scad)",
+      "Bash(mv /Users/costmo/Documents/dev/printing/printery/models/frame/hotend-carriage.scad /Users/costmo/Documents/dev/printing/printery/models/hotend/hotend-carriage.scad)"
     ],
     "additionalDirectories": [
       "/Users/costmo/Documents/dev/printing/printery/.claude"

@@ -10,7 +10,7 @@
  * Assembly placement: both retainers centred in X on the frame midpoint.
  */
 
-include <shared-dims.scad>
+include <../common/shared-dims.scad>
 
 // ---------------------------------------------------------------------------
 // Front-top X rod retainer geometry
