@@ -113,23 +113,17 @@ _rod_dz = x_rod_rear_z - x_rod_front_z;   // −35.7 mm — rear rod lower in Z
 // Assembly module — placed on the front-top X rod in global frame coordinates
 // ---------------------------------------------------------------------------
 module hotend_carriage() {
-    // Front-top retainer
-    translate([_place_x, _place_y, _place_z])
-        front_top_retainer();
-    // Rear-bottom retainer — same X, offset by rod spacing in Y and Z, rotated 180° around X to open rear
-    translate([_place_x, _place_y + _rod_dy + ft_body_y, _place_z + _rod_dz + ft_body_z])
+    front_top_retainer();
+    translate([0, _rod_dy + ft_body_y, _rod_dz + ft_body_z])
         rotate([180, 0, 0])
             rear_bottom_retainer();
+    translate([0, 0, _rod_dz])
+        cube([ft_body_x, ft_body_y, -_rod_dz]);
+    translate([0, ft_body_y, _rod_dz])
+        cube([ft_body_x, _rod_dy - ft_body_y, ft_body_z]);
 }
 
 // ---------------------------------------------------------------------------
-// Preview — render at origin for easy inspection.
+// Preview
 // ---------------------------------------------------------------------------
-front_top_retainer();
-translate([0, _rod_dy + ft_body_y, _rod_dz + ft_body_z])
-    rotate([180, 0, 0])
-        rear_bottom_retainer();
-translate([0, 0, _rod_dz])
-    cube([ft_body_x, ft_body_y, -_rod_dz]);
-translate([0, ft_body_y, _rod_dz])
-    cube([ft_body_x, _rod_dy - ft_body_y, ft_body_z]);
+hotend_carriage();
