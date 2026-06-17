@@ -22,5 +22,5 @@ module pulley_spacer(height) {
 
 // --- Output ---
 // pulley_spacer(height = 5);
-// pulley_spacer(height = 1.4);
-pulley_spacer(height = 10.0);
+pulley_spacer(height = 1.2);
+// pulley_spacer(height = 10.0);

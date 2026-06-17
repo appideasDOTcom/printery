@@ -171,8 +171,8 @@ module y_rod_mount_rear() {
 
 // Preview
 // Four variations:
-// y_rod_mount_front();                 // A. Front left
+y_rod_mount_front();                 // A. Front left
 // mirror([1,0,0]) y_rod_mount_front(); // B. Front right
-y_rod_mount_rear();                  // C. Rear left
+// y_rod_mount_rear();                  // C. Rear left
 // mirror([1,0,0]) y_rod_mount_rear();     // D. Rear right
 //
