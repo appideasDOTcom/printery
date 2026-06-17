@@ -52,7 +52,7 @@ ls_travel        = ls_length - ls_lower_engage - ls_upper_engage;  // 330 mm nut
 // Lower pillow block geometry
 pb_wall          = 5.0;    // XY side-wall thickness around bearing OD
 pb_floor         = 4.0;    // Z floor/ceiling thickness (one closed end per block)
-pb_bearing_od    = 22.2;   // 608zz outer diameter
+pb_bearing_od    = 22.1;   // 608zz outer diameter
 pb_bearing_h     = 7.0;    // 608zz height
 pb_bearing_id    = 8.0;    // 608zz inner bore
 pb_flange_od     = 10.5;   // Spacer flange OD

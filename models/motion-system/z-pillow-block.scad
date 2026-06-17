@@ -145,6 +145,6 @@ module z_pillow_block(bolts = "xy", flip = false) {
 // Preview
 // ---------------------------------------------------------------------------
 // z_pillow_block(bolts = "xy", flip = false); // A. Front-left
-// z_pillow_block(bolts = "xy", flip = true); // B. Front-right
-z_pillow_block(bolts = "xx", flip = false); // C. Rear-center
+z_pillow_block(bolts = "xy", flip = true); // B. Front-right
+// z_pillow_block(bolts = "xx", flip = false); // C. Rear-center
 
