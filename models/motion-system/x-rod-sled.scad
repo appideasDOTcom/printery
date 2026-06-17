@@ -26,7 +26,7 @@ include <../common/shared-dims.scad>
 yrod_x        = sled_w / 2;                 // 11.5 — Y rod / bearing centre in X
 yrod_z        = y_rod_z - sled_bot_z;       // 36.275 — Y rod centre in Z (rides high)
 
-x_bore_dia    = carriage_rod_dia + 0.3;   // 8.3 mm slip fit for the X rod capture
+x_bore_dia    = carriage_rod_dia + rod_bore_tol;   // 8.1 mm slip fit for the X rod capture
 
 // Front-top and rear-bottom X rod capture positions (sled-local, origin front-left-bottom)
 xrod_front_y  = x_rod_local_edge_gap + x_bore_dia / 2;              // 16.15 — from front face
@@ -61,7 +61,7 @@ fp_m5_head_dia   = 9.5;
 fp_m5_head_depth = 5.1;
 fp_m5_hex_dia    = 9.6;
 fp_m5_nut_h      = 4.1;
-fp_shaft_top_z   = yrod_z + (carriage_rod_dia + 0.3) / 2;  // stops just below Y-rod bore floor
+fp_shaft_top_z   = yrod_z + (carriage_rod_dia + rod_bore_tol) / 2;  // stops just below Y-rod bore floor
 
 // --- Rear-face idler pulley pocket ---
 // 18 mm behind and 15 mm outside the front pulley shaft; same Z extents.

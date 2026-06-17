@@ -15,6 +15,11 @@ $fa = 1.0;
 $fs = 0.1;
 
 // ---------------------------------------------------------------------------
+// Tolerances
+// ---------------------------------------------------------------------------
+rod_bore_tol     = 0.1;   // Slip-fit tolerance added to 8 mm linear rod bore diameter
+
+// ---------------------------------------------------------------------------
 // 2020 extrusion
 // ---------------------------------------------------------------------------
 ex               = 20.0;   // Nominal extrusion cross-section (mm)
@@ -148,7 +153,7 @@ sled_bot_z           = utf_post_bot_z;                  // 446 mm — fixed to U
 // Bore edge is x_rod_local_edge_gap mm from each adjacent sled face.
 x_rod_mid_y          = bf_y_rail / 2;     // 202.5 mm — X rod Y midpoint in frame
 x_rod_local_edge_gap = 3.0;              // bore outer edge to nearest sled face (mm)
-_x_rod_bore_r        = (carriage_rod_dia + 0.3) / 2;          // 4.15 mm — bore radius
+_x_rod_bore_r        = (carriage_rod_dia + rod_bore_tol) / 2;  // 4.05 mm — bore radius
 _sled_front_y        = x_rod_mid_y - sled_d / 2;              // 172.5 mm — sled front face, global Y
 // Global Y positions
 x_rod_front_y        = _sled_front_y + x_rod_local_edge_gap + _x_rod_bore_r;           // 179.65 mm
@@ -187,10 +192,10 @@ wing_extend          = 20.0;  // How far the wing tab extends past the block bod
 // ---------------------------------------------------------------------------
 // Z-axis stabilization linear rod (8 mm rod, 362 mm long)
 // ---------------------------------------------------------------------------
-z_lr_dia         = 8.0;    // Physical rod diameter
+z_lr_dia         = carriage_rod_dia;    // Physical rod diameter
 z_lr_length      = 362.0;  // Physical rod length
 z_lr_clearance   = 0.2;    // Extra bore depth on each end (rod treated as 362.4 mm)
-z_lr_bore_dia    = 8.3;    // Bore diameter for the 8 mm rod
+z_lr_bore_dia    = z_lr_dia + rod_bore_tol;    // Bore diameter for the 8 mm rod
 z_lr_wall        = 5.0;    // Plastic wall thickness flanking the rod bore
 
 // Distance from the outer (extrusion-facing) block face to each bore centre:

@@ -39,7 +39,7 @@ _yrm_h_rail     = 70.0;
 // Rod bore
 // ---------------------------------------------------------------------------
 _yrm_bore_x     = yrm_bore_x;                // bore centre X — from shared-dims.scad
-_yrm_bore_dia   = carriage_rod_dia + 0.3;    // 8.3 mm — 8 mm rod + 0.3 slip fit
+_yrm_bore_dia   = carriage_rod_dia + rod_bore_tol;    // 8.1 mm — 8 mm rod + 0.1 slip fit
 _yrm_bore_depth = _yrm_d - 2;                // 18 mm — rod bottoms out 2 mm from far face
 _yrm_air_dia    = 5.0;                        // air-escape through-hole diameter
 _yrm_bore_z     = y_rod_z - utf_post_bot_z;  // 36.275 mm — rod centre, local to block
@@ -173,5 +173,6 @@ module y_rod_mount_rear() {
 // Four variations:
 // y_rod_mount_front();                 // A. Front left
 // mirror([1,0,0]) y_rod_mount_front(); // B. Front right
-// y_rod_mount_rear();                  // C. Rear left
-mirror([1,0,0]) y_rod_mount_rear();     // D. Rear right
+y_rod_mount_rear();                  // C. Rear left
+// mirror([1,0,0]) y_rod_mount_rear();     // D. Rear right
+//

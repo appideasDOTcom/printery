@@ -24,7 +24,9 @@
       "Bash(mv /Users/costmo/Documents/dev/printing/printery/models/frame/y-rod-mount.scad /Users/costmo/Documents/dev/printing/printery/models/motion-system/y-rod-mount.scad)",
       "Bash(mv /Users/costmo/Documents/dev/printing/printery/models/frame/z-carriage-sled.scad /Users/costmo/Documents/dev/printing/printery/models/motion-system/z-carriage-sled.scad)",
       "Bash(mv /Users/costmo/Documents/dev/printing/printery/models/frame/z-pillow-block.scad /Users/costmo/Documents/dev/printing/printery/models/motion-system/z-pillow-block.scad)",
-      "Bash(mv /Users/costmo/Documents/dev/printing/printery/models/frame/hotend-carriage.scad /Users/costmo/Documents/dev/printing/printery/models/hotend/hotend-carriage.scad)"
+      "Bash(mv /Users/costmo/Documents/dev/printing/printery/models/frame/hotend-carriage.scad /Users/costmo/Documents/dev/printing/printery/models/hotend/hotend-carriage.scad)",
+      "Bash(openscad --hardwarnings -o /tmp/pulley-spacer.stl /Users/costmo/Documents/dev/printing/printery/models/motion-system/pulley-spacer.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/pulley-spacer.stl /Users/costmo/Documents/dev/printing/printery/models/motion-system/pulley-spacer.scad)"
     ],
     "additionalDirectories": [
       "/Users/costmo/Documents/dev/printing/printery/.claude"
