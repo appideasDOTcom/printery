@@ -102,7 +102,7 @@ module z_belt_tensioner() {
             translate([0, 0, _arm_z_ctr - _arm_thick/2])
                 linear_extrude(_arm_thick) {
                     // Front junction: corner at (-_plate_x, _arm_y_start)
-                    translate([-14, 20])
+                    translate([-2*_plate_x - _f, 2*_arm_y_start - _f])
                     rotate([0, 0, 180])
                     difference() {
                         translate([-_plate_x - _f, _arm_y_start - _f])
@@ -111,7 +111,7 @@ module z_belt_tensioner() {
                             circle(r = _f);
                     }
                     // Rear junction: corner at (-_plate_x, _arm_y_start+_arm_y)
-                    translate([-14, 64])
+                    translate([-2*_plate_x - _f, 2*(_arm_y_start + _arm_y) + _f])
                     rotate([0, 0, -180])
                     difference() {
                         translate([-_plate_x - _f, _arm_y_start + _arm_y])
