@@ -57,7 +57,7 @@ _plate_y    = _arm_y_start + _arm_y + _arm_y_start;  // 42 mm — equal extensio
 // In arm-local coords (arm X=0 at plate back face, arm extends to X=−_arm_depth):
 _slot_near   = 21.0;   // mm inboard from extrusion face for first belt contact
 _slot_far    = 36.0;   // mm inboard for full 15 mm travel
-_slot_r      = m5_through_dia / 2;  // 2.75 mm
+_slot_r      = m5_through_dia / 2 - 0.45;  // 2.75 mm + 0.45 for a little tolerance and to simplify the shape.
 _slot_len    = _slot_far - _slot_near;  // 15 mm
 // Arm-local X of slot centre (arm X=0 at extrusion face, negative = inboard):
 _slot_cx_arm = -(_slot_near + _slot_len / 2);  // −28.5 mm
@@ -201,8 +201,8 @@ module z_belt_tensioner() {
         // Hex end caps — points face ±Y (in/out of printer), rotate 90° around Z
         _nut_track_z = _plate_z - _nut_track_d;
         rotate([0, 0, 90])
-            for (ex = [_slot_cx_arm - _plate_x - _slot_len/2,
-                       _slot_cx_arm - _plate_x + _slot_len/2]) {
+            for (ex = [_slot_cx_arm - _plate_x - _slot_len/2 + _slot_r,
+                       _slot_cx_arm - _plate_x + _slot_len/2 - _slot_r]) {
                 translate([_arm_cy, -ex, _nut_track_z])
 					rotate([0, 0, 90])
                     	cylinder(d = _nut_hex_dia, h = _nut_track_d + 0.1, $fn = 6);

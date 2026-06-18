@@ -121,7 +121,9 @@
       "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format png --camera=-10,8,7,55,0,340,60 -o /tmp/z-proof1.png /Users/costmo/Documents/dev/printing/printery/models/motion-system/z-belt-tensioner.scad)",
       "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format png --camera=-10,34,7,55,0,20,60 -o /tmp/z-proof2.png /Users/costmo/Documents/dev/printing/printery/models/motion-system/z-belt-tensioner.scad)",
       "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format png --camera=-8,12,8,70,0,350,25 -o /tmp/z-front-close.png /Users/costmo/Documents/dev/printing/printery/models/motion-system/z-belt-tensioner.scad)",
-      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format binstl -o /tmp/z-clean.stl /Users/costmo/Documents/dev/printing/printery/models/motion-system/z-belt-tensioner.scad)"
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format binstl -o /tmp/z-clean.stl /Users/costmo/Documents/dev/printing/printery/models/motion-system/z-belt-tensioner.scad)",
+      "Bash(openscad --hardwarnings -o /tmp/z-belt-tensioner.stl /Users/costmo/Documents/dev/printing/printery/models/motion-system/z-belt-tensioner.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/z-belt-tensioner.stl /Users/costmo/Documents/dev/printing/printery/models/motion-system/z-belt-tensioner.scad)"
     ],
     "additionalDirectories": [
       "/Users/costmo/Documents/dev/printing/printery/.claude"

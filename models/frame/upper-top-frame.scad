@@ -155,6 +155,7 @@ use <top-frame.scad>   // also brings bottom-frame module in scope
 use <bottom-frame.scad>
 use <../motion-system/x-rod-sled.scad>
 use <../hotend/hotend-carriage.scad>
+use <../motion-system/z-belt-tensioner.scad>
 
 color("peru")           bottom_frame();
 top_frame();
@@ -170,3 +171,8 @@ _hc_place_x = bf_outer_x / 2 - _hc_body_x / 2;
 _hc_place_y = x_rod_front_y - _hc_bore_cy;
 _hc_place_z = x_rod_front_z - _hc_bore_cz;
 color("tomato") translate([_hc_place_x, _hc_place_y, _hc_place_z]) hotend_carriage();
+
+// Z belt tensioner — right side, immediately behind front-right lower pillow block
+// Local X=0 placed at the right extrusion inner face; body extends inward (−X)
+color("tomato") translate([bf_outer_x - ex, ex + z_lr_block_depth + 20.5, pb_lower_bot_z])
+    z_belt_tensioner();
