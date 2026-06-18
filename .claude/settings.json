@@ -101,7 +101,27 @@
       "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --render --camera=-15,30,12,90,0,90,40 -o /tmp/tensioner-verify.png /Users/costmo/Documents/dev/printing/printery/models/motion-system/z-belt-tensioner.scad)",
       "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --render --camera=-15,21,10,70,0,90,40 -o /tmp/fv2b.png /tmp/fillet-verify2.scad)",
       "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --render --camera=-20,30,8,60,0,135,50 -o /tmp/fv2c.png /tmp/fillet-verify2.scad)",
-      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD /tmp/vals.scad)"
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD /tmp/vals.scad)",
+      "Bash(openscad --export-format binstl -o /tmp/z-belt-tensioner-test.stl models/motion-system/z-belt-tensioner.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format binstl -o /tmp/z-belt-tensioner-test.stl /Users/costmo/Documents/dev/printing/printery/models/motion-system/z-belt-tensioner.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format png --camera=20,20,5,45,0,45,150 -o /tmp/z-tensioner-corner.png /Users/costmo/Documents/dev/printing/printery/models/motion-system/z-belt-tensioner.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format png --camera=-5,21,10,60,0,20,80 -o /tmp/z-tensioner-void.png /Users/costmo/Documents/dev/printing/printery/models/motion-system/z-belt-tensioner.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format png --camera=-5,21,10,60,0,20,80 -o /tmp/z-tensioner-void2.png /Users/costmo/Documents/dev/printing/printery/models/motion-system/z-belt-tensioner.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format png --camera=-5,10,8,55,0,10,60 -o /tmp/debug-corner.png /tmp/debug-corner.scad)",
+      "Bash(grep -v \"^$\")",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format png --camera=-5,21,10,60,0,20,80 -o /tmp/z-tensioner-v3.png /Users/costmo/Documents/dev/printing/printery/models/motion-system/z-belt-tensioner.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD -o /tmp/debug2.stl /tmp/debug2.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format png --camera=-5,21,10,60,0,20,80 -o /tmp/z-tensioner-v4.png /Users/costmo/Documents/dev/printing/printery/models/motion-system/z-belt-tensioner.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format png --camera=-7,12,8,60,0,15,30 -o /tmp/debug3.png /tmp/debug3.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format png --camera=-10,8,7,55,0,340,60 -o /tmp/debug3b.png /tmp/debug3.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format png --camera=-10,8,7,55,0,340,60 -o /tmp/z-v5.png /Users/costmo/Documents/dev/printing/printery/models/motion-system/z-belt-tensioner.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format png --camera=-10,8,7,55,0,340,60 -o /tmp/z-v6.png /Users/costmo/Documents/dev/printing/printery/models/motion-system/z-belt-tensioner.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format png --camera=-10,8,7,55,0,340,60 -o /tmp/z-v7.png /Users/costmo/Documents/dev/printing/printery/models/motion-system/z-belt-tensioner.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format png --camera=-5,21,10,60,0,20,80 -o /tmp/z-verify.png /Users/costmo/Documents/dev/printing/printery/models/motion-system/z-belt-tensioner.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format png --camera=-10,8,7,55,0,340,60 -o /tmp/z-proof1.png /Users/costmo/Documents/dev/printing/printery/models/motion-system/z-belt-tensioner.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format png --camera=-10,34,7,55,0,20,60 -o /tmp/z-proof2.png /Users/costmo/Documents/dev/printing/printery/models/motion-system/z-belt-tensioner.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format png --camera=-8,12,8,70,0,350,25 -o /tmp/z-front-close.png /Users/costmo/Documents/dev/printing/printery/models/motion-system/z-belt-tensioner.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format binstl -o /tmp/z-clean.stl /Users/costmo/Documents/dev/printing/printery/models/motion-system/z-belt-tensioner.scad)"
     ],
     "additionalDirectories": [
       "/Users/costmo/Documents/dev/printing/printery/.claude"

@@ -79,6 +79,28 @@ _bolt_z2     = _plate_z * 0.75;
 _r = 2.0;
 _f = 4.0;
 
+module _fillet_corner(y, rear = false) {
+    // Quarter-torus patch between the perpendicular side and bottom fillets.
+    // Its section grows from zero at their shared outer point to the full
+    // corner radius at the plate, so it occupies only the gap between them.
+    _steps = 24;
+    intersection() {
+        translate([-_plate_x - _f, y, _arm_z_ctr - _arm_thick/2])
+            rotate([0, 90, 0])
+                rotate_extrude()
+                    polygon(concat(
+                        [[0, 0]],
+                        [for (i = [1:_steps])
+                            let(x = _f * i / _steps)
+                                [_f - sqrt(_f*_f - x*x), x]],
+                        [[0, _f]]
+                    ));
+        translate([-_plate_x - _f, rear ? y : y - _f,
+                   _arm_z_ctr - _arm_thick/2 - _f])
+            cube([_f, _f, _f]);
+    }
+}
+
 module z_belt_tensioner() {
 
     difference() {
@@ -106,6 +128,10 @@ module z_belt_tensioner() {
                             square([_f, _f]);
                             circle(r = _f);
                         }
+
+            // Close the two trihedral gaps between the side and bottom fillets.
+            _fillet_corner(_arm_y_start);
+            _fillet_corner(_arm_y_start + _arm_y, rear = true);
 
             // Inner fillets at arm-to-plate junctions
             translate([0, 0, _arm_z_ctr - _arm_thick/2])
