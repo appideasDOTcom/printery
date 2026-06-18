@@ -270,5 +270,5 @@ color("gold")      _z_carriage_sleds();
 
 // Z belt tensioner — right side, immediately behind front-right lower pillow block
 // Local X=0 placed at the right extrusion inner face; body extends inward (−X)
-color("tomato") translate([bf_outer_x - ex, ex + z_lr_block_depth + 20, pb_lower_bot_z])
+color("tomato") translate([bf_outer_x - ex, ex + z_lr_block_depth + 20.5, pb_lower_bot_z])
     z_belt_tensioner();

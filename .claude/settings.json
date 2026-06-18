@@ -42,7 +42,13 @@
       "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/check.stl models/frame/top-frame.scad)",
       "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/top-view.png --camera=300,80,150,0,0,0,300 --projection=o models/frame/top-frame.scad)",
       "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/top-view2.png --camera=300,80,150,0,0,0,300 --projection=o models/frame/top-frame.scad)",
-      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/tensioner-check.png --camera=280,100,85,60,0,200,200 --projection=p models/frame/top-frame.scad)"
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/tensioner-check.png --camera=280,100,85,60,0,200,200 --projection=p models/frame/top-frame.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/tensioner-rounded.png --camera=300,95,150,0,0,0,250 --projection=o models/frame/top-frame.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/tensioner-persp.png --camera=290,95,85,55,0,210,220 --projection=p models/frame/top-frame.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/tensioner-persp2.png --camera=290,95,85,55,0,210,220 --projection=p models/frame/top-frame.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/tensioner-rounded2.png --camera=290,95,85,55,0,210,220 --projection=p models/frame/top-frame.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/tensioner-rounded3.png --camera=290,95,85,55,0,210,220 --projection=p models/frame/top-frame.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/tensioner-rounded4.png --camera=290,95,85,55,0,210,220 --projection=p models/frame/top-frame.scad)"
     ],
     "additionalDirectories": [
       "/Users/costmo/Documents/dev/printing/printery/.claude"

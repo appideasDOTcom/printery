@@ -36,7 +36,7 @@ include <../common/shared-dims.scad>
 // ---------------------------------------------------------------------------
 
 // Back plate: presses flat against X=320 face
-_plate_x   = 4.0;    // thickness in X (into the extrusion face)
+_plate_x   = wing_t;  // thickness in X — matches Z pillow block wing thickness
 _arm_y_start = 12.0;  // extension on each side of the arm
 _plate_z   = ex;  // 20 mm — matches 2020 extrusion height
 
@@ -76,18 +76,26 @@ _bolt_z2     = _plate_z * 0.75;
 // Module — local origin at the extrusion inner face (X=0 here = global X=320)
 //          body extends in −X; placed with translate so X=0 lands on the face
 // ---------------------------------------------------------------------------
+_r = 2.0;
+
 module z_belt_tensioner() {
 
-    // Plate and arm both extend in −X from X=0
     difference() {
         union() {
-            // Back plate against extrusion inner face
-            translate([-_plate_x, 0, 0])
-                cube([_plate_x, _plate_y, _plate_z]);
+            // Back plate — full height, corners rounded via hull of cylinders
+            hull() {
+                translate([-_plate_x/2, _r, 0])
+                    cylinder(r = _plate_x/2, h = _plate_z);
+                translate([-_plate_x/2, _plate_y - _r, 0])
+                    cylinder(r = _plate_x/2, h = _plate_z);
+            }
 
-            // Arm extends inward (−X), starting at _arm_y_start from plate front
-            translate([-_plate_x - _arm_depth, _arm_y_start, _arm_z_ctr - _arm_thick/2])
-                cube([_arm_depth, _arm_y, _arm_thick]);
+            // Arm — at its Z position, all four outer corners rounded as one shape
+            translate([0, 0, _arm_z_ctr - _arm_thick/2])
+                linear_extrude(_arm_thick)
+                    offset(r = _r) offset(r = -2*_r) offset(r = _r)
+                        translate([-_plate_x - _arm_depth, _arm_y_start])
+                            square([_arm_depth + _plate_x, _arm_y]);
         }
 
         // M5 pulley slot — vertical (Z axis), slot runs in X
