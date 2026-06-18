@@ -126,7 +126,7 @@ module z_belt_tensioner() {
                             square([_arm_depth + _plate_x, _arm_y]);
 
             // Bottom fillet: arm underside meets back plate (XZ plane, extruded in Y)
-            translate([-_plate_x - 4, _arm_y_start, _arm_z_ctr - _arm_thick + 2.7])
+            translate([-_plate_x - 4, _arm_y_start, _arm_z_ctr - _arm_thick/2 - _f])
                 rotate([-90, -90, 0])
                     linear_extrude(_arm_y)
                         difference() {
