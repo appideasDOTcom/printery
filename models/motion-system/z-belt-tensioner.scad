@@ -98,6 +98,15 @@ module z_belt_tensioner() {
                         translate([-_plate_x - _arm_depth, _arm_y_start])
                             square([_arm_depth + _plate_x, _arm_y]);
 
+            // Bottom fillet: arm underside meets back plate (XZ plane, extruded in Y)
+            translate([-_plate_x - 4, _arm_y_start, _arm_z_ctr - _arm_thick + 1])
+                rotate([-90, -90, 0])
+                    linear_extrude(_arm_y)
+                        difference() {
+                            square([_f, _f]);
+                            circle(r = _f);
+                        }
+
             // Inner fillets at arm-to-plate junctions
             translate([0, 0, _arm_z_ctr - _arm_thick/2])
                 linear_extrude(_arm_thick) {
