@@ -26,7 +26,23 @@
       "Bash(mv /Users/costmo/Documents/dev/printing/printery/models/frame/z-pillow-block.scad /Users/costmo/Documents/dev/printing/printery/models/motion-system/z-pillow-block.scad)",
       "Bash(mv /Users/costmo/Documents/dev/printing/printery/models/frame/hotend-carriage.scad /Users/costmo/Documents/dev/printing/printery/models/hotend/hotend-carriage.scad)",
       "Bash(openscad --hardwarnings -o /tmp/pulley-spacer.stl /Users/costmo/Documents/dev/printing/printery/models/motion-system/pulley-spacer.scad)",
-      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/pulley-spacer.stl /Users/costmo/Documents/dev/printing/printery/models/motion-system/pulley-spacer.scad)"
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/pulley-spacer.stl /Users/costmo/Documents/dev/printing/printery/models/motion-system/pulley-spacer.scad)",
+      "Bash(openscad --hardwarnings -o /tmp/z-belt-tensioner.stl models/motion-system/z-belt-tensioner.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/z-belt-tensioner.stl models/motion-system/z-belt-tensioner.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/top-frame-tensioner.stl models/frame/top-frame.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/tensioner-solo.png --camera=320,90,90,55,0,25,150 --projection=o models/motion-system/z-belt-tensioner.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/tensioner-in-frame.png --camera=290,70,95,55,0,25,200 --projection=o models/frame/top-frame.scad)",
+      "Read(//tmp/**)",
+      "Read(//private/tmp/**)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/tensioner-in-frame2.png --camera=300,60,100,45,0,340,250 --projection=o models/frame/top-frame.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/tensioner-in-frame3.png --camera=300,60,100,45,0,340,250 --projection=o models/frame/top-frame.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/tensioner-check.png --camera=300,60,100,45,0,340,250 --projection=o models/frame/top-frame.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/tensioner-side.png --camera=310,80,90,90,0,90,200 --projection=o models/frame/top-frame.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/tensioner-top.png --camera=300,80,150,0,0,0,300 --projection=o models/frame/top-frame.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/check.stl models/frame/top-frame.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/top-view.png --camera=300,80,150,0,0,0,300 --projection=o models/frame/top-frame.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/top-view2.png --camera=300,80,150,0,0,0,300 --projection=o models/frame/top-frame.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/tensioner-check.png --camera=280,100,85,60,0,200,200 --projection=p models/frame/top-frame.scad)"
     ],
     "additionalDirectories": [
       "/Users/costmo/Documents/dev/printing/printery/.claude"

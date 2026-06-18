@@ -261,8 +261,14 @@ module top_frame() {
 // ---------------------------------------------------------------------------
 use <bottom-frame.scad>
 use <upper-top-frame.scad>
+use <../motion-system/z-belt-tensioner.scad>
 
 color("peru")      bottom_frame();
 top_frame();
 color("gold")      _z_carriage_sleds();
 // color("burlywood") upper_top_frame();
+
+// Z belt tensioner — right side, immediately behind front-right lower pillow block
+// Local X=0 placed at the right extrusion inner face; body extends inward (−X)
+color("tomato") translate([bf_outer_x - ex, ex + z_lr_block_depth + 20, pb_lower_bot_z])
+    z_belt_tensioner();
