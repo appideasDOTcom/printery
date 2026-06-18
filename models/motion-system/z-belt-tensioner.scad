@@ -77,6 +77,7 @@ _bolt_z2     = _plate_z * 0.75;
 //          body extends in −X; placed with translate so X=0 lands on the face
 // ---------------------------------------------------------------------------
 _r = 2.0;
+_f = 4.0;
 
 module z_belt_tensioner() {
 
@@ -96,6 +97,29 @@ module z_belt_tensioner() {
                     offset(r = _r) offset(r = -2*_r) offset(r = _r)
                         translate([-_plate_x - _arm_depth, _arm_y_start])
                             square([_arm_depth + _plate_x, _arm_y]);
+
+            // Inner fillets at arm-to-plate junctions
+            translate([0, 0, _arm_z_ctr - _arm_thick/2])
+                linear_extrude(_arm_thick) {
+                    // Front junction: corner at (-_plate_x, _arm_y_start)
+                    translate([-14, 20])
+                    rotate([0, 0, 180])
+                    difference() {
+                        translate([-_plate_x - _f, _arm_y_start - _f])
+                            square([_f, _f]);
+                        translate([-_plate_x, _arm_y_start])
+                            circle(r = _f);
+                    }
+                    // Rear junction: corner at (-_plate_x, _arm_y_start+_arm_y)
+                    translate([-14, 64])
+                    rotate([0, 0, -180])
+                    difference() {
+                        translate([-_plate_x - _f, _arm_y_start + _arm_y])
+                            square([_f, _f]);
+                        translate([-_plate_x, _arm_y_start + _arm_y])
+                            circle(r = _f);
+                    }
+                }
         }
 
         // M5 pulley slot — vertical (Z axis), slot runs in X
