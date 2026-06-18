@@ -44,7 +44,7 @@ _plate_z   = ex;  // 20 mm — matches 2020 extrusion height
 // The arm is positioned at the REAR of the plate (away from the pillow block)
 // so it does not overlap the pillow block in Y at all.
 // Arm Z centre in local coords (local Z=0 = pb_lower_bot_z = 70 mm):
-_arm_thick  = 10.0;  // arm height in Z
+_arm_thick  = 13.4;  // arm height in Z
 _arm_z_ctr  = ex - _arm_thick / 2;   // 15 mm — arm top flush with top of 20 mm extrusion
 _arm_depth  = 42.0;  // arm reach in −X (must reach 36 mm for full slot travel)
 _arm_y      = 18.0;  // arm front-to-back depth in Y (narrower than plate)
@@ -121,7 +121,7 @@ module z_belt_tensioner() {
                             square([_arm_depth + _plate_x, _arm_y]);
 
             // Bottom fillet: arm underside meets back plate (XZ plane, extruded in Y)
-            translate([-_plate_x - 4, _arm_y_start, _arm_z_ctr - _arm_thick + 1])
+            translate([-_plate_x - 4, _arm_y_start, _arm_z_ctr - _arm_thick + 2.7])
                 rotate([-90, -90, 0])
                     linear_extrude(_arm_y)
                         difference() {
