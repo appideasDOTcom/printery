@@ -66,6 +66,11 @@ _slot_cx_arm = -(_slot_near + _slot_len / 2);  // −28.5 mm
 _cbore_d     = m5_head_dia;    // 9 mm
 _cbore_z     = m5_head_depth;  // 3.5 mm
 
+// M5 nut trapping track — cut into the top of the arm, centred on the slot
+_nut_track_w = 7.9;   // M5 nut narrow-side width
+_nut_track_d = 3.4;   // depth of track from top surface
+_nut_hex_dia = 9.1;   // M5 hex nut end-cap diameter
+
 // Two M5 T-nut bolts clamping plate to extrusion (bolt axis in X, into T-slot)
 _bolt_y1     = _plate_y * 0.25;
 _bolt_y2     = _plate_y * 0.75;
@@ -185,6 +190,22 @@ module z_belt_tensioner() {
                     cylinder(d = _cbore_d, h = _cbore_z + 0.1);
                 translate([ (_slot_len/2 - _slot_r), 0, 0])
                     cylinder(d = _cbore_d, h = _cbore_z + 0.1);
+            }
+
+        // M5 nut trapping track — straight channel from top surface down
+        translate([_slot_cx_arm - _plate_x - _slot_len/2,
+                   _arm_cy - _nut_track_w/2,
+                   _plate_z - _nut_track_d])
+            cube([_slot_len, _nut_track_w, _nut_track_d + 0.1]);
+
+        // Hex end caps — points face ±Y (in/out of printer), rotate 90° around Z
+        _nut_track_z = _plate_z - _nut_track_d;
+        rotate([0, 0, 90])
+            for (ex = [_slot_cx_arm - _plate_x - _slot_len/2,
+                       _slot_cx_arm - _plate_x + _slot_len/2]) {
+                translate([_arm_cy, -ex, _nut_track_z])
+					rotate([0, 0, 90])
+                    	cylinder(d = _nut_hex_dia, h = _nut_track_d + 0.1, $fn = 6);
             }
 
     }
