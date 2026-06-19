@@ -37,6 +37,7 @@ use <../common/2020-extrusion.scad>
 use <../motion-system/z-pillow-block.scad>
 use <../motion-system/z-carriage-sled.scad>
 use <../printerX/Z axis frame brace.scad>
+use <../build-plate/corner-bracket.scad>
 
 // ---------------------------------------------------------------------------
 // Derived values not already in shared-dims
@@ -228,6 +229,7 @@ module _z_carriage_sleds() {
 
     // Front-left
     translate([_cx_fl, _cy_f, _z_pre]) z_carriage_assembly();
+	echo( _z_pre );
 
     // Front-right
     translate([_cx_fr, _cy_f, _z_pre]) z_carriage_assembly();
@@ -272,3 +274,33 @@ color("gold")      _z_carriage_sleds();
 // Local X=0 placed at the right extrusion inner face; body extends inward (−X)
 color("tomato") translate([bf_outer_x - ex, ex + z_lr_block_depth + 20.5, pb_lower_bot_z])
     z_belt_tensioner();
+
+// ---------------------------------------------------------------------------
+// Build plate corner brackets — 235×235 mm array, 2 mm below upper pillow block tops
+// ---------------------------------------------------------------------------
+
+_cb_span      = 235;                              // outer-edge to outer-edge spacing
+_cb_origin_x  = bf_outer_x / 2 - _cb_span / 2;  // X of front-left bracket outer corner
+_cb_origin_y  = bf_y_rail / 2 - _cb_span / 2;   // Y of front-left bracket outer corner
+_cb_sled_z    = (pb_lower_top_z + pb_upper_bot_z) / 2 - (rj_base_y + 2) / 2;  // sled bottom Z (matches _z_pre in _z_carriage_sleds)
+_cb_z         = _cb_sled_z + 31 - 2 - 8;        // 2 mm below top of sled (zbr_h=31), bottom face of bracket
+
+module _build_plate_brackets() {
+    // Front-left: notch faces +X, +Y (no rotation)
+    translate([_cb_origin_x, _cb_origin_y, _cb_z])
+        corner_bracket();
+    // Front-right: rotate 90° CW → notch faces −X, +Y
+    translate([_cb_origin_x + _cb_span, _cb_origin_y, _cb_z])
+        rotate([0, 0, 90])
+            corner_bracket();
+    // Rear-right: rotate 180° → notch faces −X, −Y
+    translate([_cb_origin_x + _cb_span, _cb_origin_y + _cb_span, _cb_z])
+        rotate([0, 0, 180])
+            corner_bracket();
+    // Rear-left: rotate 270° CW → notch faces +X, −Y
+    translate([_cb_origin_x, _cb_origin_y + _cb_span, _cb_z])
+        rotate([0, 0, 270])
+            corner_bracket();
+}
+
+color("gold") _build_plate_brackets();

@@ -215,4 +215,6 @@ z_lr_bore_depth  = (z_lr_length + z_lr_clearance * 2 - (pb_upper_bot_z - pb_lowe
 m5_through_dia       = 5.5;
 m5_head_dia          = 9.0;
 m5_head_depth        = 3.5;
+m5_nut_corner_dia    = 9.5;   // corner-to-corner (circumscribed) diameter, DIN 934
+m5_nut_depth         = 4.8;  // DIN 934 nominal thickness
 m5_tnut_clearance    = 20.0;  // Elbow connector occupies first 20 mm of each rail

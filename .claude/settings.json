@@ -123,10 +123,31 @@
       "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format png --camera=-8,12,8,70,0,350,25 -o /tmp/z-front-close.png /Users/costmo/Documents/dev/printing/printery/models/motion-system/z-belt-tensioner.scad)",
       "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format binstl -o /tmp/z-clean.stl /Users/costmo/Documents/dev/printing/printery/models/motion-system/z-belt-tensioner.scad)",
       "Bash(openscad --hardwarnings -o /tmp/z-belt-tensioner.stl /Users/costmo/Documents/dev/printing/printery/models/motion-system/z-belt-tensioner.scad)",
-      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/z-belt-tensioner.stl /Users/costmo/Documents/dev/printing/printery/models/motion-system/z-belt-tensioner.scad)"
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/z-belt-tensioner.stl /Users/costmo/Documents/dev/printing/printery/models/motion-system/z-belt-tensioner.scad)",
+      "Bash(mkdir -p /Users/costmo/Documents/dev/printing/printery/models/build-plate)",
+      "Bash(openscad --export-format binstl -o /tmp/corner-bracket.stl /Users/costmo/Documents/dev/printing/printery/models/build-plate/corner-bracket.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format binstl -o /tmp/corner-bracket.stl /Users/costmo/Documents/dev/printing/printery/models/build-plate/corner-bracket.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format png -o /tmp/corner-bracket-top.png --camera=20,20,50,0,0,0 --projection=ortho --imgsize=800,800 /Users/costmo/Documents/dev/printing/printery/models/build-plate/corner-bracket.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format png -o /tmp/corner-bracket-top.png --camera=20,20,80,0,0,0 --projection=ortho --imgsize=800,800 /Users/costmo/Documents/dev/printing/printery/models/build-plate/corner-bracket.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format png -o /tmp/corner-bracket-top.png --camera=20,20,100,0,0,0,150 --projection=ortho --imgsize=800,800 /Users/costmo/Documents/dev/printing/printery/models/build-plate/corner-bracket.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format png -o /tmp/cb-zoom.png --camera=15,30,100,0,0,0,20 --projection=ortho --imgsize=800,800 /Users/costmo/Documents/dev/printing/printery/models/build-plate/corner-bracket.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format binstl -o /tmp/top-frame.stl /Users/costmo/Documents/dev/printing/printery/models/frame/top-frame.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format png -o /tmp/top-frame.png --camera=170,200,600,0,0,0,600 --projection=ortho --imgsize=800,800 /Users/costmo/Documents/dev/printing/printery/models/frame/top-frame.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format png -o /tmp/tf-front.png --camera=170,500,300,70,0,0,600 --projection=ortho --imgsize=800,800 /Users/costmo/Documents/dev/printing/printery/models/frame/top-frame.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format png -o /tmp/tf-side.png --camera=600,200,300,70,0,90,600 --projection=ortho --imgsize=800,800 /Users/costmo/Documents/dev/printing/printery/models/frame/top-frame.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD -o /dev/null /tmp/check_z.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format svg -o /tmp/check_z.svg /tmp/check_z.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format png -o /tmp/tf-wide.png --camera=170,500,250,60,0,0,900 --projection=ortho --imgsize=900,900 /Users/costmo/Documents/dev/printing/printery/models/frame/top-frame.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD -o /tmp/check_z.stl /tmp/check_z.scad)",
+      "Bash(cat > *)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD -o /tmp/check_z.stl top-frame.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/check_z.stl top-frame.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD -o /tmp/tf.stl top-frame.scad)"
     ],
     "additionalDirectories": [
-      "/Users/costmo/Documents/dev/printing/printery/.claude"
+      "/Users/costmo/Documents/dev/printing/printery/.claude",
+      "/Users/costmo/Documents/dev/printing/printery/models",
+      "/private/tmp"
     ]
   }
 }
