@@ -3,9 +3,10 @@
 // Re-usable shapes
 // ============================================================
 
-// Concave quarter-cylinder fillet for filling a 90° inside corner along the Z axis.
+// Concave quarter-cylinder fillet for rounding right angle junctions.
+// Improves structural integrity and high speed print quality. Looks nicer, too.
 // Place the origin at the corner, rotate to the target face, then union into the parent.
-// d: fillet diameter (concave curve radius is d/2); l: length  of the produced output.
+// d: fillet diameter (concave curve radius is d/2); l: length of the produced output.
 module inner_fillet( d, l )
 {
 	xDimension = d;
