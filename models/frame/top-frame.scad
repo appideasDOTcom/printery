@@ -329,7 +329,7 @@ module _build_plate_brackets() {
     // Right crossbar: rotated 90° so flat wall faces +X (right-outside), bar body extends inward (−X)
     translate([_rcb_side_x - 15, _rcb_side_y, _cb_z])
         rotate([0, 0, 90])
-            #right_crossbar();
+            right_crossbar();
 }
 
 color("gold") _build_plate_brackets();
