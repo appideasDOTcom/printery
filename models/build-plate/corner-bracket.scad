@@ -58,7 +58,7 @@ module corner_bracket(include_cutout = false) {
 
 // Crossbar dimensions (must match front-crossbar.scad)
 _cb_bar_width  = 12.0;   // bar body depth (Y in crossbar local)
-_cb_bar_height =  4.0;   // bar body height (Z)
+_cb_bar_height =  5.4;   // bar body height (Z)
 _cb_tol        =  0.1;   // fit tolerance
 
 // Front crossbar starts at world x=72.5; bracket origin at world x=52.5 → local x=20
@@ -79,6 +79,11 @@ module front_left_bed_bracket() {
         // M3 through-holes into left crossbar overlap (local x=0..12, y=20..40)
         translate([4, 34, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
         translate([8, 24, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
+        // M3 nut traps at top face
+        translate([24, 4, plate_height - m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = m3_nut_depth + 1, $fn = 6);
+        translate([34, 8, plate_height - m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = m3_nut_depth + 1, $fn = 6);
+        translate([4, 34, plate_height - m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = m3_nut_depth + 1, $fn = 6);
+        translate([8, 24, plate_height - m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = m3_nut_depth + 1, $fn = 6);
     }
 }
 
@@ -97,6 +102,11 @@ module _front_right_cut_bracket() {
         // M3 through-holes into right crossbar overlap (local x=20..40, y=15..27)
         translate([24, 19, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
         translate([34, 23, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
+        // M3 nut traps at top face
+        translate([4,  34, plate_height - m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = m3_nut_depth + 1, $fn = 6);
+        translate([8,  24, plate_height - m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = m3_nut_depth + 1, $fn = 6);
+        translate([24, 19, plate_height - m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = m3_nut_depth + 1, $fn = 6);
+        translate([34, 23, plate_height - m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = m3_nut_depth + 1, $fn = 6);
     }
 }
 
@@ -119,6 +129,11 @@ module _rear_left_cut_bracket() {
         // M3 through-holes into left crossbar overlap (local x=20..40, y=0..12)
         translate([24, 4, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
         translate([34, 8, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
+        // M3 nut traps at top face
+        translate([4,  34, plate_height - m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = m3_nut_depth + 1, $fn = 6);
+        translate([8,  24, plate_height - m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = m3_nut_depth + 1, $fn = 6);
+        translate([24,  4, plate_height - m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = m3_nut_depth + 1, $fn = 6);
+        translate([34,  8, plate_height - m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = m3_nut_depth + 1, $fn = 6);
     }
 }
 
@@ -141,6 +156,11 @@ module _rear_right_cut_bracket() {
         // M3 through-holes into right crossbar overlap (local x=15..27, y=20..40)
         translate([19, 34, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
         translate([23, 24, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
+        // M3 nut traps at top face
+        translate([24,  4, plate_height - m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = m3_nut_depth + 1, $fn = 6);
+        translate([34,  8, plate_height - m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = m3_nut_depth + 1, $fn = 6);
+        translate([19, 34, plate_height - m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = m3_nut_depth + 1, $fn = 6);
+        translate([23, 24, plate_height - m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = m3_nut_depth + 1, $fn = 6);
     }
 }
 

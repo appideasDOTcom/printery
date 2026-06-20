@@ -9,13 +9,15 @@ $fs = 0.1;
 // --- Dimensions (mm) ---
 bar_length        = 195.0;
 bar_width         =  12.0;
-bar_height        =   4.0;
+bar_height        =   5.4;
 corner_radius     =   2.0;
 wall_depth        =   2.0;   // front wall: extends in −Y from y=0
 wall_height       =  10.0;   // front wall: 2 mm taller than corner bracket (8 mm)
 
 // --- Dimensions (mm) ---
-m3_through_dia = 3.4;  // M3 clearance bore
+m3_through_dia    = 3.4;  // M3 clearance bore
+m3_head_dia       = 6.0;  // M3 socket head diameter
+m3_head_sink      = 3.2;  // counterbore depth into bottom face of crossbar
 
 // Crossbar end hole offsets — two holes per end, offset ±2 mm from bar centre (y=6)
 // Left end: x=4 and x=14 from local x=0
@@ -60,6 +62,11 @@ module front_crossbar() {
         // M3 through-holes at right end, mirrored in x
         translate([bar_length - _hole_x2, _hole_y1, -1]) cylinder(d = m3_through_dia, h = bar_height + 2);
         translate([bar_length - _hole_x1, _hole_y2, -1]) cylinder(d = m3_through_dia, h = bar_height + 2);
+        // Socket head counterbores at bottom face, 2 mm deep into bar
+        translate([_hole_x1,              _hole_y1, -1]) cylinder(d = m3_head_dia, h = m3_head_sink + 1);
+        translate([_hole_x2,              _hole_y2, -1]) cylinder(d = m3_head_dia, h = m3_head_sink + 1);
+        translate([bar_length - _hole_x2, _hole_y1, -1]) cylinder(d = m3_head_dia, h = m3_head_sink + 1);
+        translate([bar_length - _hole_x1, _hole_y2, -1]) cylinder(d = m3_head_dia, h = m3_head_sink + 1);
     }
 }
 

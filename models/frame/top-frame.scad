@@ -317,7 +317,7 @@ module _build_plate_brackets() {
     // Front crossbar: centered on frame X, front edge flush with bracket front, bottom flush with brackets
 	color( "lightblue" ) {
 		translate([_fcb_origin_x, _cb_origin_y, _cb_z])
-			front_crossbar();
+			#front_crossbar();
 
 		// Rear crossbar: rotated 180° so flat wall faces +Y (rear), bar body extends inward (−Y)
 		translate([_rcb_origin_x, _cb_origin_y + _cb_span, _cb_z])
