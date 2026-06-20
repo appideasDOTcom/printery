@@ -153,7 +153,15 @@
       "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/rear_left_bottom4.png /tmp/rear_left_check.scad --camera=80,310,262,0,0,0,200 --projection=o)",
       "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/rear_left_bottom5.png /tmp/rear_left_check.scad --camera=80,310,262,0,0,0,200 --projection=o)",
       "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/rear_right_check2.png /tmp/rear_right_check.scad --camera=290,300,0,180,0,0,200 --projection=o)",
-      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/top-frame-rl.png /Users/costmo/Documents/dev/printing/printery/models/frame/top-frame.scad --camera=70,295,263,55,0,30,200 --projection=p)"
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/top-frame-rl.png /Users/costmo/Documents/dev/printing/printery/models/frame/top-frame.scad --camera=70,295,263,55,0,30,200 --projection=p)",
+      "Bash(openscad --hardwarnings -o /tmp/test-crossbar.stl models/build-plate/front-crossbar.scad)",
+      "Bash(openscad --hardwarnings -o /tmp/test-bracket.stl models/build-plate/corner-bracket.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/test-crossbar.stl /Users/costmo/Documents/dev/printing/printery/models/build-plate/front-crossbar.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/test-bracket.stl /Users/costmo/Documents/dev/printing/printery/models/build-plate/corner-bracket.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/test-topframe.stl /Users/costmo/Documents/dev/printing/printery/models/frame/top-frame.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD -o /tmp/hole-check.echo /tmp/hole-check.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD -o /tmp/hole-check.png /tmp/hole-check.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD -o /tmp/hole-check2.png /tmp/hole-check2.scad)"
     ],
     "additionalDirectories": [
       "/Users/costmo/Documents/dev/printing/printery/.claude",

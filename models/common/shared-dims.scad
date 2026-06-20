@@ -210,6 +210,15 @@ z_lr_block_depth = z_lr_bearing_cy + pb_bearing_od / 2 + pb_wall;               
 z_lr_bore_depth  = (z_lr_length + z_lr_clearance * 2 - (pb_upper_bot_z - pb_lower_top_z)) / 2;  // 13.2 mm
 
 // ---------------------------------------------------------------------------
+// M3 hardware
+// ---------------------------------------------------------------------------
+m3_through_dia       = 3.4;   // clearance bore for M3 bolt
+m3_head_dia          = 6.0;   // pan/socket head diameter
+m3_head_depth        = 3.0;   // socket head height
+m3_nut_corner_dia    = 6.35;  // corner-to-corner diameter, DIN 934
+m3_nut_depth         = 2.4;   // DIN 934 nominal thickness
+
+// ---------------------------------------------------------------------------
 // M5 hardware
 // ---------------------------------------------------------------------------
 m5_through_dia       = 5.5;

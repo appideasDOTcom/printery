@@ -67,13 +67,18 @@ _fcb_local_x_start = 20.0;
 module front_left_bed_bracket() {
     difference() {
         corner_bracket();
-        // Front crossbar: bar body occupies local y=0..12, z=0..4, starting at local x=20
+        // Front crossbar slot: local y=0..12, z=0..4, starting at local x=20
         translate([_fcb_local_x_start, 0, -_cb_tol])
             cube([plate_width - _fcb_local_x_start + 1, _cb_bar_width + _cb_tol, _cb_bar_height + _cb_tol]);
-        // Left crossbar: runs along X=0 face, bar body occupies local x=0..12, z=0..4
-        // Left crossbar spans local y=20..40 on this bracket
+        // Left crossbar slot: local x=0..12, z=0..4, spanning local y=20..40
         translate([-_cb_tol, 20, -_cb_tol])
             cube([_cb_bar_width + _cb_tol, plate_depth - 20 + 1, _cb_bar_height + _cb_tol]);
+        // M3 through-holes into front crossbar overlap (local x=20..40, y=0..12)
+        translate([24, 4, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
+        translate([34, 8, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
+        // M3 through-holes into left crossbar overlap (local x=0..12, y=20..40)
+        translate([4, 34, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
+        translate([8, 24, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
     }
 }
 
@@ -86,6 +91,12 @@ module _front_right_cut_bracket() {
         // Right crossbar slot (15mm inset): local x=20..40, y=15..27
         translate([20, 15, -_cb_tol])
             cube([plate_width - 20 + 1, _cb_bar_width + _cb_tol, _cb_bar_height + _cb_tol]);
+        // M3 through-holes into front crossbar overlap (local x=0..12, y=20..40)
+        translate([4, 34, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
+        translate([8, 24, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
+        // M3 through-holes into right crossbar overlap (local x=20..40, y=15..27)
+        translate([24, 19, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
+        translate([34, 23, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
     }
 }
 
@@ -102,6 +113,12 @@ module _rear_left_cut_bracket() {
         // Left crossbar slot: local x=20..40, y=0..12
         translate([20, -_cb_tol, -_cb_tol])
             cube([plate_width - 20 + 1, _cb_bar_width + _cb_tol, _cb_bar_height + _cb_tol]);
+        // M3 through-holes into rear crossbar overlap (local x=0..12, y=20..40)
+        translate([4, 34, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
+        translate([8, 24, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
+        // M3 through-holes into left crossbar overlap (local x=20..40, y=0..12)
+        translate([24, 4, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
+        translate([34, 8, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
     }
 }
 
@@ -118,6 +135,12 @@ module _rear_right_cut_bracket() {
         // Right crossbar slot (15mm inset): local x=15..27, y=20..40
         translate([15, 20, -_cb_tol])
             cube([_cb_bar_width + _cb_tol, plate_depth - 20 + 1, _cb_bar_height + _cb_tol]);
+        // M3 through-holes into rear crossbar overlap (local x=20..40, y=0..12)
+        translate([24, 4, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
+        translate([34, 8, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
+        // M3 through-holes into right crossbar overlap (local x=15..27, y=20..40)
+        translate([19, 34, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
+        translate([23, 24, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
     }
 }
 

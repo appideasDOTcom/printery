@@ -14,6 +14,17 @@ corner_radius     =   2.0;
 wall_depth        =   2.0;   // front wall: extends in −Y from y=0
 wall_height       =  10.0;   // front wall: 2 mm taller than corner bracket (8 mm)
 
+// --- Dimensions (mm) ---
+m3_through_dia = 3.4;  // M3 clearance bore
+
+// Crossbar end hole offsets — two holes per end, offset ±2 mm from bar centre (y=6)
+// Left end: x=4 and x=14 from local x=0
+// Right end: mirrored → x=bar_length−4 and x=bar_length−14
+_hole_y1   = bar_width / 2 - 2;  // 4 — closer to front face
+_hole_y2   = bar_width / 2 + 2;  // 8 — closer to back edge
+_hole_x1   = 4;
+_hole_x2   = 14;
+
 // --- Modules ---
 
 module rounded_bar() {
@@ -38,9 +49,17 @@ module front_wall() {
 }
 
 module front_crossbar() {
-    union() {
-        rounded_bar();
-        front_wall();
+    difference() {
+        union() {
+            rounded_bar();
+            front_wall();
+        }
+        // M3 through-holes at left end: x1 closer to front face, x2 closer to back edge
+        translate([_hole_x1, _hole_y1, -1]) cylinder(d = m3_through_dia, h = bar_height + 2);
+        translate([_hole_x2, _hole_y2, -1]) cylinder(d = m3_through_dia, h = bar_height + 2);
+        // M3 through-holes at right end, mirrored in x
+        translate([bar_length - _hole_x2, _hole_y1, -1]) cylinder(d = m3_through_dia, h = bar_height + 2);
+        translate([bar_length - _hole_x1, _hole_y2, -1]) cylinder(d = m3_through_dia, h = bar_height + 2);
     }
 }
 
