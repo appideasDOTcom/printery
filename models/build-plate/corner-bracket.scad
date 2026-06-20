@@ -56,23 +56,73 @@ module corner_bracket(include_cutout = false) {
     }
 }
 
+// Crossbar dimensions (must match front-crossbar.scad)
+_cb_bar_width  = 12.0;   // bar body depth (Y in crossbar local)
+_cb_bar_height =  4.0;   // bar body height (Z)
+_cb_tol        =  0.1;   // fit tolerance
+
+// Front crossbar starts at world x=72.5; bracket origin at world x=52.5 → local x=20
+_fcb_local_x_start = 20.0;
+
 module front_left_bed_bracket() {
-	corner_bracket();
+    difference() {
+        corner_bracket();
+        // Front crossbar: bar body occupies local y=0..12, z=0..4, starting at local x=20
+        translate([_fcb_local_x_start, 0, -_cb_tol])
+            cube([plate_width - _fcb_local_x_start + 1, _cb_bar_width + _cb_tol, _cb_bar_height + _cb_tol]);
+        // Left crossbar: runs along X=0 face, bar body occupies local x=0..12, z=0..4
+        // Left crossbar spans local y=20..40 on this bracket
+        translate([-_cb_tol, 20, -_cb_tol])
+            cube([_cb_bar_width + _cb_tol, plate_depth - 20 + 1, _cb_bar_height + _cb_tol]);
+    }
+}
+
+module _front_right_cut_bracket() {
+    difference() {
+        corner_bracket();
+        // Front crossbar slot: local x=0..12, y=20..40
+        translate([-_cb_tol, 20, -_cb_tol])
+            cube([_cb_bar_width + _cb_tol, plate_depth - 20 + 1, _cb_bar_height + _cb_tol]);
+        // Right crossbar slot (15mm inset): local x=20..40, y=15..27
+        translate([20, 15, -_cb_tol])
+            cube([plate_width - 20 + 1, _cb_bar_width + _cb_tol, _cb_bar_height + _cb_tol]);
+    }
 }
 
 module front_right_bed_bracket() {
-	rotate([0, 0, 90])
-            corner_bracket();
+    rotate([0, 0, 90]) _front_right_cut_bracket();
+}
+
+module _rear_left_cut_bracket() {
+    difference() {
+        corner_bracket();
+        // Rear crossbar slot: local x=0..12, y=20..40 (bar starts at world x=72.5 → local_y=20)
+        translate([-_cb_tol, 20, -_cb_tol])
+            cube([_cb_bar_width + _cb_tol, plate_depth - 20 + 1, _cb_bar_height + _cb_tol]);
+        // Left crossbar slot: local x=20..40, y=0..12
+        translate([20, -_cb_tol, -_cb_tol])
+            cube([plate_width - 20 + 1, _cb_bar_width + _cb_tol, _cb_bar_height + _cb_tol]);
+    }
 }
 
 module rear_left_bed_bracket() {
-	rotate([0, 0, 270])
-            corner_bracket();
+    rotate([0, 0, 270]) _rear_left_cut_bracket();
+}
+
+module _rear_right_cut_bracket() {
+    difference() {
+        corner_bracket(include_cutout = true);
+        // Rear crossbar slot: local x=20..40, y=0..12
+        translate([20, -_cb_tol, -_cb_tol])
+            cube([plate_width - 20 + 1, _cb_bar_width + _cb_tol, _cb_bar_height + _cb_tol]);
+        // Right crossbar slot (15mm inset): local x=15..27, y=20..40
+        translate([15, 20, -_cb_tol])
+            cube([_cb_bar_width + _cb_tol, plate_depth - 20 + 1, _cb_bar_height + _cb_tol]);
+    }
 }
 
 module rear_right_bed_bracket() {
-	rotate([0, 0, 180])
-            corner_bracket(include_cutout = true);
+    rotate([0, 0, 180]) _rear_right_cut_bracket();
 }
 
 corner_bracket();

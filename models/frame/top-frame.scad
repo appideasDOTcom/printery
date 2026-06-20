@@ -301,35 +301,35 @@ _rcb_side_y    = _cb_origin_y + _cb_span / 2 - _fcb_length / 2;  // right (90°)
 module _build_plate_brackets() {
     // Front-left: notch faces +X, +Y (no rotation)
     translate([_cb_origin_x, _cb_origin_y, _cb_z])
-        #front_left_bed_bracket();
+        front_left_bed_bracket();
     // Front-right: rotate 90° CW → notch faces −X, +Y
     translate([_cb_origin_x + _cb_span, _cb_origin_y, _cb_z])
-        #front_right_bed_bracket();
+        front_right_bed_bracket();
     // Rear-right: rotate 180° → notch faces −X, −Y
     translate([_cb_origin_x + _cb_span, _cb_origin_y + _cb_span, _cb_z])
-        #rear_right_bed_bracket();
+        rear_right_bed_bracket();
     // Rear-left: rotate 270° CW → notch faces +X, −Y
     translate([_cb_origin_x, _cb_origin_y + _cb_span, _cb_z])
-        #rear_left_bed_bracket();
+        rear_left_bed_bracket();
 
     // Front crossbar: centered on frame X, front edge flush with bracket front, bottom flush with brackets
     translate([_fcb_origin_x, _cb_origin_y, _cb_z])
-        front_crossbar();
+        #front_crossbar();
 
     // Rear crossbar: rotated 180° so flat wall faces +Y (rear), bar body extends inward (−Y)
     translate([_rcb_origin_x, _cb_origin_y + _cb_span, _cb_z])
         rotate([0, 0, 180])
-            front_crossbar();
+            #front_crossbar();
 
     // Left crossbar: rotated −90° so flat wall faces −X (left-outside), bar body extends inward (+X)
     translate([_lcb_origin_x, _lcb_origin_y, _cb_z])
         rotate([0, 0, -90])
-            front_crossbar();
+            #front_crossbar();
 
     // Right crossbar: rotated 90° so flat wall faces +X (right-outside), bar body extends inward (−X)
     translate([_rcb_side_x - 15, _rcb_side_y, _cb_z])
         rotate([0, 0, 90])
-            right_crossbar();
+            #right_crossbar();
 }
 
 color("gold") _build_plate_brackets();
