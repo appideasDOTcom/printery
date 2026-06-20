@@ -142,7 +142,11 @@
       "Bash(cat > *)",
       "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD -o /tmp/check_z.stl top-frame.scad)",
       "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/check_z.stl top-frame.scad)",
-      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD -o /tmp/tf.stl top-frame.scad)"
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD -o /tmp/tf.stl top-frame.scad)",
+      "Bash(openscad --hardwarnings -o /tmp/front-crossbar.stl /Users/costmo/Documents/dev/printing/printery/models/build-plate/front-crossbar.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/front-crossbar.stl /Users/costmo/Documents/dev/printing/printery/models/build-plate/front-crossbar.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/top-frame.stl /Users/costmo/Documents/dev/printing/printery/models/frame/top-frame.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /tmp/right-crossbar.stl /Users/costmo/Documents/dev/printing/printery/models/build-plate/right-crossbar.scad)"
     ],
     "additionalDirectories": [
       "/Users/costmo/Documents/dev/printing/printery/.claude",
