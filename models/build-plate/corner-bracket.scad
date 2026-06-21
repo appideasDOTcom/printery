@@ -7,7 +7,9 @@ $fn = 64;
 corner_radius   = 2;    // mm — rounded corner radius
 plate_width     = 40;   // mm — X
 plate_depth     = 40;   // mm — Y
-plate_height    = 8;    // mm — Z
+plate_height    = 12.2;  // mm — Z
+
+buried_m3_nut_depth = m3_nut_depth + 0.4;
 
 // Rounded rectangle helper
 module rounded_rect(w, d, h, r) {
@@ -58,7 +60,7 @@ module corner_bracket(include_cutout = false) {
 
 // Crossbar dimensions (must match front-crossbar.scad)
 _cb_bar_width  = 12.0;   // bar body depth (Y in crossbar local)
-_cb_bar_height =  5.4;   // bar body height (Z)
+_cb_bar_height =  6.0;   // bar body height (Z)
 _cb_tol        =  0.1;   // fit tolerance
 
 // Front crossbar starts at world x=72.5; bracket origin at world x=52.5 → local x=20
@@ -80,10 +82,10 @@ module front_left_bed_bracket() {
         translate([4, 34, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
         translate([8, 24, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
         // M3 nut traps at top face
-        translate([24, 4, plate_height - m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = m3_nut_depth + 1, $fn = 6);
-        translate([34, 8, plate_height - m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = m3_nut_depth + 1, $fn = 6);
-        translate([4, 34, plate_height - m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = m3_nut_depth + 1, $fn = 6);
-        translate([8, 24, plate_height - m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = m3_nut_depth + 1, $fn = 6);
+        translate([24, 4, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + 1, $fn = 6);
+        translate([34, 8, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + 1, $fn = 6);
+        translate([4, 34, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + 1, $fn = 6);
+        translate([8, 24, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + 1, $fn = 6);
     }
 }
 
@@ -103,10 +105,10 @@ module _front_right_cut_bracket() {
         translate([24, 19, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
         translate([34, 23, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
         // M3 nut traps at top face
-        translate([4,  34, plate_height - m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = m3_nut_depth + 1, $fn = 6);
-        translate([8,  24, plate_height - m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = m3_nut_depth + 1, $fn = 6);
-        translate([24, 19, plate_height - m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = m3_nut_depth + 1, $fn = 6);
-        translate([34, 23, plate_height - m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = m3_nut_depth + 1, $fn = 6);
+        translate([4,  34, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + 1, $fn = 6);
+        translate([8,  24, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + 1, $fn = 6);
+        translate([24, 19, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + 1, $fn = 6);
+        translate([34, 23, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + 1, $fn = 6);
     }
 }
 
@@ -130,10 +132,10 @@ module _rear_left_cut_bracket() {
         translate([24, 4, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
         translate([34, 8, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
         // M3 nut traps at top face
-        translate([4,  34, plate_height - m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = m3_nut_depth + 1, $fn = 6);
-        translate([8,  24, plate_height - m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = m3_nut_depth + 1, $fn = 6);
-        translate([24,  4, plate_height - m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = m3_nut_depth + 1, $fn = 6);
-        translate([34,  8, plate_height - m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = m3_nut_depth + 1, $fn = 6);
+        translate([4,  34, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + 1, $fn = 6);
+        translate([8,  24, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + 1, $fn = 6);
+        translate([24,  4, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + 1, $fn = 6);
+        translate([34,  8, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + 1, $fn = 6);
     }
 }
 
@@ -157,10 +159,10 @@ module _rear_right_cut_bracket() {
         translate([19, 34, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
         translate([23, 24, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
         // M3 nut traps at top face
-        translate([24,  4, plate_height - m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = m3_nut_depth + 1, $fn = 6);
-        translate([34,  8, plate_height - m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = m3_nut_depth + 1, $fn = 6);
-        translate([19, 34, plate_height - m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = m3_nut_depth + 1, $fn = 6);
-        translate([23, 24, plate_height - m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = m3_nut_depth + 1, $fn = 6);
+        translate([24,  4, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + 1, $fn = 6);
+        translate([34,  8, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + 1, $fn = 6);
+        translate([19, 34, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + 1, $fn = 6);
+        translate([23, 24, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + 1, $fn = 6);
     }
 }
 
@@ -168,4 +170,6 @@ module rear_right_bed_bracket() {
     rotate([0, 0, 180]) _rear_right_cut_bracket();
 }
 
-corner_bracket();
+// corner_bracket();
+// front_left_bed_bracket(); // A. front-left
+front_right_bed_bracket(); // B. front-right

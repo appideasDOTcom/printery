@@ -284,8 +284,9 @@ color("tomato") translate([bf_outer_x - ex, ex + z_lr_block_depth + 20.5, pb_low
 _cb_span      = 235;                              // outer-edge to outer-edge spacing
 _cb_origin_x  = bf_outer_x / 2 - _cb_span / 2;  // X of front-left bracket outer corner
 _cb_origin_y  = bf_y_rail / 2 - _cb_span / 2;   // Y of front-left bracket outer corner
-_cb_sled_z    = (pb_lower_top_z + pb_upper_bot_z) / 2 - (rj_base_y + 2) / 2;  // sled bottom Z (matches _z_pre in _z_carriage_sleds)
-_cb_z         = _cb_sled_z + 31 - 2 - 8;        // 2 mm below top of sled (zbr_h=31), bottom face of bracket
+_cb_sled_z    = ((pb_lower_top_z + pb_upper_bot_z) / 2 - (rj_base_y + 2) / 2);  // sled bottom Z (matches _z_pre in _z_carriage_sleds)
+_cb_z         = _cb_sled_z + 31 - 2 - 12.2;      // bottom face of bracket (12.2 mm tall, wall extends 2 mm above)
+_cb_bar_z     = _cb_z;                           // crossbar bottom: same as bracket bottom
 
 // Front crossbar: local x=0 is its left end, y=0 is the flat (front) edge, z=0 is the bottom.
 // Rear crossbar: rotated 180° so flat wall faces +Y (rear); x=0 after rotation is the right end.
@@ -316,21 +317,21 @@ module _build_plate_brackets() {
 
     // Front crossbar: centered on frame X, front edge flush with bracket front, bottom flush with brackets
 	color( "lightblue" ) {
-		translate([_fcb_origin_x, _cb_origin_y, _cb_z])
-			#front_crossbar();
+		translate([_fcb_origin_x, _cb_origin_y, _cb_bar_z])
+			front_crossbar();
 
 		// Rear crossbar: rotated 180° so flat wall faces +Y (rear), bar body extends inward (−Y)
-		translate([_rcb_origin_x, _cb_origin_y + _cb_span, _cb_z])
+		translate([_rcb_origin_x, _cb_origin_y + _cb_span, _cb_bar_z])
 			rotate([0, 0, 180])
 				front_crossbar();
 
 		// Left crossbar: rotated −90° so flat wall faces −X (left-outside), bar body extends inward (+X)
-		translate([_lcb_origin_x, _lcb_origin_y, _cb_z])
+		translate([_lcb_origin_x, _lcb_origin_y, _cb_bar_z])
 			rotate([0, 0, -90])
 				front_crossbar();
 
 		// Right crossbar: rotated 90° so flat wall faces +X (right-outside), bar body extends inward (−X)
-		translate([_rcb_side_x - 15, _rcb_side_y, _cb_z])
+		translate([_rcb_side_x - 15, _rcb_side_y, _cb_bar_z])
 			rotate([0, 0, 90])
 				right_crossbar();
 	}

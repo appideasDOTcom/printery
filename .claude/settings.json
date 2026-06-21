@@ -175,7 +175,13 @@
       "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings --camera=9,6,1,155,0,15,35 --colorscheme=Tomorrow --imgsize=1200,600 -o /tmp/crossbar-cbore2.png /Users/costmo/Documents/dev/printing/printery/models/build-plate/front-crossbar.scad)",
       "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings --camera=20,20,10,0,0,0,80 --colorscheme=Tomorrow --imgsize=1000,1000 -o /tmp/bracket-top.png /Users/costmo/Documents/dev/printing/printery/models/build-plate/corner-bracket.scad)",
       "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings --camera=170,202,232,0,0,0,600 --colorscheme=Tomorrow --imgsize=1200,1200 -o /tmp/assembly-top.png /Users/costmo/Documents/dev/printing/printery/models/frame/top-frame.scad)",
-      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings --camera=80,95,232,55,0,10,200 --colorscheme=Tomorrow --imgsize=1200,1200 -o /tmp/corner-align.png /Users/costmo/Documents/dev/printing/printery/models/frame/top-frame.scad)"
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings --camera=80,95,232,55,0,10,200 --colorscheme=Tomorrow --imgsize=1200,1200 -o /tmp/corner-align.png /Users/costmo/Documents/dev/printing/printery/models/frame/top-frame.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings --camera=80,95,232,55,0,10,200 --colorscheme=Tomorrow --imgsize=1200,1200 -o /tmp/corner-align2.png /Users/costmo/Documents/dev/printing/printery/models/frame/top-frame.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings --camera=80,95,232,90,0,0,150 --colorscheme=Tomorrow --imgsize=1200,600 -o /tmp/corner-side.png /Users/costmo/Documents/dev/printing/printery/models/frame/top-frame.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings --camera=80,95,232,90,0,0,150 --colorscheme=Tomorrow --imgsize=1200,600 -o /tmp/corner-side2.png /Users/costmo/Documents/dev/printing/printery/models/frame/top-frame.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings --camera=170,202,232,0,0,0,600 --colorscheme=Tomorrow --imgsize=1200,1200 -o /tmp/assembly-top2.png /Users/costmo/Documents/dev/printing/printery/models/frame/top-frame.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --camera=80,90,232,90,0,90,200 --colorscheme=Tomorrow --imgsize=1200,600 -o /tmp/z-check.png /tmp/z-check.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --camera=72.5,89,265,90,0,0,60 --colorscheme=Tomorrow --imgsize=1200,400 -o /tmp/z-check2.png /tmp/z-check.scad)"
     ],
     "additionalDirectories": [
       "/Users/costmo/Documents/dev/printing/printery/.claude",

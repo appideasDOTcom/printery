@@ -9,15 +9,15 @@ $fs = 0.1;
 // --- Dimensions (mm) ---
 bar_length        = 195.0;
 bar_width         =  12.0;
-bar_height        =   5.4;
+bar_height        =   6.0;
 corner_radius     =   2.0;
 wall_depth        =   2.0;   // front wall: extends in −Y from y=0
-wall_height       =  10.0;   // front wall: 2 mm taller than corner bracket (8 mm)
+wall_height       =  14.2;   // front wall: 2 mm taller than corner bracket (12.2 mm)
 
 // --- Dimensions (mm) ---
 m3_through_dia    = 3.4;  // M3 clearance bore
 m3_head_dia       = 6.0;  // M3 socket head diameter
-m3_head_sink      = 3.2;  // counterbore depth into bottom face of crossbar
+m3_head_sink      = 4.4;  // counterbore depth into bottom face of crossbar
 
 // Crossbar end hole offsets — two holes per end, offset ±2 mm from bar centre (y=6)
 // Left end: x=4 and x=14 from local x=0
@@ -71,4 +71,7 @@ module front_crossbar() {
 }
 
 // --- Output ---
-front_crossbar();
+front_crossbar(); // A. Front crossbar
+// rotate([0, 0, 180]) front_crossbar(); // B. Rear
+// rotate([0, 0, -90]) front_crossbar(); // C. Rear
+// rotate([0, 0, 90]) right_crossbar(); // D. Right
