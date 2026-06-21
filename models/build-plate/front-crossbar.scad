@@ -17,7 +17,7 @@ wall_height       =  14.2;   // front wall: 2 mm taller than corner bracket (12.
 // --- Dimensions (mm) ---
 m3_through_dia    = 3.4;  // M3 clearance bore
 m3_head_dia       = 6.0;  // M3 socket head diameter
-m3_head_sink      = 4.4;  // counterbore depth into bottom face of crossbar
+m3_head_sink      = 4.0;  // counterbore depth into bottom face of crossbar
 
 // Crossbar end hole offsets — two holes per end, offset ±2 mm from bar centre (y=6)
 // Left end: x=4 and x=14 from local x=0
