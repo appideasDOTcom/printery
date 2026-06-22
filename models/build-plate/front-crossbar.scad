@@ -3,6 +3,9 @@
 // Crossbar for the front of the build plate assembly
 // ============================================================
 
+include <../common/shared-dims.scad>
+use <../frame/top-frame.scad>
+
 $fa = 1.0;
 $fs = 0.1;
 
@@ -12,7 +15,7 @@ bar_width         =  12.0;
 bar_height        =   6.0;
 corner_radius     =   2.0;
 wall_depth        =   2.0;   // front wall: extends in −Y from y=0
-wall_height       =  14.2;   // front wall: 2 mm taller than corner bracket (12.2 mm)
+wall_height       =  cb_wall_height;   // front wall: 5 mm taller than corner bracket (12.2 mm)
 
 // --- Dimensions (mm) ---
 m3_through_dia    = 3.4;  // M3 clearance bore
@@ -50,6 +53,22 @@ module front_wall() {
         cube([bar_length, wall_depth, wall_height]);
 }
 
+// Cutout applied to the back edge of the rear crossbar instance (see top-frame.scad).
+// Dimensions: 130 × (wall_depth + 6) × wall_height, centred in X, flush with back face.
+module rear_crossbar_cutout() {
+    cutout_w = 130;
+    cutout_d = 2;
+
+	bolt_w = 120;
+
+    translate([(bar_length - cutout_w) / 2, bar_width - cutout_d - 1, 0])
+        cube([cutout_w, cutout_d + 1, wall_height]);  // +1 in Y to clear back face
+	translate([(bar_length - 120) / 2, bar_width - cutout_d - 1, 0])
+		scale( [3, 4.2, 1] ) cylinder( d = 4, h = wall_height );
+	translate([(bar_length + 120) / 2, bar_width - cutout_d - 1, 0])
+		scale( [3, 4.2, 1] ) cylinder( d = 4, h = wall_height );
+}
+
 module front_crossbar() {
     difference() {
         union() {
@@ -71,7 +90,12 @@ module front_crossbar() {
 }
 
 // --- Output ---
-front_crossbar(); // A. Front crossbar
-// rotate([0, 0, 180]) front_crossbar(); // B. Rear
-// rotate([0, 0, -90]) front_crossbar(); // C. Rear
-// rotate([0, 0, 90]) right_crossbar(); // D. Right
+front_crossbar(); // A & B Front & Left
+// C. Rear
+// difference() {
+// 		rotate([0, 0, 180])
+// 			front_crossbar();
+// 	translate([0, 12, 0])
+// 		rotate([0, 0, 180])
+// 			rear_crossbar_cutout();
+// }

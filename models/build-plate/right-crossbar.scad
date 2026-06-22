@@ -20,4 +20,5 @@ module right_crossbar() {
 }
 
 // --- Output ---
-right_crossbar();
+// right_crossbar();
+rotate([0, 0, 90]) right_crossbar(); // D. Right

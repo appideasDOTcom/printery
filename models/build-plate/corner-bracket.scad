@@ -10,6 +10,7 @@ plate_depth     = 40;   // mm — Y
 plate_height    = 12.2;  // mm — Z
 
 buried_m3_nut_depth = m3_nut_depth + 0.4;
+buried_m5_nut_depth = m5_nut_depth + 5.0; // The surface is approximagtely 7.4mm.
 
 // Rounded rectangle helper
 module rounded_rect(w, d, h, r) {
@@ -40,7 +41,7 @@ module corner_bracket(include_cutout = false) {
                 translate([32, 32, -1])
                     cylinder(d = m5_through_dia, h = plate_height + 2);
                 translate([32, 32, 0])
-                    cylinder(d = m5_nut_corner_dia, h = m5_nut_depth, $fn = 6);
+                    cylinder(d = m5_nut_corner_dia, h = buried_m5_nut_depth, $fn = 6);
             }
             // Concave fillet at the inner right-angle corner (X=15, Y=30)
             translate([15 - corner_radius, 30 + corner_radius, 0])
@@ -53,7 +54,7 @@ module corner_bracket(include_cutout = false) {
             translate([32, 32, -1])
                 cylinder(d = m5_through_dia, h = plate_height + 2);
             translate([32, 32, 0])
-                cylinder(d = m5_nut_corner_dia, h = m5_nut_depth, $fn = 6);
+                cylinder(d = m5_nut_corner_dia, h = buried_m5_nut_depth, $fn = 6);
         }
     }
 }
@@ -172,4 +173,6 @@ module rear_right_bed_bracket() {
 
 // corner_bracket();
 // front_left_bed_bracket(); // A. front-left
-front_right_bed_bracket(); // B. front-right
+// front_right_bed_bracket(); // B. front-right
+// rear_left_bed_bracket(); // C. rear-left
+rear_right_bed_bracket(); // D. rear-right

@@ -227,3 +227,8 @@ m5_head_depth        = 3.5;
 m5_nut_corner_dia    = 9.5;   // corner-to-corner (circumscribed) diameter, DIN 934
 m5_nut_depth         = 4.8;  // DIN 934 nominal thickness
 m5_tnut_clearance    = 20.0;  // Elbow connector occupies first 20 mm of each rail
+
+// ---------------------------------------------------------------------------
+// Hotbed mount
+// ---------------------------------------------------------------------------
+cb_wall_height = 17.2;

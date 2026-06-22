@@ -285,7 +285,7 @@ _cb_span      = 235;                              // outer-edge to outer-edge sp
 _cb_origin_x  = bf_outer_x / 2 - _cb_span / 2;  // X of front-left bracket outer corner
 _cb_origin_y  = bf_y_rail / 2 - _cb_span / 2;   // Y of front-left bracket outer corner
 _cb_sled_z    = ((pb_lower_top_z + pb_upper_bot_z) / 2 - (rj_base_y + 2) / 2);  // sled bottom Z (matches _z_pre in _z_carriage_sleds)
-_cb_z         = _cb_sled_z + 31 - 2 - 12.2;      // bottom face of bracket (12.2 mm tall, wall extends 2 mm above)
+_cb_z         = _cb_sled_z + 31 - cb_wall_height;      // bottom face of bracket (12.2 mm tall, wall extends 2 mm above)
 _cb_bar_z     = _cb_z;                           // crossbar bottom: same as bracket bottom
 
 // Front crossbar: local x=0 is its left end, y=0 is the flat (front) edge, z=0 is the bottom.
@@ -321,9 +321,15 @@ module _build_plate_brackets() {
 			front_crossbar();
 
 		// Rear crossbar: rotated 180° so flat wall faces +Y (rear), bar body extends inward (−Y)
-		translate([_rcb_origin_x, _cb_origin_y + _cb_span, _cb_bar_z])
-			rotate([0, 0, 180])
-				front_crossbar();
+		// Back-edge notch removed via rear_crossbar_cutout()
+		difference() {
+			translate([_rcb_origin_x, _cb_origin_y + _cb_span, _cb_bar_z])
+				rotate([0, 0, 180])
+					front_crossbar();
+			translate([_rcb_origin_x, _cb_origin_y + _cb_span + (12), _cb_bar_z])
+				rotate([0, 0, 180])
+					rear_crossbar_cutout();
+		}
 
 		// Left crossbar: rotated −90° so flat wall faces −X (left-outside), bar body extends inward (+X)
 		translate([_lcb_origin_x, _lcb_origin_y, _cb_bar_z])
