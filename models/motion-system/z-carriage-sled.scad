@@ -195,6 +195,30 @@ module _z_carriage_hollow() {
 }
 
 // Left variant: base + bracket arm extending toward front-left corner bracket
+// M3 through-hole through the -Y face of the bracket pocket step.
+// Wall face is at Y = _arm_loc_brk_y. Hole bores in +Y through the arm.
+module _z_carriage_bracket_wall_hole() {
+    _hx = (-zbr_r + _arm_loc_brk_x) / 2;  // 3.2 mm — X centre of wall material
+    _hz = _arm_z_bot + _arm_z_h / 2;       // 22.4 mm — Z centre of wall height
+    translate([_arm_loc_brk_x + 1, (_arm_fcb_y0 + _arm_fcb_y1) / 2 + 3, _arm_z_bot + _arm_z_h / 2])
+        rotate([0, -90, 0])
+            cylinder(d = m3_through_dia, h = plate_width);
+	// Cutout for allen wrench access.
+	translate([_arm_loc_brk_x -10, (_arm_fcb_y0 + _arm_fcb_y1) / 2 + 3, _arm_z_bot + _arm_z_h / 2])
+        rotate([0, -90, 0])
+            cylinder(d = 5, h = plate_width);
+
+	translate([_arm_loc_brk_x + 1 + 8, (_arm_fcb_y0 + _arm_fcb_y1) / 2 + 3, _arm_z_bot + _arm_z_h / 2])
+        rotate([90, -90, 0])
+            cylinder(d = m3_through_dia, h = plate_width);
+	translate([_arm_loc_brk_x + 1 + 8, (_arm_fcb_y0 + _arm_fcb_y1) / 2 + 3 - 12, _arm_z_bot + _arm_z_h / 2])
+        rotate([90, -90, 0])
+            cylinder(d = 5, h = plate_width);
+
+
+
+}
+
 module z_carriage_left() {
     union() {
         difference() {
@@ -205,6 +229,7 @@ module z_carriage_left() {
             _z_carriage_brk_cutout();
             _z_carriage_cuts();
 			_z_carriage_hollow();
+            _z_carriage_bracket_wall_hole();
         }
         // Inner fillet at the pocket's 90° corner (bracket outer corner in sled local coords)
         // Concave curve faces +X,+Y (into the pocket); rotate 180° so the solid quadrant
@@ -215,6 +240,11 @@ module z_carriage_left() {
 
 
     }
+}
+
+// Right variant: mirror of left along X axis (rod centre is the mirror axis)
+module z_carriage_right() {
+    mirror([1, 0, 0]) z_carriage_left();
 }
 
 z_carriage_left();

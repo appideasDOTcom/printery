@@ -234,7 +234,7 @@ module _z_carriage_sleds() {
 	echo( _z_pre );
 
     // Front-right
-    translate([_cx_fr, _cy_f, _z_pre]) z_carriage_assembly();
+    translate([_cx_fr, _cy_f, _z_pre]) z_carriage_right();
 
     // Rear-center: rotate 180° so relief and lead screw offset face the correct direction
     translate([_cx_rc, _cy_r, _z_pre]) rotate([0, 0, 180]) z_carriage_assembly();
@@ -303,10 +303,10 @@ module _build_plate_brackets() {
 	color("slateblue") {
 		// Front-left: notch faces +X, +Y (no rotation)
 		translate([_cb_origin_x, _cb_origin_y, _cb_z])
-			#front_left_bed_bracket();
+			front_left_bed_bracket();
 		// Front-right: rotate 90° CW → notch faces −X, +Y
 		translate([_cb_origin_x + _cb_span, _cb_origin_y, _cb_z])
-			front_right_bed_bracket();
+			#front_right_bed_bracket();
 		// Rear-right: rotate 180° → notch faces −X, −Y
 		translate([_cb_origin_x + _cb_span, _cb_origin_y + _cb_span, _cb_z])
 			rear_right_bed_bracket();

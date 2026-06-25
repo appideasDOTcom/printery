@@ -67,6 +67,13 @@ _cb_tol        =  0.1;   // fit tolerance
 // Front crossbar starts at world x=72.5; bracket origin at world x=52.5 → local x=20
 _fcb_local_x_start = 20.0;
 
+// Blind M3 hole in the −Y (front) face of the bracket, 12 mm deep,
+// centred at bracket local x=20 (pocket X centre), z=8.6 mm (arm wall Z centre).
+// Aligns with _z_carriage_bracket_wall_hole() in z-carriage-sled.scad.
+_flb_wall_hole_x = plate_width / 2;      // 20 mm
+_flb_wall_hole_z = cb_wall_height / 2;   // 8.6 mm — centre of arm face height
+_flb_wall_hole_d = 12.0;                 // blind depth into bracket
+
 module front_left_bed_bracket() {
     difference() {
         corner_bracket();
@@ -76,6 +83,10 @@ module front_left_bed_bracket() {
         // Left crossbar slot: local x=0..12, z=0..4, spanning local y=20..40
         translate([-_cb_tol, 20, -_cb_tol])
             cube([_cb_bar_width + _cb_tol, plate_depth - 20 + 1, _cb_bar_height + _cb_tol]);
+        // M3 blind hole in −Y face, centred on pocket X and arm wall Z
+        translate([_flb_wall_hole_x, -0.1, _flb_wall_hole_z])
+            rotate([-90, 0, 0])
+                cylinder(d = m3_through_dia, h = _flb_wall_hole_d + 0.1);
         // M3 through-holes into front crossbar overlap (local x=20..40, y=0..12)
         translate([24, 4, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
         translate([34, 8, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
