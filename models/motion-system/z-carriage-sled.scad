@@ -1,4 +1,5 @@
 include <../common/shared-dims.scad>
+use <../common/shapes.scad>
 
 // --- Bearing retainer ---
 zbr_od           = rj_bearing_od + 5.0;                // 20.1 mm
@@ -59,6 +60,11 @@ module _t8_nut_screws() {
 // Bracket arm — connects sled cylinder to corner bracket
 // ---------------------------------------------------------------------------
 
+// Corner bracket dimensions (must match corner-bracket.scad)
+corner_radius = 2;
+plate_width   = 40;
+plate_depth   = 40;
+
 // Frame-level constants (matches placement in top-frame.scad / upper-top-frame.scad)
 _arm_rod_cx   = ex + pb_block_xy / 2;             // 36 mm — front-left rod centre X (frame)
 _arm_rod_cy   = ex + z_lr_rod_cy;                 // 29.1 mm — front-left rod centre Y (frame)
@@ -114,6 +120,18 @@ module _z_carriage_arm_left() {
 // Combined carriage pieces
 // ---------------------------------------------------------------------------
 
+// All subtractions that apply to every variant
+module _z_carriage_cuts() {
+    _zbr_pocket();
+    _zbr_relief();
+    _zbr_outer_clip();
+    translate([0, _z_ls_offset, -0.1])
+        cylinder(d = zcn_id, h = zbr_h + 0.2);
+    translate([0, _z_ls_offset, zbr_h - 3.5])
+        cylinder(d = 22.0 + 0.4, h = 3.5 + 0.1);
+    _t8_nut_screws();
+}
+
 // Base: bearing retainer + lead screw collar (no bracket arm)
 module z_carriage_assembly() {
     difference() {
@@ -128,26 +146,47 @@ module z_carriage_assembly() {
                         cylinder(d = zcn_od, h = zcn_h);
                 }
         }
-        // Bearing pocket, rod entry relief, and outer face clip
-        _zbr_pocket();
-        _zbr_relief();
-        _zbr_outer_clip();
-        // Lead screw bore through the collar nut section
-        translate([0, _z_ls_offset, -0.1])
-            cylinder(d = zcn_id, h = zbr_h + 0.2);
-        // Collar nut counterbore at top face
-        translate([0, _z_ls_offset, zbr_h - 3.5])
-            cylinder(d = 22.0 + 0.4, h = 3.5 + 0.1);
-        // M3 fastener holes for T8 nut flange
-        _t8_nut_screws();
+        _z_carriage_cuts();
     }
+}
+
+// Cutout: bracket footprint that intercepts the arm, with rounded outer corner
+module _z_carriage_brk_cutout() {
+    _r   = corner_radius;          // 2 mm — matches corner-bracket.scad
+    _w   = plate_width;            // 40 mm
+    _d   = plate_depth;            // 40 mm
+    _bx  = _arm_loc_brk_x;        // 16.5 mm — bracket left edge in sled local X
+    _by  = _arm_loc_brk_y;        // 55.9 mm — bracket front edge in sled local Y
+    // Full arm height + epsilon top/bottom to ensure clean cut
+    translate([_bx, _by, _arm_z_bot - 0.1])
+        hull() {
+            // Rounded outer corner at bracket [0,0]
+            translate([_r, _r, 0]) cylinder(r = _r, h = _arm_z_h + 0.2);
+            // Other three corners — sharp (large rectangles flush to edges)
+            translate([0,      0,  0]) cube([_r,  _r,  _arm_z_h + 0.2]);
+            translate([_w - _r, 0,  0]) cube([_r,  _r,  _arm_z_h + 0.2]);
+            translate([0,  _d - _r, 0]) cube([_r,  _r,  _arm_z_h + 0.2]);
+            translate([_w - _r, _d - _r, 0]) cube([_r, _r, _arm_z_h + 0.2]);
+        }
 }
 
 // Left variant: base + bracket arm extending toward front-left corner bracket
 module z_carriage_left() {
     union() {
-        z_carriage_assembly();
-        #_z_carriage_arm_left();
+        difference() {
+            union() {
+                z_carriage_assembly();
+                _z_carriage_arm_left();
+            }
+            _z_carriage_brk_cutout();
+            _z_carriage_cuts();
+        }
+        // Inner fillet at the pocket's 90° corner (bracket outer corner in sled local coords)
+        // Concave curve faces +X,+Y (into the pocket); rotate 180° so the solid quadrant
+        // sits in the −X,−Y material and the curve opens toward the empty pocket space.
+        translate([_arm_loc_brk_x + 2, _arm_loc_brk_y + 2, _arm_z_bot])
+            rotate([0, 0, 0])
+                inner_fillet(d = 4, l = _arm_z_h);
     }
 }
 
