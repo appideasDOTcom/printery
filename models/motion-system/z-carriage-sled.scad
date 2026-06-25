@@ -110,9 +110,11 @@ module _z_carriage_arm_left() {
         translate([-zbr_r, _arm_fcb_y0, _arm_z_bot])
             cube([_arm_loc_fcb_x + zbr_r, _arm_fcb_y1 - _arm_fcb_y0, _arm_z_h]);
 
-        // Left-crossbar end slab — full height, bottom at _arm_z_bot
-        translate([-zbr_r, _arm_lcb_y0, _arm_z_bot])
-            cube([_arm_lcb_x1 + zbr_r, _e, _arm_z_h]);
+        // Left-crossbar end slab — full height, rounded at left corner
+        translate([-zbr_r + corner_radius, _arm_lcb_y0 - corner_radius, _arm_z_bot])
+            cylinder(r = corner_radius, h = _arm_z_h);
+        translate([-zbr_r + corner_radius, _arm_lcb_y0, _arm_z_bot])
+            cube([_arm_lcb_x1 + zbr_r - corner_radius, _e, _arm_z_h]);
     }
 }
 
