@@ -144,6 +144,32 @@ module rear_left_bed_bracket() {
     rotate([0, 0, 270]) _rear_left_cut_bracket();
 }
 
+// Cable tie passthrough channel for the rear-right corner bracket only.
+// Enters the x=0 face (2/3 toward rear, 2mm from top), exits the z=0 bottom face.
+// Cross-section: 3 mm wide (Y-span of cable tie) × 2 mm (thickness).
+// A quarter-torus swept from a rectangular profile gives constant cross-section
+// around the bend, which a cable tie can slide through cleanly.
+module _rr_cable_tie_bore() {
+    ct_w = 3.0;  // cable tie width  (spans Y at entry, X at exit)
+    ct_h = 2.0;  // cable tie height (spans Z at entry, Y at exit)
+    ct_cy = 10;  // Y centre: 2/3 of the 30 mm face toward rear (y=0)
+    // Z centre of entry opening: top of opening 2 mm from top face
+    ct_cz = plate_height - 2 - ct_h / 2;   // = 9.2 mm
+    // Bend radius = ct_cz so the quarter-arc lands exactly on z=0
+    r = ct_cz;
+    // rotate_extrude(angle=90) sweeps the 2D profile around Z (0°→+X, 90°→+Y).
+    // rotate([90,0,0]) tips the sweep axis from Z to -Y, making the arc run in XZ.
+    // rotate([0,0,180]) flips +X→-X and +Y→-Y so arc runs -X (entry) → -Z (exit).
+    // Centre of curvature ends up at the origin before translate.
+    // translate([r, ct_cy, ct_cz]): entry lands at (0, ct_cy, ct_cz), exit at (r, ct_cy, 0).
+    translate([r, ct_cy, ct_cz])
+        rotate([90, 0, 0])
+            rotate([0, 0, 180])
+                rotate_extrude(angle = 90, $fn = 64)
+                    translate([r, 0, 0])
+                        square([ct_h, ct_w], center = true);
+}
+
 module _rear_right_cut_bracket() {
     difference() {
         corner_bracket(include_cutout = true);
@@ -164,6 +190,8 @@ module _rear_right_cut_bracket() {
         translate([34,  8, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + 1, $fn = 6);
         translate([19, 34, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + 1, $fn = 6);
         translate([23, 24, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + 1, $fn = 6);
+        // Cable tie passthrough
+        _rr_cable_tie_bore();
     }
 }
 
