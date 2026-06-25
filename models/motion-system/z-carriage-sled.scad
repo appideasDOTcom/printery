@@ -56,9 +56,63 @@ module _t8_nut_screws() {
 }
 
 // ---------------------------------------------------------------------------
-// Combined carriage piece
+// Bracket arm — connects sled cylinder to corner bracket
 // ---------------------------------------------------------------------------
 
+// Frame-level constants (matches placement in top-frame.scad / upper-top-frame.scad)
+_arm_rod_cx   = ex + pb_block_xy / 2;             // 36 mm — front-left rod centre X (frame)
+_arm_rod_cy   = ex + z_lr_rod_cy;                 // 29.1 mm — front-left rod centre Y (frame)
+_cb_span      = 235;                              // build-plate bracket corner-to-corner span
+_arm_brk_x    = bf_outer_x / 2 - _cb_span / 2;  // 52.5 mm — bracket outer-left X (frame)
+_arm_brk_y    = bf_y_rail / 2 - _cb_span / 2;    // 85 mm — bracket front Y (frame)
+_arm_fcb_x    = bf_outer_x / 2 - 195 / 2;       // 72.5 mm — front crossbar left end X (frame)
+
+// Convert to local sled coordinates (origin = rod centre)
+_arm_loc_brk_x  = _arm_brk_x  - _arm_rod_cx;    // 16.5 mm
+_arm_loc_brk_y  = _arm_brk_y  - _arm_rod_cy;     // 55.9 mm
+_arm_loc_fcb_x  = _arm_fcb_x  - _arm_rod_cx;     // 36.5 mm
+
+// Arm Z extents in local sled space
+_arm_z_bot = zbr_h - cb_wall_height;              // 13.8 mm — bracket / crossbar bottom
+_arm_z_top = zbr_h;                               // 31.0 mm — flush with sled top
+_arm_z_h   = cb_wall_height;                      // 17.2 mm
+
+// Front crossbar inner end in local Y (front face of bracket = front face of crossbar body)
+_arm_fcb_y0 = _arm_loc_brk_y - 2;                    // 55.9 mm — front face
+_arm_fcb_y1 = _arm_fcb_y0 + 12.0;               // 67.9 mm — rear face (bar_width)
+
+// Left crossbar: bracket local x=0..12, local y=20..40 → sled local x=16.5..28.5, y=75.9..95.9
+_arm_lcb_x1 = _arm_loc_brk_x + 12.0;            // 28.5 mm — inner face of left crossbar slot
+_arm_lcb_y0 = _arm_loc_brk_y + 20.0;            // 75.9 mm — left crossbar front face (bracket local y=20)
+
+// Build the left-variant bracket arm using hull() for 45° mitered sides.
+// The shape starts at the cylinder's +Y face and fans out to span both crossbar ends.
+// Two control slabs define the 45° angled walls:
+//   A) at the front-crossbar end: extends from cylinder +Y face to fcb_x at fcb_y0..fcb_y1
+//   B) at the left-crossbar end:  extends from cylinder +Y face to lcb_x1 at lcb_y0
+module _z_carriage_arm_left() {
+    _e       = 0.01;          // epsilon for hull continuity
+    _root_hw = zcn_od / 2;   // half-width at root = lead screw collar radius
+    hull() {
+        // Root slab — centred on X=0, starting at lead screw centre Y
+        translate([-_root_hw, _z_ls_offset - _e, _arm_z_bot])
+            cube([zcn_od, _e, _arm_z_h]);
+
+        // Front-crossbar end slab — spans from left edge to fcb_x, at the crossbar Y band
+        translate([-zbr_r, _arm_fcb_y0, _arm_z_bot])
+            cube([_arm_loc_fcb_x + zbr_r, _arm_fcb_y1 - _arm_fcb_y0, _arm_z_h]);
+
+        // Left-crossbar end slab — spans from left edge to lcb_x1, at the left crossbar front face
+        translate([-zbr_r, _arm_lcb_y0, _arm_z_bot])
+            cube([_arm_lcb_x1 + zbr_r, _e, _arm_z_h]);
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Combined carriage pieces
+// ---------------------------------------------------------------------------
+
+// Base: bearing retainer + lead screw collar (no bracket arm)
 module z_carriage_assembly() {
     difference() {
         union() {
@@ -87,4 +141,12 @@ module z_carriage_assembly() {
     }
 }
 
-z_carriage_assembly();
+// Left variant: base + bracket arm extending toward front-left corner bracket
+module z_carriage_left() {
+    union() {
+        z_carriage_assembly();
+        #_z_carriage_arm_left();
+    }
+}
+
+z_carriage_left();

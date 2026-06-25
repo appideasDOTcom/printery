@@ -230,7 +230,7 @@ module _z_carriage_sleds() {
     _ls_cy_r = bf_rear_y_face - z_lr_bearing_cy;  // 355.7 mm (rear screw)
 
     // Front-left
-    translate([_cx_fl, _cy_f, _z_pre]) z_carriage_assembly();
+    translate([_cx_fl, _cy_f, _z_pre]) z_carriage_left();
 	echo( _z_pre );
 
     // Front-right
