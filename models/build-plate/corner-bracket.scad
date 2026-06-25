@@ -90,6 +90,25 @@ _cb_bar_width  = 12.0;   // bar body depth (Y in crossbar local)
 _cb_bar_height =  6.0;   // bar body height (Z)
 _cb_tol        =  0.1;   // fit tolerance
 
+// M3 crossbar fastener grid — two staggered bolts per crossbar overlap.
+// "along"  = distance from the slot-start (inner joint) end of the overlap.
+// "across" = distance from a long edge of the bar, measured from the overlap's base.
+// Coordinates derive from cb_slot_start / cb_right_inset so they track plate size.
+m3_along_near = 4.0;                          // first bolt, from the inner-joint end
+m3_along_far  = 14.0;                         // second bolt, from the inner-joint end
+m3_edge_near  = 4.0;                          // bolt inset from the near long edge
+m3_edge_far   = _cb_bar_width - m3_edge_near; // 8.0 mm — symmetric inset from the far edge
+
+// Cut one M3 fastener: clearance bore fully through the plate plus a hex nut
+// trap recessed into the top face. Through-hole and trap always share X/Y, so
+// both live here and each fastener position is written exactly once.
+module m3_fastener(x, y) {
+    translate([x, y, _thru_z0])
+        cylinder(d = m3_through_dia, h = _thru_h);
+    translate([x, y, plate_height - buried_m3_nut_depth])
+        cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + _nuttrap_over, $fn = 6);
+}
+
 // Front crossbar starts at world x=72.5; bracket origin at world x=52.5 → local x=cb_slot_start
 _fcb_local_x_start = cb_slot_start;
 
@@ -113,26 +132,21 @@ module front_left_bed_bracket() {
         // // M3 blind holes in -Y face for z_carriage_left() screws
         // translate([1, 0, 8.6])  rotate([-90, 0, 0]) cylinder(d = m3_through_dia, h = 12);
         // translate([9, 0, 8.6])  rotate([-90, 0, 0]) cylinder(d = m3_through_dia, h = 12);
-        // M3 through-holes into front crossbar overlap (local x=20..40, y=0..12)
-        translate([24, 4, _thru_z0]) cylinder(d = m3_through_dia, h = _thru_h);
-        translate([34, 8, _thru_z0]) cylinder(d = m3_through_dia, h = _thru_h);
-        // M3 through-holes into left crossbar overlap (local x=0..12, y=20..40)
-        translate([4, 34, _thru_z0]) cylinder(d = m3_through_dia, h = _thru_h);
-        translate([8, 24, _thru_z0]) cylinder(d = m3_through_dia, h = _thru_h);
-        // M3 nut traps at top face
-        translate([24, 4, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + _nuttrap_over, $fn = 6);
-        translate([34, 8, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + _nuttrap_over, $fn = 6);
-        translate([4, 34, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + _nuttrap_over, $fn = 6);
-        translate([8, 24, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + _nuttrap_over, $fn = 6);
+        // M3 fasteners — front crossbar overlap (X-bar, base y=0)
+        m3_fastener(cb_slot_start + m3_along_near, m3_edge_near);
+        m3_fastener(cb_slot_start + m3_along_far,  m3_edge_far);
+        // M3 fasteners — left crossbar overlap (Y-bar, base x=0)
+        m3_fastener(m3_edge_near, cb_slot_start + m3_along_far);
+        m3_fastener(m3_edge_far,  cb_slot_start + m3_along_near);
 
 		// Z-carriage connector throughholes.
-		translate([11, 13, zc_conn_z])rotate([-90,0,90]) cylinder(d=zc_conn_dia, h=zc_conn_len);
-		translate([10, 0, zc_conn_z])rotate([-90,0,0]) cylinder(d=zc_conn_dia, h=zc_conn_len);
+		translate([11, 13, zc_conn_z]) rotate([-90,0,90]) cylinder(d=zc_conn_dia, h=zc_conn_len);
+		translate([10, 0, zc_conn_z]) rotate([-90,0,0]) cylinder(d=zc_conn_dia, h=zc_conn_len);
 
-		translate([4.6, 13, zc_conn_z]){
+		translate([4.6, 13, zc_conn_z]) {
 			rotate( [0, 0, 90] ) m3_slot();
 		}
-		translate([10, 3, zc_conn_z]){
+		translate([10, 3, zc_conn_z]) {
 			m3_slot();
 		}
     }
@@ -161,27 +175,22 @@ module _front_right_cut_bracket() {
         // Right crossbar slot (15mm inset): local x=20..40, y=15..27
         translate([cb_slot_start, cb_right_inset, -_cb_tol])
             cube([plate_width - cb_slot_start + cb_slot_overrun, _cb_bar_width + _cb_tol, _cb_bar_height + _cb_tol]);
-        // M3 through-holes into front crossbar overlap (local x=0..12, y=20..40)
-        translate([4, 34, _thru_z0]) cylinder(d = m3_through_dia, h = _thru_h);
-        translate([8, 24, _thru_z0]) cylinder(d = m3_through_dia, h = _thru_h);
-        // M3 through-holes into right crossbar overlap (local x=20..40, y=15..27)
-        translate([24, 19, _thru_z0]) cylinder(d = m3_through_dia, h = _thru_h);
-        translate([34, 23, _thru_z0]) cylinder(d = m3_through_dia, h = _thru_h);
-        // M3 nut traps at top face
-        translate([4,  34, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + _nuttrap_over, $fn = 6);
-        translate([8,  24, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + _nuttrap_over, $fn = 6);
-        translate([24, 19, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + _nuttrap_over, $fn = 6);
-        translate([34, 23, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + _nuttrap_over, $fn = 6);
+        // M3 fasteners — front crossbar overlap (Y-bar, base x=0)
+        m3_fastener(m3_edge_near, cb_slot_start + m3_along_far);
+        m3_fastener(m3_edge_far,  cb_slot_start + m3_along_near);
+        // M3 fasteners — right crossbar overlap (X-bar, base y=cb_right_inset)
+        m3_fastener(cb_slot_start + m3_along_near, cb_right_inset + m3_edge_near);
+        m3_fastener(cb_slot_start + m3_along_far,  cb_right_inset + m3_edge_far);
 
 		// Z-carriage connector throughholes.
-		translate([11, 10, zc_conn_z])rotate([-90,0,90]) cylinder(d=zc_conn_dia, h=zc_conn_len);
-		translate([13, 0, zc_conn_z])rotate([-90,0,0]) cylinder(d=zc_conn_dia, h=zc_conn_len);
+		translate([11, 10, zc_conn_z]) rotate([-90,0,90]) cylinder(d=zc_conn_dia, h=zc_conn_len);
+		translate([13, 0, zc_conn_z]) rotate([-90,0,0]) cylinder(d=zc_conn_dia, h=zc_conn_len);
 
-		translate([4.6, 10, zc_conn_z]){
+		translate([4.6, 10, zc_conn_z]) {
 			rotate( [0, 0, 90] ) m3_slot();
 		}
 
-		translate([13, 3, zc_conn_z]){
+		translate([13, 3, zc_conn_z]) {
 			m3_slot();
 		}
     }
@@ -200,17 +209,12 @@ module _rear_left_cut_bracket() {
         // Left crossbar slot: local x=20..40, y=0..12
         translate([cb_slot_start, -_cb_tol, -_cb_tol])
             cube([plate_width - cb_slot_start + cb_slot_overrun, _cb_bar_width + _cb_tol, _cb_bar_height + _cb_tol]);
-        // M3 through-holes into rear crossbar overlap (local x=0..12, y=20..40)
-        translate([4, 34, _thru_z0]) cylinder(d = m3_through_dia, h = _thru_h);
-        translate([8, 24, _thru_z0]) cylinder(d = m3_through_dia, h = _thru_h);
-        // M3 through-holes into left crossbar overlap (local x=20..40, y=0..12)
-        translate([24, 4, _thru_z0]) cylinder(d = m3_through_dia, h = _thru_h);
-        translate([34, 8, _thru_z0]) cylinder(d = m3_through_dia, h = _thru_h);
-        // M3 nut traps at top face
-        translate([4,  34, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + _nuttrap_over, $fn = 6);
-        translate([8,  24, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + _nuttrap_over, $fn = 6);
-        translate([24,  4, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + _nuttrap_over, $fn = 6);
-        translate([34,  8, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + _nuttrap_over, $fn = 6);
+        // M3 fasteners — rear crossbar overlap (Y-bar, base x=0)
+        m3_fastener(m3_edge_near, cb_slot_start + m3_along_far);
+        m3_fastener(m3_edge_far,  cb_slot_start + m3_along_near);
+        // M3 fasteners — left crossbar overlap (X-bar, base y=0)
+        m3_fastener(cb_slot_start + m3_along_near, m3_edge_near);
+        m3_fastener(cb_slot_start + m3_along_far,  m3_edge_far);
     }
 }
 
@@ -253,17 +257,12 @@ module _rear_right_cut_bracket() {
         // Right crossbar slot (15mm inset): local x=15..27, y=20..40
         translate([cb_right_inset, cb_slot_start, -_cb_tol])
             cube([_cb_bar_width + _cb_tol, plate_depth - cb_slot_start + cb_slot_overrun, _cb_bar_height + _cb_tol]);
-        // M3 through-holes into rear crossbar overlap (local x=20..40, y=0..12)
-        translate([24, 4, _thru_z0]) cylinder(d = m3_through_dia, h = _thru_h);
-        translate([34, 8, _thru_z0]) cylinder(d = m3_through_dia, h = _thru_h);
-        // M3 through-holes into right crossbar overlap (local x=15..27, y=20..40)
-        translate([19, 34, _thru_z0]) cylinder(d = m3_through_dia, h = _thru_h);
-        translate([23, 24, _thru_z0]) cylinder(d = m3_through_dia, h = _thru_h);
-        // M3 nut traps at top face
-        translate([24,  4, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + _nuttrap_over, $fn = 6);
-        translate([34,  8, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + _nuttrap_over, $fn = 6);
-        translate([19, 34, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + _nuttrap_over, $fn = 6);
-        translate([23, 24, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + _nuttrap_over, $fn = 6);
+        // M3 fasteners — rear crossbar overlap (X-bar, base y=0)
+        m3_fastener(cb_slot_start + m3_along_near, m3_edge_near);
+        m3_fastener(cb_slot_start + m3_along_far,  m3_edge_far);
+        // M3 fasteners — right crossbar overlap (Y-bar, base x=cb_right_inset)
+        m3_fastener(cb_right_inset + m3_edge_near, cb_slot_start + m3_along_far);
+        m3_fastener(cb_right_inset + m3_edge_far,  cb_slot_start + m3_along_near);
         // Cable tie passthrough
         _rr_cable_tie_bore();
     }
