@@ -247,6 +247,7 @@ module z_carriage_right() {
     mirror([1, 0, 0]) z_carriage_left();
 }
 
-z_carriage_left();
+// z_carriage_left();
+z_carriage_right();
 
 
