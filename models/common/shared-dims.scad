@@ -232,3 +232,10 @@ m5_tnut_clearance    = 20.0;  // Elbow connector occupies first 20 mm of each ra
 // Hotbed mount
 // ---------------------------------------------------------------------------
 cb_wall_height = 17.2;
+
+// Corner bracket plate envelope — shared by corner-bracket.scad and the
+// z-carriage-sled bracket pocket so the two always agree (single source of truth).
+// (corner_radius stays local to each part; it is a per-part rounding choice.)
+plate_width  = 40.0;   // mm — X
+plate_depth  = 40.0;   // mm — Y
+plate_height = 12.2;   // mm — Z

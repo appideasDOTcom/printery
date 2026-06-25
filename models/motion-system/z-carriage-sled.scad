@@ -12,6 +12,15 @@ zcn_od  = 27.0;
 zcn_id  = 10.0 + 0.2;                                  // 10.2 mm lead screw bore
 zcn_h   = 13.5;
 
+// --- T8 anti-backlash nut flange interface (top of sled) ---
+t8_flange_od     = 22.0;   // nut flange outer diameter
+t8_flange_tol    = 0.4;    // clearance added to the flange recess
+t8_flange_recess = 3.5;    // recess depth below the sled top face
+t8_bolt_circle_r = 8.0;    // M3 flange-screw bolt circle radius
+t8_screw_d_bot   = 2.6;    // press-fit minor diameter (bottom of taper)
+t8_screw_d_top   = 3.6;    // tapered entry diameter (top)
+t8_screw_taper_h = 3.0;    // taper depth from the top face
+
 // --- Shared offset: lead screw centre relative to rod centre ---
 _z_ls_offset = z_lr_bearing_cy - z_lr_rod_cy;          // 20.2 mm
 
@@ -45,14 +54,14 @@ module _zbr_outer_clip() {
 // 4 M3 press-fit holes for the T8 nut flange — 8 mm radius, 45° start, every 90°
 module _t8_nut_screws() {
     for (a = [45, 135, 225, 315]) {
-        _hx = 8.0 * cos(a);
-        _hy = 8.0 * sin(a);
-        // Tapered entry: 3.6 mm at top, 2.6 mm at bottom, 3 mm deep
-        translate([_hx, _z_ls_offset + _hy, zbr_h - 3])
-            cylinder(d1 = 2.6, d2 = 3.6, h = 3.1);
+        _hx = t8_bolt_circle_r * cos(a);
+        _hy = t8_bolt_circle_r * sin(a);
+        // Tapered entry: t8_screw_d_top at top, t8_screw_d_bot at bottom, t8_screw_taper_h deep
+        translate([_hx, _z_ls_offset + _hy, zbr_h - t8_screw_taper_h])
+            cylinder(d1 = t8_screw_d_bot, d2 = t8_screw_d_top, h = t8_screw_taper_h + 0.1);
         // Straight bore through the remainder
         translate([_hx, _z_ls_offset + _hy, -0.1])
-            cylinder(d = 2.6, h = zbr_h - 3 + 0.2);
+            cylinder(d = t8_screw_d_bot, h = zbr_h - t8_screw_taper_h + 0.2);
     }
 }
 
@@ -60,18 +69,23 @@ module _t8_nut_screws() {
 // Bracket arm — connects sled cylinder to corner bracket
 // ---------------------------------------------------------------------------
 
-// Corner bracket dimensions (must match corner-bracket.scad)
-corner_radius = 2;
-plate_width   = 40;
-plate_depth   = 40;
+// Corner bracket dimensions (plate_width/plate_depth come from shared-dims.scad)
+corner_radius = 2;        // local per-part rounding, matches corner-bracket.scad
+
+// Crossbar geometry (must match front-crossbar.scad / corner-bracket.scad)
+cb_bar_width  = 12.0;     // crossbar body depth — bracket slot width
+cb_span       = 235.0;    // build-plate bracket corner-to-corner span
+fcb_length    = 195.0;    // front crossbar length
+cb_slot_start = plate_width / 2;   // 20 mm — crossbar meets the bracket midpoint
+_fcb_front_offset = 2.0;  // bracket front face sits this far ahead of the rod-local brk_y
 
 // Frame-level constants (matches placement in top-frame.scad / upper-top-frame.scad)
 _arm_rod_cx   = ex + pb_block_xy / 2;             // 36 mm — front-left rod centre X (frame)
 _arm_rod_cy   = ex + z_lr_rod_cy;                 // 29.1 mm — front-left rod centre Y (frame)
-_cb_span      = 235;                              // build-plate bracket corner-to-corner span
+_cb_span      = cb_span;                          // build-plate bracket corner-to-corner span
 _arm_brk_x    = bf_outer_x / 2 - _cb_span / 2;  // 52.5 mm — bracket outer-left X (frame)
 _arm_brk_y    = bf_y_rail / 2 - _cb_span / 2;    // 85 mm — bracket front Y (frame)
-_arm_fcb_x    = bf_outer_x / 2 - 195 / 2;       // 72.5 mm — front crossbar left end X (frame)
+_arm_fcb_x    = bf_outer_x / 2 - fcb_length / 2;       // 72.5 mm — front crossbar left end X (frame)
 
 // Convert to local sled coordinates (origin = rod centre)
 _arm_loc_brk_x  = _arm_brk_x  - _arm_rod_cx;    // 16.5 mm
@@ -84,12 +98,12 @@ _arm_z_top = zbr_h;                               // 31.0 mm — flush with sled
 _arm_z_h   = cb_wall_height;                      // 17.2 mm
 
 // Front crossbar inner end in local Y (front face of bracket = front face of crossbar body)
-_arm_fcb_y0 = _arm_loc_brk_y - 2;                    // 55.9 mm — front face
-_arm_fcb_y1 = _arm_fcb_y0 + 12.0;               // 67.9 mm — rear face (bar_width)
+_arm_fcb_y0 = _arm_loc_brk_y - _fcb_front_offset;    // 55.9 mm — front face
+_arm_fcb_y1 = _arm_fcb_y0 + cb_bar_width;       // 67.9 mm — rear face (bar_width)
 
 // Left crossbar: bracket local x=0..12, local y=20..40 → sled local x=16.5..28.5, y=75.9..95.9
-_arm_lcb_x1 = _arm_loc_brk_x + 12.0;            // 28.5 mm — inner face of left crossbar slot
-_arm_lcb_y0 = _arm_loc_brk_y + 20.0;            // 75.9 mm — left crossbar front face (bracket local y=20)
+_arm_lcb_x1 = _arm_loc_brk_x + cb_bar_width;    // 28.5 mm — inner face of left crossbar slot
+_arm_lcb_y0 = _arm_loc_brk_y + cb_slot_start;   // 75.9 mm — left crossbar front face (bracket local y=20)
 
 // Build the left-variant bracket arm using hull() for 45° mitered sides.
 // The shape starts at the cylinder's +Y face and fans out to span both crossbar ends.
@@ -129,8 +143,8 @@ module _z_carriage_cuts() {
     _zbr_outer_clip();
     translate([0, _z_ls_offset, -0.1])
         cylinder(d = zcn_id, h = zbr_h + 0.2);
-    translate([0, _z_ls_offset, zbr_h - 3.5])
-        cylinder(d = 22.0 + 0.4, h = 3.5 + 0.1);
+    translate([0, _z_ls_offset, zbr_h - t8_flange_recess])
+        cylinder(d = t8_flange_od + t8_flange_tol, h = t8_flange_recess + 0.1);
     _t8_nut_screws();
 }
 
@@ -174,21 +188,25 @@ module _z_carriage_brk_cutout() {
 
 module _z_carriage_hollow() {
 
-	_wall_offset = 4;
-	translate( [0, 0, -3] ) {
+	_wall_offset    = 4;     // inset of the pocket walls from the control points
+	_hollow_tube_d  = 4;     // diameter of each hull pillar (governs corner radius)
+	_hollow_z_shift = -3;    // drop the pocket below the arm bottom for a clean cut
+	// NOTE: the X/Y control points below were placed empirically to trace the
+	// underside pocket; they are intentionally left as literals.
+	translate( [0, 0, _hollow_z_shift] ) {
 
 		hull() {
-			translate([-10 + _wall_offset,  32 + _wall_offset, _arm_z_bot]) cylinder(d = 4, h = _arm_z_h);
-			translate([ 23 - _wall_offset,  32 + _wall_offset, _arm_z_bot]) cylinder(d = 4, h = _arm_z_h);
-			translate([ 34 - _wall_offset,  56 - _wall_offset, _arm_z_bot]) cylinder(d = 4, h = _arm_z_h);
-			translate([ 16 - _wall_offset,  56 - _wall_offset, _arm_z_bot]) cylinder(d = 4, h = _arm_z_h);
+			translate([-10 + _wall_offset,  32 + _wall_offset, _arm_z_bot]) cylinder(d = _hollow_tube_d, h = _arm_z_h);
+			translate([ 23 - _wall_offset,  32 + _wall_offset, _arm_z_bot]) cylinder(d = _hollow_tube_d, h = _arm_z_h);
+			translate([ 34 - _wall_offset,  56 - _wall_offset, _arm_z_bot]) cylinder(d = _hollow_tube_d, h = _arm_z_h);
+			translate([ 16 - _wall_offset,  56 - _wall_offset, _arm_z_bot]) cylinder(d = _hollow_tube_d, h = _arm_z_h);
 		}
 
 		hull() {
-			translate([-10 + _wall_offset,  32 + _wall_offset, _arm_z_bot]) cylinder(d = 4, h = _arm_z_h);
-			translate([ 16 - _wall_offset,  56 - _wall_offset, _arm_z_bot]) cylinder(d = 4, h = _arm_z_h);
-			translate([-10 + _wall_offset,  76 - _wall_offset, _arm_z_bot]) cylinder(d = 4, h = _arm_z_h);
-			translate([ 16 - _wall_offset,  76 - _wall_offset, _arm_z_bot]) cylinder(d = 4, h = _arm_z_h);
+			translate([-10 + _wall_offset,  32 + _wall_offset, _arm_z_bot]) cylinder(d = _hollow_tube_d, h = _arm_z_h);
+			translate([ 16 - _wall_offset,  56 - _wall_offset, _arm_z_bot]) cylinder(d = _hollow_tube_d, h = _arm_z_h);
+			translate([-10 + _wall_offset,  76 - _wall_offset, _arm_z_bot]) cylinder(d = _hollow_tube_d, h = _arm_z_h);
+			translate([ 16 - _wall_offset,  76 - _wall_offset, _arm_z_bot]) cylinder(d = _hollow_tube_d, h = _arm_z_h);
 		}
 	}
 
@@ -200,20 +218,23 @@ module _z_carriage_hollow() {
 module _z_carriage_bracket_wall_hole() {
     _hx = (-zbr_r + _arm_loc_brk_x) / 2;  // 3.2 mm — X centre of wall material
     _hz = _arm_z_bot + _arm_z_h / 2;       // 22.4 mm — Z centre of wall height
-    translate([_arm_loc_brk_x + 1, (_arm_fcb_y0 + _arm_fcb_y1) / 2 + 9, _arm_z_bot + _arm_z_h / 2 - 2.6])
+    _hole_z   = _arm_z_bot + _arm_z_h / 2 - 2.6;       // 19.8 mm — fastener bore Z
+    _fcb_mid  = (_arm_fcb_y0 + _arm_fcb_y1) / 2;       // Y midline of the front crossbar pocket
+    _access_d = 5;                                     // allen-wrench access bore diameter
+    translate([_arm_loc_brk_x + 1, _fcb_mid + 9, _hole_z])
         rotate([0, -90, 0])
             cylinder(d = m3_through_dia, h = plate_width);
 	// Cutout for allen wrench access.
-	translate([_arm_loc_brk_x -10, (_arm_fcb_y0 + _arm_fcb_y1) / 2 + 9, _arm_z_bot + _arm_z_h / 2 - 2.6])
+	translate([_arm_loc_brk_x -10, _fcb_mid + 9, _hole_z])
         rotate([0, -90, 0])
-            cylinder(d = 5, h = plate_width);
+            cylinder(d = _access_d, h = plate_width);
 
-	translate([_arm_loc_brk_x + 1 + 9, (_arm_fcb_y0 + _arm_fcb_y1) / 2 + 3, _arm_z_bot + _arm_z_h / 2 - 2.6])
+	translate([_arm_loc_brk_x + 1 + 9, _fcb_mid + 3, _hole_z])
         rotate([90, -90, 0])
             cylinder(d = m3_through_dia, h = plate_width);
-	translate([_arm_loc_brk_x + 1 + 9, (_arm_fcb_y0 + _arm_fcb_y1) / 2 + 3 - 12, _arm_z_bot + _arm_z_h / 2 - 2.6])
+	translate([_arm_loc_brk_x + 1 + 9, _fcb_mid + 3 - 12, _hole_z])
         rotate([90, -90, 0])
-            cylinder(d = 5, h = plate_width);
+            cylinder(d = _access_d, h = plate_width);
 
 
 
