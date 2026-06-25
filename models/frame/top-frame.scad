@@ -303,7 +303,7 @@ module _build_plate_brackets() {
 	color("slateblue") {
 		// Front-left: notch faces +X, +Y (no rotation)
 		translate([_cb_origin_x, _cb_origin_y, _cb_z])
-			front_left_bed_bracket();
+			#front_left_bed_bracket();
 		// Front-right: rotate 90° CW → notch faces −X, +Y
 		translate([_cb_origin_x + _cb_span, _cb_origin_y, _cb_z])
 			front_right_bed_bracket();

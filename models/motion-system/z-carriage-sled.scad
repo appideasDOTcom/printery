@@ -172,6 +172,28 @@ module _z_carriage_brk_cutout() {
         }
 }
 
+module _z_carriage_hollow() {
+
+	_wall_offset = 4;
+	translate( [0, 0, -3] ) {
+
+		hull() {
+			translate([-10 + _wall_offset,  32 + _wall_offset, _arm_z_bot]) cylinder(d = 4, h = _arm_z_h);
+			translate([ 23 - _wall_offset,  32 + _wall_offset, _arm_z_bot]) cylinder(d = 4, h = _arm_z_h);
+			translate([ 34 - _wall_offset,  56 - _wall_offset, _arm_z_bot]) cylinder(d = 4, h = _arm_z_h);
+			translate([ 16 - _wall_offset,  56 - _wall_offset, _arm_z_bot]) cylinder(d = 4, h = _arm_z_h);
+		}
+
+		hull() {
+			translate([-10 + _wall_offset,  32 + _wall_offset, _arm_z_bot]) cylinder(d = 4, h = _arm_z_h);
+			translate([ 16 - _wall_offset,  56 - _wall_offset, _arm_z_bot]) cylinder(d = 4, h = _arm_z_h);
+			translate([-10 + _wall_offset,  76 - _wall_offset, _arm_z_bot]) cylinder(d = 4, h = _arm_z_h);
+			translate([ 16 - _wall_offset,  76 - _wall_offset, _arm_z_bot]) cylinder(d = 4, h = _arm_z_h);
+		}
+	}
+
+}
+
 // Left variant: base + bracket arm extending toward front-left corner bracket
 module z_carriage_left() {
     union() {
@@ -182,6 +204,7 @@ module z_carriage_left() {
             }
             _z_carriage_brk_cutout();
             _z_carriage_cuts();
+			_z_carriage_hollow();
         }
         // Inner fillet at the pocket's 90° corner (bracket outer corner in sled local coords)
         // Concave curve faces +X,+Y (into the pocket); rotate 180° so the solid quadrant
@@ -189,7 +212,11 @@ module z_carriage_left() {
         translate([_arm_loc_brk_x + 2, _arm_loc_brk_y + 2, _arm_z_bot])
             rotate([0, 0, 0])
                 inner_fillet(d = 4, l = _arm_z_h);
+
+
     }
 }
 
 z_carriage_left();
+
+
