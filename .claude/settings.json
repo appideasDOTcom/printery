@@ -343,7 +343,9 @@
       "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings --colorscheme=Tomorrow --imgsize=1200,900 --camera=20,20,6,60,0,30,130 -o /private/tmp/bracket-debug3.png models/build-plate/corner-bracket.scad)",
       "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings --colorscheme=Tomorrow --imgsize=1600,1200 --camera=85,92,265,55,0,25,180 -o /private/tmp/alignment-check.png models/frame/top-frame.scad)",
       "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings --colorscheme=Tomorrow --imgsize=1600,1200 --camera=255,92,265,55,0,335,180 -o /private/tmp/alignment-fr.png models/frame/top-frame.scad)",
-      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings --colorscheme=Tomorrow --imgsize=1200,900 --camera=20,20,6,55,0,30,120 -o /private/tmp/fl-debug.png models/build-plate/corner-bracket.scad)"
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings --colorscheme=Tomorrow --imgsize=1200,900 --camera=20,20,6,55,0,30,120 -o /private/tmp/fl-debug.png models/build-plate/corner-bracket.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --hardwarnings -o /private/tmp/claude-501/-Users-costmo-Documents-dev-printing-printery/139617cb-36cf-4794-bde0-2bd9414068c3/scratchpad/right-bracket.png --camera=20,20,6,55,0,25,120 --render /Users/costmo/Documents/dev/printing/printery/models/build-plate/corner-bracket.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD -o /private/tmp/claude-501/-Users-costmo-Documents-dev-printing-printery/139617cb-36cf-4794-bde0-2bd9414068c3/scratchpad/right-bracket.png --camera=20,20,6,55,0,25,150 --autocenter --viewall --render=fast /private/tmp/claude-501/-Users-costmo-Documents-dev-printing-printery/139617cb-36cf-4794-bde0-2bd9414068c3/scratchpad/right-only.scad)"
     ],
     "additionalDirectories": [
       "/Users/costmo/Documents/dev/printing/printery/.claude",
