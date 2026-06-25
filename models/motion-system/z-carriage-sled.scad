@@ -200,18 +200,18 @@ module _z_carriage_hollow() {
 module _z_carriage_bracket_wall_hole() {
     _hx = (-zbr_r + _arm_loc_brk_x) / 2;  // 3.2 mm — X centre of wall material
     _hz = _arm_z_bot + _arm_z_h / 2;       // 22.4 mm — Z centre of wall height
-    translate([_arm_loc_brk_x + 1, (_arm_fcb_y0 + _arm_fcb_y1) / 2 + 3, _arm_z_bot + _arm_z_h / 2])
+    translate([_arm_loc_brk_x + 1, (_arm_fcb_y0 + _arm_fcb_y1) / 2 + 9, _arm_z_bot + _arm_z_h / 2 - 2.6])
         rotate([0, -90, 0])
             cylinder(d = m3_through_dia, h = plate_width);
 	// Cutout for allen wrench access.
-	translate([_arm_loc_brk_x -10, (_arm_fcb_y0 + _arm_fcb_y1) / 2 + 3, _arm_z_bot + _arm_z_h / 2])
+	translate([_arm_loc_brk_x -10, (_arm_fcb_y0 + _arm_fcb_y1) / 2 + 9, _arm_z_bot + _arm_z_h / 2 - 2.6])
         rotate([0, -90, 0])
             cylinder(d = 5, h = plate_width);
 
-	translate([_arm_loc_brk_x + 1 + 8, (_arm_fcb_y0 + _arm_fcb_y1) / 2 + 3, _arm_z_bot + _arm_z_h / 2])
+	translate([_arm_loc_brk_x + 1 + 9, (_arm_fcb_y0 + _arm_fcb_y1) / 2 + 3, _arm_z_bot + _arm_z_h / 2 - 2.6])
         rotate([90, -90, 0])
             cylinder(d = m3_through_dia, h = plate_width);
-	translate([_arm_loc_brk_x + 1 + 8, (_arm_fcb_y0 + _arm_fcb_y1) / 2 + 3 - 12, _arm_z_bot + _arm_z_h / 2])
+	translate([_arm_loc_brk_x + 1 + 9, (_arm_fcb_y0 + _arm_fcb_y1) / 2 + 3 - 12, _arm_z_bot + _arm_z_h / 2 - 2.6])
         rotate([90, -90, 0])
             cylinder(d = 5, h = plate_width);
 

@@ -75,6 +75,7 @@ _flb_wall_hole_z = cb_wall_height / 2;   // 8.6 mm — centre of arm face height
 _flb_wall_hole_d = 12.0;                 // blind depth into bracket
 
 module front_left_bed_bracket() {
+
     difference() {
         corner_bracket();
         // Front crossbar slot: local y=0..12, z=0..4, starting at local x=20
@@ -83,10 +84,9 @@ module front_left_bed_bracket() {
         // Left crossbar slot: local x=0..12, z=0..4, spanning local y=20..40
         translate([-_cb_tol, 20, -_cb_tol])
             cube([_cb_bar_width + _cb_tol, plate_depth - 20 + 1, _cb_bar_height + _cb_tol]);
-        // M3 blind hole in −Y face, centred on pocket X and arm wall Z
-        translate([_flb_wall_hole_x, -0.1, _flb_wall_hole_z])
-            rotate([-90, 0, 0])
-                cylinder(d = m3_through_dia, h = _flb_wall_hole_d + 0.1);
+        // // M3 blind holes in -Y face for z_carriage_left() screws
+        // translate([1, 0, 8.6])  rotate([-90, 0, 0]) cylinder(d = m3_through_dia, h = 12);
+        // translate([9, 0, 8.6])  rotate([-90, 0, 0]) cylinder(d = m3_through_dia, h = 12);
         // M3 through-holes into front crossbar overlap (local x=20..40, y=0..12)
         translate([24, 4, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
         translate([34, 8, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
@@ -98,7 +98,32 @@ module front_left_bed_bracket() {
         translate([34, 8, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + 1, $fn = 6);
         translate([4, 34, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + 1, $fn = 6);
         translate([8, 24, plate_height - buried_m3_nut_depth]) cylinder(d = m3_nut_corner_dia, h = buried_m3_nut_depth + 1, $fn = 6);
+
+		// Z-carriage connector throughholes.
+		translate([11, 13, 6]) rotate([-90,0,90]) cylinder(d=3, h=12);
+		translate([10, 0, 6]) rotate([-90,0,0]) cylinder(d=3, h=12);
+
+		translate([4.6, 13, 6]) {
+			rotate( [0, 0, 90] ) m3_slot();
+		}
+		translate([10, 3, 6]) {
+			m3_slot();
+		}
     }
+
+
+
+
+
+}
+
+module m3_slot() {
+
+	hull() {
+		rotate([-90,90,0]) cylinder(d=6.3, h=2.6, $fn=6);
+		translate([0, 0, -15]) rotate([-90,90,0]) cylinder(d=6.3, h=2.6, $fn=6);
+	}
+
 }
 
 module _front_right_cut_bracket() {
@@ -110,6 +135,9 @@ module _front_right_cut_bracket() {
         // Right crossbar slot (15mm inset): local x=20..40, y=15..27
         translate([20, 15, -_cb_tol])
             cube([plate_width - 20 + 1, _cb_bar_width + _cb_tol, _cb_bar_height + _cb_tol]);
+        // M3 blind holes in -Y face for z_carriage_right() screws
+        translate([7, 0, 8.6])  rotate([-90, 0, 0]) cylinder(d = m3_through_dia, h = 12);
+        translate([7, 8, 8.6])  rotate([-90, 0, 0]) cylinder(d = m3_through_dia, h = 12);
         // M3 through-holes into front crossbar overlap (local x=0..12, y=20..40)
         translate([4, 34, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
         translate([8, 24, -1]) cylinder(d = m3_through_dia, h = plate_height + 2);
@@ -210,8 +238,5 @@ module rear_right_bed_bracket() {
     rotate([0, 0, 180]) _rear_right_cut_bracket();
 }
 
-// corner_bracket();
-// front_left_bed_bracket(); // A. front-left
-// front_right_bed_bracket(); // B. front-right
-// rear_left_bed_bracket(); // C. rear-left
-rear_right_bed_bracket(); // D. rear-right
+front_left_bed_bracket();
+
