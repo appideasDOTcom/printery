@@ -91,18 +91,20 @@ _arm_lcb_y0 = _arm_loc_brk_y + 20.0;            // 75.9 mm — left crossbar fro
 //   A) at the front-crossbar end: extends from cylinder +Y face to fcb_x at fcb_y0..fcb_y1
 //   B) at the left-crossbar end:  extends from cylinder +Y face to lcb_x1 at lcb_y0
 module _z_carriage_arm_left() {
-    _e       = 0.01;          // epsilon for hull continuity
-    _root_hw = zcn_od / 2;   // half-width at root = lead screw collar radius
+    _e          = 0.01;
+    _root_hw    = zcn_od / 2;
+    _root_z_bot = zbr_h - zcn_h;        // 17.5 mm — bottom at root, flush with top of lower cylinder
+    _root_z_h   = zbr_h - _root_z_bot;  // 13.5 mm — height at root (= zcn_h)
     hull() {
-        // Root slab — centred on X=0, starting at lead screw centre Y
-        translate([-_root_hw, _z_ls_offset - _e, _arm_z_bot])
-            cube([zcn_od, _e, _arm_z_h]);
+        // Root slab — top flat at zbr_h, bottom raised to meet the lower cylinder top
+        translate([-_root_hw, _z_ls_offset - _e, _root_z_bot])
+            cube([zcn_od, _e, _root_z_h]);
 
-        // Front-crossbar end slab — spans from left edge to fcb_x, at the crossbar Y band
+        // Front-crossbar end slab — full height, bottom at _arm_z_bot
         translate([-zbr_r, _arm_fcb_y0, _arm_z_bot])
             cube([_arm_loc_fcb_x + zbr_r, _arm_fcb_y1 - _arm_fcb_y0, _arm_z_h]);
 
-        // Left-crossbar end slab — spans from left edge to lcb_x1, at the left crossbar front face
+        // Left-crossbar end slab — full height, bottom at _arm_z_bot
         translate([-zbr_r, _arm_lcb_y0, _arm_z_bot])
             cube([_arm_lcb_x1 + zbr_r, _e, _arm_z_h]);
     }
