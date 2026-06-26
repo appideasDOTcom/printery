@@ -314,6 +314,40 @@ module _z_carriage_rear_web() {
         translate([_tri_base_x_r - _tri_slab_xw, _tri_base_y, _tri_base_bot])
             cube([_tri_slab_xw, _tri_slab_yd, _tri_top_z - _tri_base_bot]);
     }
+
+	translate([_tri_base_x_l + 1, _tri_base_y + 1, _tri_base_bot])
+		_rear_web_edge_fill();
+
+	translate([_tri_base_x_r - _tri_slab_xw +1, _tri_base_y + 1, _tri_base_bot + _tri_top_z - _tri_base_bot - 5])
+		rotate([180, 0, 180]) _rear_web_edge_fill();
+}
+
+module _rear_web_edge_fill() {
+
+	hull() {
+		translate( [0, 0, 0] ) cylinder(d = 2, h = _tri_top_z - _tri_base_bot - 5);
+		translate( [-6.5, 0.6, 0] ) cylinder(d = 2, h = _tri_top_z - _tri_base_bot - 5);
+		translate( [-6.5, 8, 0] ) cylinder(d = 2, h = _tri_top_z - _tri_base_bot - 5);
+		translate( [0, 8, 0] ) cylinder(d = 2, h = _tri_top_z - _tri_base_bot - 5);
+	}
+
+}
+
+module _rear_carriage_hollow() {
+	translate( [0, _rcb_y - 10, _tri_top_z - 23] ) {
+		hull() {
+			cylinder( d = 4, h = 20 );
+
+			translate([-26, 0, 0]) cylinder( d = 4, h = 20 );
+			translate([26, 0, 0]) cylinder( d = 4, h = 20 );
+
+			translate([-50, 13, 0]) cylinder( d = 4, h = 20 );
+			translate([50, 13, 0]) cylinder( d = 4, h = 20 );
+
+			translate([-50, 18.5, 0]) cylinder( d = 4, h = 20 );
+			translate([50, 18.5, 0]) cylinder( d = 4, h = 20 );
+		}
+	}
 }
 
 // ---------------------------------------------------------------------------
@@ -373,6 +407,7 @@ module z_carriage_rear() {
         _z_carriage_cuts();
         _rail_block_fasteners();
 		_bed_alignment_fasteners();
+		_rear_carriage_hollow();
     }
 
 }
