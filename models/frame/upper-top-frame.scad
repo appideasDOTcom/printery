@@ -24,6 +24,9 @@ include <../common/shared-dims.scad>
 use <../common/2020-extrusion.scad>
 use <../motion-system/y-rod-mount.scad>
 use <../motion-system/z-carriage-sled.scad>
+use <../build-plate/corner-bracket.scad>
+use <../build-plate/front-crossbar.scad>
+use <../build-plate/right-crossbar.scad>
 
 // ---------------------------------------------------------------------------
 // Dimensions — now in shared-dims.scad (utf_post_h, utf_post_bot_z, etc.)
@@ -142,10 +145,55 @@ module _z_carriage_sleds() {
     translate([_cx_fl, _cy_f, _z_pre]) z_carriage_left();
 
     // Front-right
-    translate([_cx_fr, _cy_f, _z_pre]) z_carriage_assembly();
+    translate([_cx_fr, _cy_f, _z_pre]) z_carriage_right();
 
     // Rear-center: rotate 180° so relief and lead screw offset face the correct direction
-    translate([_cx_rc, _cy_r, _z_pre]) rotate([0, 0, 180]) z_carriage_assembly();
+    translate([_cx_rc, _cy_r, _z_pre]) rotate([0, 0, 180]) z_carriage_rear();
+}
+
+// ---------------------------------------------------------------------------
+// Build-plate bracket / crossbar positioning (matches top-frame.scad)
+// ---------------------------------------------------------------------------
+
+_cb_span      = 235;
+_cb_origin_x  = bf_outer_x / 2 - _cb_span / 2;
+_cb_origin_y  = bf_y_rail / 2 - _cb_span / 2;
+_cb_sled_z    = ((pb_lower_top_z + pb_upper_bot_z) / 2 - (rj_base_y + 2) / 2);
+_cb_z         = _cb_sled_z + 31 - cb_wall_height;
+_cb_bar_z     = _cb_z;
+
+_fcb_length   = 195;
+_fcb_origin_x = bf_outer_x / 2 - _fcb_length / 2;
+_rcb_origin_x = bf_outer_x / 2 + _fcb_length / 2;
+_lcb_origin_x = _cb_origin_x;
+_lcb_origin_y = _cb_origin_y + _cb_span / 2 + _fcb_length / 2;
+_rcb_side_x   = _cb_origin_x + _cb_span;
+_rcb_side_y   = _cb_origin_y + _cb_span / 2 - _fcb_length / 2;
+
+module _build_plate_brackets() {
+    color("slateblue") {
+        translate([_cb_origin_x, _cb_origin_y, _cb_z])
+            front_left_bed_bracket();
+        translate([_cb_origin_x + _cb_span, _cb_origin_y, _cb_z])
+            front_right_bed_bracket();
+        translate([_cb_origin_x + _cb_span, _cb_origin_y + _cb_span, _cb_z])
+            rear_right_bed_bracket();
+        translate([_cb_origin_x, _cb_origin_y + _cb_span, _cb_z])
+            rear_left_bed_bracket();
+    }
+
+    color("lightblue") {
+        translate([_fcb_origin_x, _cb_origin_y, _cb_bar_z])
+            front_crossbar();
+        translate([_rcb_origin_x, _cb_origin_y + _cb_span, _cb_bar_z])
+            rear_crossbar();
+        translate([_lcb_origin_x, _lcb_origin_y, _cb_bar_z])
+            rotate([0, 0, -90])
+                front_crossbar();
+        translate([_rcb_side_x - 15, _rcb_side_y, _cb_bar_z])
+            rotate([0, 0, 90])
+                right_crossbar();
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -176,3 +224,5 @@ color("tomato") translate([_hc_place_x, _hc_place_y, _hc_place_z]) hotend_carria
 // Local X=0 placed at the right extrusion inner face; body extends inward (−X)
 color("tomato") translate([bf_outer_x - ex, ex + z_lr_block_depth + 20.5, pb_lower_bot_z])
     z_belt_tensioner();
+
+_build_plate_brackets();
