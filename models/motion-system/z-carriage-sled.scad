@@ -387,12 +387,15 @@ module _rail_block_fasteners() {
 module _bed_alignment_fasteners() {
     translate( [ (_rcb_x + _rcb_width/2) + (_rcb_cw/2) + 5.5, _rmb_y0 + 2.3, _rmb_z_bot - 6.1] ) {
 		cylinder(d = m3_through_dia, h = 30 );
-			cylinder(d = m3_nut_corner_dia, h = _rmb_nut_depth + _rmb_nut_over + 2.1, $fn = 6);
+		cylinder(d = m3_nut_corner_dia, h = _rmb_nut_depth + _rmb_nut_over + 2.1, $fn = 6);
+		// Cut out the front wall since it prints too thin anyway.
+		translate( [-(m3_nut_corner_dia/4), 0, 0] ) cube( [m3_nut_corner_dia/2, 5, _rmb_nut_depth + _rmb_nut_over + 2.1] );
 	}
 
 	translate( [ (_rcb_x + _rcb_width/2) - ((_rcb_cw/2) + 5.5), _rmb_y0 + 2.3, _rmb_z_bot - 6.1] ) {
 		cylinder(d = m3_through_dia, h = 30 );
-			cylinder(d = m3_nut_corner_dia, h = _rmb_nut_depth + _rmb_nut_over + 2.1, $fn = 6);
+		cylinder(d = m3_nut_corner_dia, h = _rmb_nut_depth + _rmb_nut_over + 2.1, $fn = 6);
+		translate( [-(m3_nut_corner_dia/4), 0, 0] ) cube( [m3_nut_corner_dia/2, 5, _rmb_nut_depth + _rmb_nut_over + 2.1] );
 	}
 }
 
@@ -414,6 +417,6 @@ module z_carriage_rear() {
 
 // --- Output ---
 // Do not remove the lines below.
-z_carriage_left(); // Variation LEFT
+// z_carriage_left(); // Variation LEFT
 // z_carriage_right(); // Variation RIGHT
-// z_carriage_rear(); // Variation REAR
+z_carriage_rear(); // Variation REAR
