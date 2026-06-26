@@ -361,7 +361,13 @@
       "Bash(python3 - /private/tmp/claude-501/-Users-costmo-Documents-dev-printing-printery/6d533892-00fe-4fd7-a560-63a3dae22c02/scratchpad/bigdiff.stl)",
       "Bash(sed 's#include <cb_novars.scad>#include </Users/costmo/Documents/dev/printing/printery/models/build-plate/corner-bracket.scad>#' /private/tmp/claude-501/-Users-costmo-Documents-dev-printing-printery/6d533892-00fe-4fd7-a560-63a3dae22c02/scratchpad/assert_coords.scad)",
       "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD -o /private/tmp/claude-501/-Users-costmo-Documents-dev-printing-printery/6d533892-00fe-4fd7-a560-63a3dae22c02/scratchpad/_a.stl /private/tmp/claude-501/-Users-costmo-Documents-dev-printing-printery/6d533892-00fe-4fd7-a560-63a3dae22c02/scratchpad/assert_coords2.scad)",
-      "Bash(perl -pi -e 's/zc_conn_z\\\\]\\\\\\)rotate/zc_conn_z]\\) rotate/g; s/zc_conn_z\\\\]\\\\\\)\\\\{/zc_conn_z]\\) {/g' models/build-plate/corner-bracket.scad)"
+      "Bash(perl -pi -e 's/zc_conn_z\\\\]\\\\\\)rotate/zc_conn_z]\\) rotate/g; s/zc_conn_z\\\\]\\\\\\)\\\\{/zc_conn_z]\\) {/g' models/build-plate/corner-bracket.scad)",
+      "Bash(openscad --export-format png -o /private/tmp/claude-501/-Users-costmo-Documents-dev-printing-printery/ce881fc8-2a09-454c-b7eb-43386c9bddf6/scratchpad/z-rear-top.png --camera=0,60,15,55,0,0,250 models/motion-system/z-carriage-sled.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format png -o /private/tmp/claude-501/-Users-costmo-Documents-dev-printing-printery/ce881fc8-2a09-454c-b7eb-43386c9bddf6/scratchpad/z-rear-top.png --camera=0,60,25,55,0,0,300 models/motion-system/z-carriage-sled.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format png -o /private/tmp/claude-501/-Users-costmo-Documents-dev-printing-printery/ce881fc8-2a09-454c-b7eb-43386c9bddf6/scratchpad/z-rear-side.png --camera=200,60,25,75,0,0,200 models/motion-system/z-carriage-sled.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format png -o /private/tmp/claude-501/-Users-costmo-Documents-dev-printing-printery/ce881fc8-2a09-454c-b7eb-43386c9bddf6/scratchpad/z-rear-iso.png --camera=80,80,15,60,0,30,280 models/motion-system/z-carriage-sled.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format png -o /private/tmp/claude-501/-Users-costmo-Documents-dev-printing-printery/ce881fc8-2a09-454c-b7eb-43386c9bddf6/scratchpad/z-rear-iso2.png --camera=0,60,20,60,0,0,280 --autocenter models/motion-system/z-carriage-sled.scad)",
+      "Bash(/Applications/OpenSCAD.app/Contents/MacOS/OpenSCAD --export-format png -o /private/tmp/claude-501/-Users-costmo-Documents-dev-printing-printery/ce881fc8-2a09-454c-b7eb-43386c9bddf6/scratchpad/z-rear-front.png --camera=0,60,20,90,0,0,280 --autocenter models/motion-system/z-carriage-sled.scad)"
     ],
     "additionalDirectories": [
       "/Users/costmo/Documents/dev/printing/printery/.claude",

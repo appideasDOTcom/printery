@@ -237,7 +237,8 @@ module _z_carriage_sleds() {
     translate([_cx_fr, _cy_f, _z_pre]) z_carriage_right();
 
     // Rear-center: rotate 180° so relief and lead screw offset face the correct direction
-    translate([_cx_rc, _cy_r, _z_pre]) rotate([0, 0, 180]) z_carriage_assembly();
+    // translate([_cx_rc, _cy_r, _z_pre]) rotate([0, 0, 180]) z_carriage_assembly();
+	translate([_cx_rc, _cy_r, _z_pre]) rotate([0, 0, 180]) z_carriage_rear();
 }
 
 // NOTE: The Y carriage rods and their end-capture blocks are owned by

@@ -160,7 +160,7 @@ module front_left_bed_bracket() {
 module m3_slot() {
 
 	hull() {
-		rotate([-90,90,0]) cylinder(d=6.3, h=2.6, $fn=6);
+		rotate([-90,90,0]) cylinder(d=6.8, h=2.8, $fn=6);
 		translate([0, 0, -15]) rotate([-90,90,0]) cylinder(d=6.3, h=2.6, $fn=6);
 	}
 

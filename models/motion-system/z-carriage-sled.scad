@@ -268,7 +268,67 @@ module z_carriage_right() {
     mirror([1, 0, 0]) z_carriage_left();
 }
 
+use <../build-plate/front-crossbar.scad>
+
+// ---------------------------------------------------------------------------
+// Rear carriage connector — triangular web joining bearing pillar to crossbar
+// ---------------------------------------------------------------------------
+
+// Crossbar piece placement (must match the translate below)
+_rcb_x      = -97.5;   // left edge of crossbar piece in sled local X
+_rcb_y      =  44.0;   // front face of crossbar piece in sled local Y
+_rcb_z      =  13.8;   // bottom of crossbar piece in sled local Z
+_rcb_width  = 195.0;   // total crossbar span (bar_length from front-crossbar.scad)
+_rcb_cw     = 109.0;   // cutout_w — material spans ±54.5 mm from bar centre (X=0)
+
+// Triangle base extents: stay within the solid material of the crossbar piece
+_tri_base_hw  = _rcb_cw / 2;                  // 54.5 mm — half-width of base
+_tri_base_x_l = -_tri_base_hw;                // -54.5 mm
+_tri_base_x_r =  _tri_base_hw;                //  54.5 mm
+_tri_base_y   = _rcb_y;                       //  44 mm — front face of crossbar
+_tri_apex_y   = _z_ls_offset;                 //  20.2 mm — lead screw bore centre Y
+
+// Z extents: top flush with sled, bottom tapers via hull
+_tri_top_z    = zbr_h;                        // 31 mm
+_tri_apex_bot = zbr_h - zcn_h;               // 17.5 mm — bottom of nut collar at apex
+_tri_base_bot = _rcb_z;                       // 13.8 mm — bottom of crossbar piece
+
+// Apex slab: narrow, at lead screw Y, bottom = collar bottom
+_tri_apex_hw  = zcn_od / 2;                   // 13.5 mm half-width
+
+// Base slab thickness in Y so it mates flush to the crossbar front face
+_tri_slab_t   = 2.0;
+
+module _z_carriage_rear_web() {
+    hull() {
+        // Apex slab — sits against the lead screw collar, bottom at collar base
+        translate([-_tri_apex_hw, _tri_apex_y, _tri_apex_bot])
+            cube([zcn_od, _tri_slab_t, _tri_top_z - _tri_apex_bot]);
+
+        // Left base corner — at crossbar front face, full height, slightly rounded
+        translate([_tri_base_x_l, _tri_base_y, _tri_base_bot])
+            cube([_tri_slab_t, _tri_slab_t, _tri_top_z - _tri_base_bot]);
+
+        // Right base corner — mirror of left
+        translate([_tri_base_x_r - _tri_slab_t, _tri_base_y, _tri_base_bot])
+            cube([_tri_slab_t, _tri_slab_t, _tri_top_z - _tri_base_bot]);
+    }
+}
+
+module z_carriage_rear() {
+    difference() {
+        union() {
+            z_carriage_assembly();
+            translate([_rcb_x, _rcb_y, _rcb_z])
+                rear_crossbar_cutout_insertion();
+            _z_carriage_rear_web();
+        }
+        _z_carriage_cuts();
+    }
+}
+
 // z_carriage_left();
-z_carriage_right();
+// z_carriage_right();
 
 
+z_carriage_rear();

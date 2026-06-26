@@ -69,6 +69,26 @@ module rear_crossbar_cutout() {
 		scale( [3, 4.2, 1] ) cylinder( d = 4, h = wall_height );
 }
 
+// Cutout applied to the back edge of the rear crossbar instance (see top-frame.scad).
+// Dimensions: 130 × (wall_depth + 6) × wall_height, centred in X, flush with back face.
+module rear_crossbar_cutout_insertion() {
+    cutout_w = 109;
+    cutout_d = 2;
+	bolt_w = 120;
+
+	platform_width = 40;
+
+    translate([(bar_length - cutout_w) / 2, bar_width - cutout_d - 1, 0])
+        cube([cutout_w, cutout_d + 1, wall_height]);  // +1 in Y to clear back face
+	translate([(bar_length - 120) / 2, bar_width - cutout_d - 1, 0])
+		scale( [3, 4.2, 1] ) cylinder( d = 4, h = wall_height - 5 );
+	translate([(bar_length + 120) / 2, bar_width - cutout_d - 1, 0])
+		scale( [3, 4.2, 1] ) cylinder( d = 4, h = wall_height - 5 );
+
+	translate([((cutout_w) / 2) + (platform_width/2), bar_width - cutout_d + 2, 6])
+		cube([platform_width, 12, wall_height - 11]);  // +1 in Y to clear back face
+}
+
 module front_crossbar() {
     difference() {
         union() {
@@ -95,7 +115,7 @@ front_crossbar(); // A & B Front & Left
 // difference() {
 // 		rotate([0, 0, 180])
 // 			front_crossbar();
-// 	translate([0, 12, 0])
-// 		rotate([0, 0, 180])
-// 			rear_crossbar_cutout();
+	// translate([0, 12, 0])
+	// 	rotate([0, 0, 180])
+	// 		rear_crossbar_cutout();
 // }
