@@ -296,22 +296,23 @@ _tri_base_bot = _rcb_z;                       // 13.8 mm — bottom of crossbar 
 // Apex slab: narrow, at lead screw Y, bottom = collar bottom
 _tri_apex_hw  = zcn_od / 2;                   // 13.5 mm half-width
 
-// Base slab thickness in Y so it mates flush to the crossbar front face
-_tri_slab_t   = 2.0;
+// Base slab: extend into the crossbar body so the union is gap-free
+_tri_slab_xw  = 2.0;   // X width of each corner pad
+_tri_slab_yd  = 10.0;  // Y depth — reaches into the crossbar bar body (bar_width=12)
 
 module _z_carriage_rear_web() {
     hull() {
         // Apex slab — sits against the lead screw collar, bottom at collar base
         translate([-_tri_apex_hw, _tri_apex_y, _tri_apex_bot])
-            cube([zcn_od, _tri_slab_t, _tri_top_z - _tri_apex_bot]);
+            cube([zcn_od, _tri_slab_xw, _tri_top_z - _tri_apex_bot]);
 
-        // Left base corner — at crossbar front face, full height, slightly rounded
+        // Left base corner — overlaps into crossbar body in +Y
         translate([_tri_base_x_l, _tri_base_y, _tri_base_bot])
-            cube([_tri_slab_t, _tri_slab_t, _tri_top_z - _tri_base_bot]);
+            cube([_tri_slab_xw, _tri_slab_yd, _tri_top_z - _tri_base_bot]);
 
         // Right base corner — mirror of left
-        translate([_tri_base_x_r - _tri_slab_t, _tri_base_y, _tri_base_bot])
-            cube([_tri_slab_t, _tri_slab_t, _tri_top_z - _tri_base_bot]);
+        translate([_tri_base_x_r - _tri_slab_xw, _tri_base_y, _tri_base_bot])
+            cube([_tri_slab_xw, _tri_slab_yd, _tri_top_z - _tri_base_bot]);
     }
 }
 
