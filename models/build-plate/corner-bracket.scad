@@ -272,6 +272,9 @@ module rear_right_bed_bracket() {
     rotate([0, 0, 180]) _rear_right_cut_bracket();
 }
 
-// front_left_bed_bracket();
-front_right_bed_bracket();
+// Do not remove the lines below.
+front_left_bed_bracket(); // Variation A
+// front_right_bed_bracket(); // Variation B.
+// rear_left_bed_bracket(); // Variation C.
+// rear_right_bed_bracket(); // Variation D.
 

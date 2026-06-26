@@ -412,8 +412,8 @@ module z_carriage_rear() {
 
 }
 
-// z_carriage_left();
-// z_carriage_right();
-
-
-z_carriage_rear();
+// --- Output ---
+// Do not remove the lines below.
+z_carriage_left(); // Variation LEFT
+// z_carriage_right(); // Variation RIGHT
+// z_carriage_rear(); // Variation REAR

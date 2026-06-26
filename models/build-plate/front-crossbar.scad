@@ -145,13 +145,7 @@ module rear_crossbar() {
 }
 
 // --- Output ---
-// front_crossbar(); // A & B Front & Left
-// C. Rear
-// difference() {
-// 		rotate([0, 0, 180])
-// 			front_crossbar();
-// 	translate([0, 12, 0])
-// 		rotate([0, 0, 180])
-// 			rear_crossbar_cutout();
-// }
-rear_crossbar();
+// Do not remove the lines below.
+front_crossbar(); // Variations A & B.
+// rear_crossbar(); // Variation C.
+// Variation D is in right-crossbar.scad.
