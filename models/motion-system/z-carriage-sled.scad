@@ -316,6 +316,40 @@ module _z_carriage_rear_web() {
     }
 }
 
+// ---------------------------------------------------------------------------
+// Rail-mount block fasteners — two M3 through-holes + top nut traps
+// Block sits on the rear crossbar rail; block in sled coords:
+//   X: _rcb_x + (cutout_w/2 + platform_width/2) = -97.5 + 74.5 = -23 .. +17
+//   Y: _rcb_y + (bar_width - cutout_d + 2)       =  44   + 12   =  56 .. 68
+//   Z: _rcb_z + 6 .. _rcb_z + 6 + (wall_height - 11) = 19.8 .. 26.0
+// ---------------------------------------------------------------------------
+
+_rmb_x0      = _rcb_x + _rcb_cw / 2 + 20;    // -23 mm — block left edge X
+_rmb_y0      = _rcb_y + 12;                    //  56 mm — block front edge Y
+_rmb_z_bot   = _rcb_z + 6;                     //  19.8 mm — block bottom Z
+_rmb_z_top   = _rcb_z + 6 + (cb_wall_height - 11);  // 26.0 mm — block top Z
+
+// Nut-trap parameters (match corner-bracket.scad m3_fastener())
+_rmb_nut_depth  = m3_nut_depth + 0.4;   // 2.8 mm — buried depth from top
+_rmb_nut_over   = 1.0;                  // overrun above pocket floor (opens to top)
+_rmb_bore_extra = 1.0;                  // bore extends below block bottom
+
+// Two holes at X=-13 and X=+7, centred in block Y at y=62 (mid of 56..68)
+_rmb_hole_x1 = _rmb_x0 + 10;           // -13 mm in sled coords
+_rmb_hole_x2 = _rmb_x0 + 30;           //  +7 mm in sled coords
+_rmb_hole_y  = _rmb_y0 + 6;            //  62 mm — Y centre of block
+
+module _rail_block_fasteners() {
+    for (hx = [_rmb_hole_x1, _rmb_hole_x2]) {
+        // Through bore — bottom to top of block
+        translate([hx, _rmb_hole_y, _rmb_z_bot - _rmb_bore_extra])
+            cylinder(d = m3_through_dia, h = (_rmb_z_top - _rmb_z_bot) + _rmb_bore_extra + 0.1);
+        // Hex nut trap — recessed into the top face
+        translate([hx, _rmb_hole_y, _rmb_z_top - _rmb_nut_depth])
+            cylinder(d = m3_nut_corner_dia, h = _rmb_nut_depth + _rmb_nut_over, $fn = 6);
+    }
+}
+
 module z_carriage_rear() {
     difference() {
         union() {
@@ -325,6 +359,7 @@ module z_carriage_rear() {
             _z_carriage_rear_web();
         }
         _z_carriage_cuts();
+        _rail_block_fasteners();
     }
 }
 
