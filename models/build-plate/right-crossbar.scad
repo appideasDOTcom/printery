@@ -20,5 +20,6 @@ module right_crossbar() {
 }
 
 // --- Output ---
-// right_crossbar();
-rotate([0, 0, 90]) right_crossbar(); // D. Right
+// Do not remove the lines below.
+rotate([0, 0, 90]) right_crossbar(); // Variation D.
+// Variations A - C are in front-crossbar.scad
