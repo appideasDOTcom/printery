@@ -318,19 +318,13 @@ module _build_plate_brackets() {
 
     // Front crossbar: centered on frame X, front edge flush with bracket front, bottom flush with brackets
 	color( "lightblue" ) {
+		// Front crossbar
 		translate([_fcb_origin_x, _cb_origin_y, _cb_bar_z])
 			front_crossbar();
 
-		// Rear crossbar: rotated 180° so flat wall faces +Y (rear), bar body extends inward (−Y)
-		// Back-edge notch removed via rear_crossbar_cutout()
-		difference() {
-			translate([_rcb_origin_x, _cb_origin_y + _cb_span, _cb_bar_z])
-				rotate([0, 0, 180])
-					front_crossbar();
-			translate([_rcb_origin_x, _cb_origin_y + _cb_span + (12), _cb_bar_z])
-				rotate([0, 0, 180])
-					rear_crossbar_cutout();
-		}
+		// Rear crossbar
+		translate([_rcb_origin_x, _cb_origin_y + _cb_span, _cb_bar_z])
+			rear_crossbar();
 
 		// Left crossbar: rotated −90° so flat wall faces −X (left-outside), bar body extends inward (+X)
 		translate([_lcb_origin_x, _lcb_origin_y, _cb_bar_z])

@@ -350,6 +350,18 @@ module _rail_block_fasteners() {
     }
 }
 
+module _bed_alignment_fasteners() {
+    translate( [ (_rcb_x + _rcb_width/2) + (_rcb_cw/2) + 5.5, _rmb_y0 + 2.3, _rmb_z_bot - 6.1] ) {
+		cylinder(d = m3_through_dia, h = 30 );
+			cylinder(d = m3_nut_corner_dia, h = _rmb_nut_depth + _rmb_nut_over + 2.1, $fn = 6);
+	}
+
+	translate( [ (_rcb_x + _rcb_width/2) - ((_rcb_cw/2) + 5.5), _rmb_y0 + 2.3, _rmb_z_bot - 6.1] ) {
+		cylinder(d = m3_through_dia, h = 30 );
+			cylinder(d = m3_nut_corner_dia, h = _rmb_nut_depth + _rmb_nut_over + 2.1, $fn = 6);
+	}
+}
+
 module z_carriage_rear() {
     difference() {
         union() {
@@ -360,7 +372,9 @@ module z_carriage_rear() {
         }
         _z_carriage_cuts();
         _rail_block_fasteners();
+		_bed_alignment_fasteners();
     }
+
 }
 
 // z_carriage_left();

@@ -4,6 +4,7 @@
 // ============================================================
 
 include <../common/shared-dims.scad>
+include <../common/shapes.scad>
 use <../frame/top-frame.scad>
 
 $fa = 1.0;
@@ -86,7 +87,11 @@ module rear_crossbar_cutout_insertion() {
 		scale( [3, 4.2, 1] ) cylinder( d = 4, h = wall_height - 5 );
 
 	translate([((cutout_w) / 2) + (platform_width/2), bar_width - cutout_d + 2, 6])
+	{
+		translate( [platform_width + 2, 2, 0] ) rotate( [0, 0, 0] ) inner_fillet( d = 4, l = wall_height - 11 );
 		cube([platform_width, 12, wall_height - 11]);  // +1 in Y to clear back face
+		translate( [-2, 2, 0] ) rotate( [0, 0, 90] ) inner_fillet( d = 4, l = wall_height - 11 );
+	}
 }
 
 module front_crossbar() {
@@ -109,13 +114,44 @@ module front_crossbar() {
     }
 }
 
+// Rear crossbar: front_crossbar() base with two additional M3 holes through the bar
+// body at the sled-block mounting positions. Holes at local X=84.5 and X=104.5,
+// Y=19 (centre of the sled block's footprint on the back edge), bored full depth.
+// Head sinks from the bottom face match the existing front_crossbar() counterbore style.
+_rcb_hole_x1  = 84.5;
+_rcb_hole_x2  = 104.5;
+_rcb_hole_y   = bar_width / 2;   // 6 mm — centre of bar depth
+
+module rear_crossbar() {
+
+	difference() {
+		rotate([0, 0, 180])
+			front_crossbar();
+
+		translate([0, 12, 0])
+			rotate([0, 0, 180])
+				rear_crossbar_cutout();
+
+		for (hx = [_rcb_hole_x1, _rcb_hole_x2]) {
+
+			rotate([0, 0, 180])
+            	translate([hx, _rcb_hole_y, -1])
+                	cylinder(d = m3_through_dia, h = bar_height + 2);
+			rotate([0, 0, 180])
+            	translate([hx, _rcb_hole_y, -1])
+                	cylinder(d = m3_head_dia, h = m3_head_sink + 1);
+        }
+	}
+}
+
 // --- Output ---
-front_crossbar(); // A & B Front & Left
+// front_crossbar(); // A & B Front & Left
 // C. Rear
 // difference() {
 // 		rotate([0, 0, 180])
 // 			front_crossbar();
-	// translate([0, 12, 0])
-	// 	rotate([0, 0, 180])
-	// 		rear_crossbar_cutout();
+// 	translate([0, 12, 0])
+// 		rotate([0, 0, 180])
+// 			rear_crossbar_cutout();
 // }
+rear_crossbar();
