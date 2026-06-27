@@ -267,6 +267,7 @@ module x_rod_sled() {
     }
 }
 
-// Preview
-x_rod_sled();                   // LEFT
-// mirror([1, 0, 0]) x_rod_sled(); // RIGHT
+// --- OUTPUT ---
+// Do not delete the lines below
+x_rod_sled();                   // Variant LEFT
+// mirror([1, 0, 0]) x_rod_sled(); // Variant RIGHT
