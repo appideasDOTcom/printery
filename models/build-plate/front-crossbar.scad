@@ -146,6 +146,6 @@ module rear_crossbar() {
 
 // --- Output ---
 // Do not remove the lines below.
-// front_crossbar(); // Variations A & B.
-rear_crossbar(); // Variation C.
+front_crossbar(); // Variations A & B.
+// rear_crossbar(); // Variation C.
 // Variation D is in right-crossbar.scad.
