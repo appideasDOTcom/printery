@@ -90,9 +90,7 @@ _f = 4.0;
 
 _left_offset = 12.2;
 
-top_wall();
-
-module top_wall() {
+module _top_wall() {
 	hull() {
 
 		translate([-_plate_x/2, _r, _arm_thick + 3.6])
@@ -107,6 +105,47 @@ module top_wall() {
 		translate([-_plate_x/2 + 20, _plate_y - _r + _left_offset, _arm_thick + 3.6])
             cylinder(r = _plate_x/2, h = 3);
 	}
+}
+
+// _supprt_structure();
+
+module _supprt_structure() {
+
+	difference() {
+
+		translate([-2.5, _plate_y - _r + _left_offset, ex - _arm_thick + 3])
+		{
+			hull() {
+				cylinder(r = _plate_x/2, h = _arm_thick);
+
+				translate( [-_slot_near, -_plate_y + 5, 0] )
+					cylinder(r = _plate_x/2, h = _arm_thick);
+
+				translate( [0, -_plate_y + 5, 0] )
+					cylinder(r = _plate_x/2, h = _arm_thick);
+
+			}
+		}
+
+		translate([0 - 7, _arm_y + 7, ex - _arm_thick + 3 - 1])
+		{
+
+			hull() {
+				translate( [0, -5, 0] )
+					cylinder(r = 2, h = _arm_thick + 2);
+
+				translate( [-_slot_near/2 - 6, -5, 0] )
+					cylinder(r = 2, h = _arm_thick + 2);
+
+
+				translate( [0, _left_offset + 4, 0] )
+					cylinder(r = 2, h = _arm_thick + 2);
+			}
+		}
+
+
+	}
+
 }
 
 module _fillet_corner(y, rear = false) {
@@ -135,6 +174,8 @@ module z_belt_tensioner() {
 
     difference() {
         union() {
+			_top_wall();
+			_supprt_structure();
             // Back plate — full height, corners rounded via hull of cylinders
             hull() {
                 translate([-_plate_x/2, _r, 0])
@@ -192,13 +233,39 @@ module z_belt_tensioner() {
             }
 
         // M5 through hole in rear plate extension — centre of rear section
-        translate([0.1, _arm_y_start + _arm_y + _arm_y_start / 2 + _left_offset - 2, _plate_z / 2])
+        translate([0, _arm_y_start + _arm_y + _arm_y_start / 2 + _left_offset - 2, _plate_z / 2])
+		{
             rotate([0, -90, 0])
+			{
                 cylinder(d = m5_through_dia, h = _plate_x + 0.2);
+					translate( [0, 0, 5] )
+						hull() {
+							cylinder(d = m5_through_dia + 6, h = 80);
+							translate( [-10, 0, 0] ) cylinder(d = m5_through_dia + 6, h = 80);
+						}
 
-		translate([0.1, _arm_y_start + _arm_y + _arm_y_start / 2 - _left_offset + 2, _plate_z / 2])
+			}
+		}
+
+		translate([0, _arm_y_start + _arm_y + _arm_y_start / 2 - _left_offset + 2, _plate_z / 2])
+		{
             rotate([0, -90, 0])
+			{
                 cylinder(d = m5_through_dia, h = _plate_x + 0.2);
+					translate( [0, 0, 5] )
+						hull() {
+							cylinder(d = m5_through_dia + 6, h = 80);
+							translate( [-10, 0, 0] ) cylinder(d = m5_through_dia + 6, h = 80);
+						}
+			}
+		}
+
+		translate([10, _arm_y/2, _plate_z - 0.1]) {
+			cylinder(d = m5_through_dia, h = _plate_x + 0.2);
+			translate( [0, _arm_y_start + _arm_y + _left_offset - (_arm_y/4), 0] ) cylinder(d = m5_through_dia, h = _plate_x + 0.2);
+		}
+
+
 
 
         // M5 head counterbore from bottom of arm
