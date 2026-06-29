@@ -38,15 +38,15 @@ include <../common/shared-dims.scad>
 // Back plate: presses flat against X=320 face
 _plate_x   = wing_t;  // thickness in X — matches Z pillow block wing thickness
 _arm_y_start = 12.0;  // extension on each side of the arm
-_plate_z   = ex;  // 20 mm — matches 2020 extrusion height
+_plate_z   = ex;  // 23 mm — matches 2020 extrusion height
 
 // Arm: extends inward (−X) from the back plate, at belt Z height.
 // The arm is positioned at the REAR of the plate (away from the pillow block)
 // so it does not overlap the pillow block in Y at all.
 // Arm Z centre in local coords (local Z=0 = pb_lower_bot_z = 70 mm):
-_arm_thick  = 13.4;  // arm height in Z
+_arm_thick  = 16.4;  // arm height in Z
 _arm_z_ctr  = ex - _arm_thick / 2;   // 15 mm — arm top flush with top of 20 mm extrusion
-_arm_depth  = 85.0;  // arm reach in −X (must reach 80 mm for full slot travel)
+_arm_depth  = 95.0;  // arm reach in −X (must reach 80 mm for full slot travel)
 _arm_y      = 18.0;  // arm front-to-back depth in Y (narrower than plate)
 _plate_y    = _arm_y_start + _arm_y + _arm_y_start;  // 42 mm — equal extension on both sides of arm
 
@@ -59,7 +59,7 @@ _plate_y    = _arm_y_start + _arm_y + _arm_y_start;  // 42 mm — equal extensio
 // _slot_far    = 36.0;   // mm inboard for full 15 mm travel
 
 _slot_near   = 65.0;   // mm inboard from extrusion face for first belt contact
-_slot_far    = 80.0;   // mm inboard for full 15 mm travel
+_slot_far    = 90.0;   // mm inboard for full 15 mm travel
 
 _slot_r      = m5_through_dia / 2 - 0.45 + 0.50;  // 2.75 mm + 0.45 for a little tolerance and to simplify the shape.
 _slot_len    = _slot_far - _slot_near;  // 15 mm
@@ -68,7 +68,7 @@ _slot_cx_arm = -(_slot_near + _slot_len / 2);  // −28.5 mm
 
 // M5 head counterbore on top face of arm
 _cbore_d     = m5_head_dia;    // 9 mm
-_cbore_z     = m5_head_depth;  // 3.5 mm
+_cbore_z     = m5_head_depth + 3;  // 6.5 mm
 
 // M5 nut trapping track — cut into the top of the arm, centred on the slot
 _nut_track_w = 7.9;   // M5 nut narrow-side width
@@ -87,6 +87,27 @@ _bolt_z2     = _plate_z * 0.75;
 // ---------------------------------------------------------------------------
 _r = 2.0;
 _f = 4.0;
+
+_left_offset = 12.2;
+
+top_wall();
+
+module top_wall() {
+	hull() {
+
+		translate([-_plate_x/2, _r, _arm_thick + 3.6])
+            cylinder(r = _plate_x/2, h = 3);
+
+		translate([-_plate_x/2, _plate_y - _r + _left_offset, _arm_thick + 3.6])
+            cylinder(r = _plate_x/2, h = 3);
+
+		translate([-_plate_x/2 + 20, _r, _arm_thick + 3.6])
+            cylinder(r = _plate_x/2, h = 3);
+
+		translate([-_plate_x/2 + 20, _plate_y - _r + _left_offset, _arm_thick + 3.6])
+            cylinder(r = _plate_x/2, h = 3);
+	}
+}
 
 module _fillet_corner(y, rear = false) {
     // Quarter-torus patch between the perpendicular side and bottom fillets.
@@ -112,27 +133,27 @@ module _fillet_corner(y, rear = false) {
 
 module z_belt_tensioner() {
 
-	_left_offset = 12.2;
-
     difference() {
         union() {
             // Back plate — full height, corners rounded via hull of cylinders
             hull() {
                 translate([-_plate_x/2, _r, 0])
-                    cylinder(r = _plate_x/2, h = _plate_z);
+                    cylinder(r = _plate_x/2, h = _plate_z + 3);
                 translate([-_plate_x/2, _plate_y - _r + _left_offset, 0])
-                    cylinder(r = _plate_x/2, h = _plate_z);
+                    cylinder(r = _plate_x/2, h = _plate_z + 3);
+
+
             }
 
             // Arm — at its Z position, all four outer corners rounded as one shape
-            translate([0, -_left_offset, _arm_z_ctr - _arm_thick/2])
+            translate([0, -_left_offset, _arm_z_ctr - _arm_thick/2 + 3])
                 linear_extrude(_arm_thick)
                     offset(r = _r) offset(r = -2*_r) offset(r = _r)
                         translate([-_plate_x - _arm_depth, _arm_y_start])
                             square([_arm_depth + _plate_x, _arm_y]);
 
             // Bottom fillet: arm underside meets back plate (XZ plane, extruded in Y)
-            translate([-_plate_x - 4, _arm_y_start - _left_offset + 2, _arm_z_ctr - _arm_thick/2 - _f])
+            translate([-_plate_x - 4, _arm_y_start - _left_offset + 2, _arm_z_ctr - _arm_thick/2 - _f + 3])
                 rotate([-90, -90, 0])
                     linear_extrude(_arm_y - 2)
                         difference() {
@@ -141,27 +162,28 @@ module z_belt_tensioner() {
                         }
 
             // Close the two trihedral gaps between the side and bottom fillets.
-            _fillet_corner(_arm_y_start + _arm_y - _left_offset, rear = true);
+            // translate( [0, 0, 3] )
+			// 	_fillet_corner(_arm_y_start + _arm_y - _left_offset, rear = true);
 
             // Inner fillets at arm-to-plate junctions
-            translate([0, 0, _arm_z_ctr - _arm_thick/2])
-                linear_extrude(_arm_thick) {
-                    // Rear junction: corner at (-_plate_x, _arm_y_start+_arm_y)
-                    translate([-2*_plate_x - _f, 2*(_arm_y_start + _arm_y) + _f - _left_offset])
-                    rotate([0, 0, -180])
-                    difference() {
-                        translate([-_plate_x - _f, _arm_y_start + _arm_y])
-                            square([_f, _f]);
-                        translate([-_plate_x, _arm_y_start + _arm_y])
-                            circle(r = _f);
-                    }
-                }
+            // translate([0, 0, _arm_z_ctr - _arm_thick/2])
+            //     linear_extrude(_arm_thick) {
+            //         // Rear junction: corner at (-_plate_x, _arm_y_start+_arm_y)
+            //         translate([-2*_plate_x - _f, 2*(_arm_y_start + _arm_y) + _f - _left_offset])
+            //         rotate([0, 0, -180])
+            //         difference() {
+            //             translate([-_plate_x - _f, _arm_y_start + _arm_y])
+            //                 square([_f, _f]);
+            //             translate([-_plate_x, _arm_y_start + _arm_y])
+            //                 circle(r = _f);
+            //         }
+            //     }
         }
 
         // M5 pulley slot — vertical (Z axis), slot runs in X
         // Y centred on the arm (rear portion of plate)
         _arm_cy = (_arm_y_start + _arm_y / 2);
-        translate([_slot_cx_arm - _plate_x, _arm_cy - _left_offset, _arm_z_ctr - _arm_thick/2 - 0.1])
+        translate([_slot_cx_arm - _plate_x, _arm_cy - _left_offset, _arm_z_ctr - _arm_thick/2 - 0.1 + 3])
             hull() {
                 translate([-(_slot_len/2 - _slot_r), 0, 0])
                     cylinder(r = _slot_r, h = _arm_thick + 0.2);
@@ -180,7 +202,7 @@ module z_belt_tensioner() {
 
 
         // M5 head counterbore from bottom of arm
-        translate([_slot_cx_arm - _plate_x, _arm_cy - _left_offset, _arm_z_ctr - _arm_thick/2 - 0.1])
+        translate([_slot_cx_arm - _plate_x, _arm_cy - _left_offset, _arm_z_ctr - _arm_thick/2 - 0.1 + 3])
             hull() {
                 translate([-(_slot_len/2 - _slot_r + 0.5), 0, 0])
                     cylinder(d = _cbore_d, h = _cbore_z + 0.1);
@@ -191,7 +213,7 @@ module z_belt_tensioner() {
         // M5 nut trapping track — straight channel from top surface down
         translate([_slot_cx_arm - _plate_x - _slot_len/2,
                    (_arm_cy - _nut_track_w/2) - _left_offset,
-                   _plate_z - _nut_track_d])
+                   _plate_z - _nut_track_d + 3])
             cube([_slot_len, _nut_track_w, _nut_track_d + 0.1]);
 
         // Hex end caps — points face ±Y (in/out of printer), rotate 90° around Z
@@ -199,7 +221,7 @@ module z_belt_tensioner() {
         rotate([0, 0, 90])
             for (ex = [_slot_cx_arm - _plate_x - _slot_len/2 + _slot_r - 0.5,
                        _slot_cx_arm - _plate_x + _slot_len/2 - _slot_r + 0.5]) {
-                translate([_arm_cy - _left_offset, -ex, _nut_track_z])
+                translate([_arm_cy - _left_offset, -ex, _nut_track_z + 3])
 					rotate([0, 0, 90])
                     	cylinder(d = _nut_hex_dia, h = _nut_track_d + 0.1, $fn = 6);
             }
