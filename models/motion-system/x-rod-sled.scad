@@ -59,8 +59,8 @@ fp_pckt_bot      = 6.0;                    // matches y-rod-mount _pul_pckt_bot
 fp_pckt_top      = 25.5;                   // matches y-rod-mount _pul_pckt_top
 fp_m5_head_dia   = 9.5;
 fp_m5_head_depth = 5.1;
-fp_m5_hex_dia    = 9.6;
-fp_m5_nut_h      = 4.1;
+fp_m5_hex_dia    = 9.4;
+fp_m5_nut_h      = 5.1;
 fp_shaft_top_z   = yrod_z + (carriage_rod_dia + rod_bore_tol) / 2;  // stops just below Y-rod bore floor
 
 // --- Rear-face idler pulley pocket ---
@@ -186,8 +186,12 @@ module front_pulley_pocket() {
     translate([fp_shaft_x, fp_shaft_y, -0.1])
         cylinder(d = fp_m5_head_dia, h = fp_m5_head_depth + 0.1);
     // M5 hex nut trap above upper pulley
-    translate([fp_shaft_x, fp_shaft_y, fp_pckt_top - 0.1])
-        cylinder(d = fp_m5_hex_dia, h = fp_m5_nut_h + 0.1, $fn = 6);
+	translate( [0, 0, 0.8] ) hull() {
+		translate([fp_shaft_x, fp_shaft_y, fp_pckt_top - 0.1])
+			rotate( [0, 0, 90] ) cylinder(d = fp_m5_hex_dia, h = fp_m5_nut_h + 0.1, $fn = 6);
+		translate([fp_shaft_x, fp_shaft_y - 20, fp_pckt_top - 0.1])
+			rotate( [0, 0, 90] ) cylinder(d = fp_m5_hex_dia, h = fp_m5_nut_h + 0.1, $fn = 6);
+	}
 }
 
 // Rear-face idler pulley pocket. Same geometry as front_pulley_pocket(); opens through
@@ -206,8 +210,12 @@ module rear_pulley_pocket() {
     translate([rp_shaft_x, rp_shaft_y, -0.1])
         cylinder(d = fp_m5_head_dia, h = fp_m5_head_depth + 0.1);
     // M5 hex nut trap above upper pulley
-    translate([rp_shaft_x, rp_shaft_y, rp_pckt_top - 0.1])
-        cylinder(d = fp_m5_hex_dia, h = fp_m5_nut_h + 0.1, $fn = 6);
+	translate( [0, 0, 1.1] ) hull() {
+		translate([rp_shaft_x, rp_shaft_y, rp_pckt_top - 0.1])
+			rotate( [0, 0, 0] ) cylinder(d = fp_m5_hex_dia, h = fp_m5_nut_h + 0.1, $fn = 6);
+		translate([rp_shaft_x - 20, rp_shaft_y, rp_pckt_top - 0.1])
+			rotate( [0, 0, 0] ) cylinder(d = fp_m5_hex_dia, h = fp_m5_nut_h + 0.1, $fn = 6);
+	}
 }
 
 // Clears the outer (−X) face for the GT2 belt running along the Y-axis wall.
@@ -259,8 +267,14 @@ module x_rod_sled() {
             translate([rp_shaft_x, rp_shaft_y, yrod_z - relief_w / 2 - 9.7])
                 cylinder(d = 15.0, h = 9.7);
             yrod_bearing_pocket();
-            translate([rp_shaft_x, rp_shaft_y, yrod_z - relief_w / 2 - 9.7 - 0.1])
-                cylinder(d = fp_m5_hex_dia, h = fp_m5_nut_h + 0.1, $fn = 6);
+
+			translate( [0, 0, 1.1] ) hull() {
+				translate([rp_shaft_x, rp_shaft_y, yrod_z - relief_w / 2 - 9.7 - 0.1])
+					rotate( [0, 0, 0] )  cylinder(d = fp_m5_hex_dia, h = fp_m5_nut_h + 0.1, $fn = 6);
+				translate([rp_shaft_x - 20, rp_shaft_y, yrod_z - relief_w / 2 - 9.7 - 0.1])
+					rotate( [0, 0, 0] )  cylinder(d = fp_m5_hex_dia, h = fp_m5_nut_h + 0.1, $fn = 6);
+			}
+
             translate([rp_shaft_x, rp_shaft_y, yrod_z - relief_w / 2 - 9.7 - 0.1])
                 cylinder(d = fp_shaft_dia, h = 7.7 + 0.1);
         }
@@ -269,5 +283,5 @@ module x_rod_sled() {
 
 // --- OUTPUT ---
 // Do not delete the lines below
-x_rod_sled();                   // Variant LEFT
-// mirror([1, 0, 0]) x_rod_sled(); // Variant RIGHT
+// x_rod_sled();                   // Variant LEFT
+mirror([1, 0, 0]) x_rod_sled(); // Variant RIGHT

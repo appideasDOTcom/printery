@@ -77,7 +77,7 @@ _shaft_top_z    = _yrm_bore_z + _yrm_bore_dia / 2;
 _m5_head_dia    = 9.5;
 _m5_head_depth  = 5.1;
 _m5_nut_h       = 5.1;
-_m5_hex_dia     = 9.6;   // M5 hex nut circumscribed dia + 0.3 mm clearance (8.0 mm AF → 9.24 mm AC)
+_m5_hex_dia     = 9.4;   // M5 hex nut circumscribed dia + 0.3 mm clearance (8.0 mm AF → 9.24 mm AC)
 
 // Corner-bracket mounting bolt (runs in X through the block)
 _cbkt_bolt_z    = _yrm_h - 6.0;   // Z centre — above rod bore, 6 mm from top face
@@ -165,7 +165,7 @@ module y_rod_mount_rear() {
             cylinder(d = _m5_head_dia, h = _m5_head_depth + 0.1);
         // M5 hex nut trap above upper pulley — $fn=6 prevents nut spinning during tightening
 
-		translate( [0, 0, 1.1] ) hull() {
+		#translate( [0, 0, 1.1] ) hull() {
 			translate([_shaft_x, _shaft_y, _pul_pckt_top - 0.1])
 				rotate( [0, 0, 90] ) cylinder(d = _m5_hex_dia, h = _m5_nut_h + 0.1, $fn = 6);
 			translate([_shaft_x, _shaft_y - 20, _pul_pckt_top - 0.1])
