@@ -76,7 +76,7 @@ _shaft_top_z    = _yrm_bore_z + _yrm_bore_dia / 2;
 
 _m5_head_dia    = 9.5;
 _m5_head_depth  = 5.1;
-_m5_nut_h       = 4.1;
+_m5_nut_h       = 5.1;
 _m5_hex_dia     = 9.6;   // M5 hex nut circumscribed dia + 0.3 mm clearance (8.0 mm AF → 9.24 mm AC)
 
 // Corner-bracket mounting bolt (runs in X through the block)
@@ -112,14 +112,18 @@ module y_rod_mount_front() {
         translate([_shaft_x - _pul_r, _shaft_y_front, _pul_pckt_bot])
             cube([2 * _pul_r, _yrm_d - _shaft_y_front + 0.1, _pul_pckt_top - _pul_pckt_bot]);
         // Shaft bore: bottom of block to just below rod bore floor
-        translate([_shaft_x, _shaft_y_front, -0.1])
+        translate([_shaft_x, _shaft_y_front, -8.3])
             cylinder(d = _shaft_dia, h = _shaft_top_z + 0.1);
         // M5 bolt-head counterbore at block bottom face
         translate([_shaft_x, _shaft_y_front, -0.1])
             cylinder(d = _m5_head_dia, h = _m5_head_depth + 0.1);
         // M5 hex nut trap above upper pulley — $fn=6 prevents nut spinning during tightening
-        translate([_shaft_x, _shaft_y_front, _pul_pckt_top - 0.1])
-            cylinder(d = _m5_hex_dia, h = _m5_nut_h + 0.1, $fn = 6);
+		translate([0, 0, 1.1]) hull() {
+			translate([_shaft_x, _shaft_y_front, _pul_pckt_top - 0.1])
+				rotate([0, 0, 90]) cylinder(d = _m5_hex_dia, h = _m5_nut_h + 0.1, $fn = 6);
+			translate([_shaft_x, _shaft_y_front + 20, _pul_pckt_top - 0.1])
+				rotate([0, 0, 90]) cylinder(d = _m5_hex_dia, h = _m5_nut_h + 0.1, $fn = 6);
+		}
         // M5 frame-mount hole
         hull() { translate([-10.5, -3.1, _yrm_h/2]) rotate([-90,0,0]) cylinder(d=5.5, h=_yrm_d+6.2); translate([-9.5, -3.1, _yrm_h/2]) rotate([-90,0,0]) cylinder(d=5.5, h=_yrm_d+6.2); }
 		hull() { translate([10, -3.1, _yrm_h_rail - 10.5]) rotate([-90,0,0]) cylinder(d=5.5, h=_yrm_d+6.2); translate([10, -3.1, _yrm_h_rail - 9.5]) rotate([-90,0,0]) cylinder(d=5.5, h=_yrm_d+6.2); }
@@ -154,14 +158,19 @@ module y_rod_mount_rear() {
         translate([_shaft_x - _pul_r, -0.1, _pul_pckt_bot])
             cube([2 * _pul_r, _shaft_y + 0.1, _pul_pckt_top - _pul_pckt_bot]);
         // Shaft bore: bottom of block to just below rod bore floor
-        translate([_shaft_x, _shaft_y, -0.1])
+        translate([_shaft_x, _shaft_y, -8.3])
             cylinder(d = _shaft_dia, h = _shaft_top_z + 0.1);
         // M5 bolt-head counterbore at block bottom face
         translate([_shaft_x, _shaft_y, -0.1])
             cylinder(d = _m5_head_dia, h = _m5_head_depth + 0.1);
         // M5 hex nut trap above upper pulley — $fn=6 prevents nut spinning during tightening
-        translate([_shaft_x, _shaft_y, _pul_pckt_top - 0.1])
-            cylinder(d = _m5_hex_dia, h = _m5_nut_h + 0.1, $fn = 6);
+
+		translate( [0, 0, 1.1] ) hull() {
+			translate([_shaft_x, _shaft_y, _pul_pckt_top - 0.1])
+				rotate( [0, 0, 90] ) cylinder(d = _m5_hex_dia, h = _m5_nut_h + 0.1, $fn = 6);
+			translate([_shaft_x, _shaft_y - 20, _pul_pckt_top - 0.1])
+				rotate( [0, 0, 90] ) cylinder(d = _m5_hex_dia, h = _m5_nut_h + 0.1, $fn = 6);
+		}
 
 		hull() { translate([-10.5, -3.1, _yrm_h/2]) rotate([-90,0,0]) cylinder(d=5.5, h=_yrm_d+6.2); translate([-9.5, -3.1, _yrm_h/2]) rotate([-90,0,0]) cylinder(d=5.5, h=_yrm_d+6.2); }
 		hull() { translate([10, -3.1, _yrm_h_rail - 10.5]) rotate([-90,0,0]) cylinder(d=5.5, h=_yrm_d+6.2); translate([10, -3.1, _yrm_h_rail - 9.5]) rotate([-90,0,0]) cylinder(d=5.5, h=_yrm_d+6.2); }

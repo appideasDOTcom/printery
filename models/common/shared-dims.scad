@@ -217,6 +217,8 @@ m3_head_dia          = 6.0;   // pan/socket head diameter
 m3_head_depth        = 3.0;   // socket head height
 m3_nut_corner_dia    = 6.35;  // corner-to-corner diameter, DIN 934
 m3_nut_depth         = 2.4;   // DIN 934 nominal thickness
+m3_cs_head_dia       = 5.8;   // conical countersink top opening (custom flat-head OD 5.6 + clearance)
+m3_cs_depth          = 2.3;   // countersink cone depth (custom flat-head counterbore depth)
 
 // ---------------------------------------------------------------------------
 // M5 hardware
@@ -239,3 +241,23 @@ cb_wall_height = 17.2;
 plate_width  = 40.0;   // mm — X
 plate_depth  = 40.0;   // mm — Y
 plate_height = 12.2;   // mm — Z
+
+// ---------------------------------------------------------------------------
+// Strain gauge interface (connects hotend and extruder)
+// ---------------------------------------------------------------------------
+// Overall piece dimensions.
+sgi_height = 3.2; // We're working with a piece of metal, so this needs to remain fixed.
+sgi_depth = 25.4;
+sgi_width = 50;
+
+// Top-mount M3 bolt pass-through (2x2 grid).
+sgi_tm_throughhole_grid_width = 32;
+sgi_tm_throughhole_grid_depth = 16;
+sgi_tm_throughhole_diameter = m3_through_dia;
+
+// Front cutout.
+sgi_fc_width = 23;
+sgi_fc_depth = 14.5;
+
+// Extruder mount bolt pass-through.
+sgi_em_throughhole_width = 43;
